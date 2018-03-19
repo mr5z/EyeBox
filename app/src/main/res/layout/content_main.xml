@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/ic_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:gravity="bottom"
+                    android:textSize="28sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:text="eyeBOX"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_gravity="bottom|end"
+                    android:gravity="center"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:text="your work our vision"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:text="Welcome, Aaron Zipagan"
+                android:layout_alignParentBottom="true"/>
+
+            <Button
+                android:id="@+id/btn_sign_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:text="@string/sign_out"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="0dp"
+                android:layout_height="92dp"
+                android:layout_margin="4dp"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/btn_client_transactions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/a"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_client" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_toEndOf="@id/a"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="9"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="@string/client_transactions"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="0dp"
+                android:layout_height="92dp"
+                android:layout_margin="4dp"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/btn_payments"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/b"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_payments" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_toEndOf="@id/b"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="0"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="@string/payments"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="0dp"
+                android:layout_height="92dp"
+                android:layout_margin="4dp"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/btn_clients"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/c"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_cart" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_toEndOf="@id/c"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="1158"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="Payments"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="0dp"
+                android:layout_height="92dp"
+                android:layout_margin="4dp"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/btn_orders"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/d"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_order" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_toEndOf="@id/d"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="0"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="Payments"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="0dp"
+                android:layout_height="92dp"
+                android:layout_margin="4dp"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/btn_visits"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/e"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_visit" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="@string/visits"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.GridLayout>
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

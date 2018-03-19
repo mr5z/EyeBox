@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Eyebox</string>
+    <string name="action_settings">Settings</string>
+    <string name="proceed">proceed</string>
+    <string name="search">Search</string>
+    <string name="client">Client</string>
+    <string name="balance">Balance</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="client_transactions">Client Transactions</string>
+    <string name="payments">Payments</string>
+    <string name="visits">Visits</string>
+    <string name="all_rights_reserve">eyeBOX | All Rights Reserved (2016)</string>
+    <string name="sign_in">Sign In</string>
+    <string name="footer">Footer</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_username">Enter Username</string>
+</resources>

@@ -18,8 +18,8 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
     @Override
     void onDataBind(ViewHolder holder, Product data) {
         holder.name.setText(data.getName());
-        holder.subName.setText(data.getSubName());
-        holder.price.setText(String.valueOf(data.getPrice()));
+        holder.subName.setText(data.getGenericName());
+        holder.price.setText(data.getFormattedPrice());
         holder.soh.setText(String.valueOf(data.getSoh()));
     }
 

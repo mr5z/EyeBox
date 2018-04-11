@@ -12,32 +12,19 @@ import java.util.List;
 
 public class ClientsAdapter extends BaseListAdapter<ClientsAdapter.ViewHolder, Client> {
 
-    public interface ItemClickListener {
-        void onItemClick(Client data);
-    }
-
-    private ItemClickListener itemClickListener;
-
     public ClientsAdapter(List<Client> dataList) {
         super(dataList, R.layout.client_row);
     }
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
     @Override
-    void onDataBind(ClientsAdapter.ViewHolder holder, Client data) {
+    void onDataBind(ViewHolder holder, Client data) {
         holder.txtClientName.setText(data.getClientName());
         holder.txtClientAddress.setText(data.getClientAddress());
-        if (itemClickListener != null) {
-            holder.itemView.setOnClickListener(view -> itemClickListener.onItemClick(data));
-        }
     }
 
     @Override
-    ClientsAdapter.ViewHolder onCreateRow(View rowView) {
-        return new ClientsAdapter.ViewHolder(rowView);
+    ViewHolder onCreateRow(View rowView) {
+        return new ViewHolder(rowView);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

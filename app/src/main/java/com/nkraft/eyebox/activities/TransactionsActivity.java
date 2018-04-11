@@ -1,21 +1,34 @@
 package com.nkraft.eyebox.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.TransactionsAdapter;
+import com.nkraft.eyebox.controls.TransactionDetailsDialog;
 import com.nkraft.eyebox.models.Transaction;
+import com.nkraft.eyebox.services.PagedResult;
+import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionsActivity extends ListActivity {
+public class TransactionsActivity extends ListActivity implements
+        TaskWrapper.Task<PagedResult<List<Transaction>>>,
+        BaseListAdapter.ItemClickListener<Transaction>,TransactionDetailsDialog.DialogClickListener {
 
+    private TaskWrapper<PagedResult<List<Transaction>>> clientTask() {
+        return new TaskWrapper<>(this);
+    }
+
+    private TransactionsAdapter adapter;
+    private List<Transaction> transactions = new ArrayList<>();
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        clientTask().execute();
     }
 
     @Override
@@ -27,11 +40,55 @@ public class TransactionsActivity extends ListActivity {
     }
 
     @Override
-    BaseListAdapter getAdapter() {
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.add(new Transaction() {{ setBalance(100); setClientAddress("Client Address 1"); setClientName("Client Name 1"); }});
-        transactions.add(new Transaction() {{ setBalance(100); setClientAddress("Client Address 2"); setClientName("Client Name 2"); }});
-        transactions.add(new Transaction() {{ setBalance(100); setClientAddress("Client Address 3"); setClientName("Client Name 3"); }});
-        return new TransactionsAdapter(transactions);
+    BaseListAdapter buildAdapter() {
+        adapter = new TransactionsAdapter(transactions);
+        adapter.setOnItemClickListener(this);
+        return adapter;
+    }
+
+    @Override
+    public void onTaskBegin() {
+        showLoader(true);
+    }
+
+    @Override
+    public PagedResult<List<Transaction>> onTaskExecute() {
+        List<Transaction> transactions = database().transactions().getAllTransactions();
+        return new PagedResult<>(transactions, transactions.size());
+    }
+
+    @Override
+    public void onTaskEnd(PagedResult<List<Transaction>> result) {
+        showLoader(false);
+        if (result.isSuccess()) {
+            transactions.clear();
+            transactions.addAll(result.data);
+            adapter.notifyDataSetChanged();
+        }
+        else {
+            showSnackbar(R.string.failed_loading_data);
+        }
+    }
+
+    @Override
+    public void onItemClick(Transaction data) {
+        showDialogDetail(data);
+    }
+
+    @Override
+    public void onTransactionUpdated(Transaction transaction) {
+        goToConfirmTransactionAcivity(transaction);
+    }
+
+    void showDialogDetail(Transaction transaction) {
+        TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction);
+        dialog.setDialogClickListener(this);
+        dialog.show();
+    }
+
+    void goToConfirmTransactionAcivity(Transaction transaction) {
+        Intent intent = new Intent(this, ConfirmTransactionActivity.class);
+        intent.putExtra("transaction", transaction);
+        startActivity(intent);
     }
 }

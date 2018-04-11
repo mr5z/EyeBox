@@ -1,21 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/client_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Large" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/client_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:text="Client Name"
+            android:id="@+id/txt_client_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:text="Product number"
+            android:id="@+id/txt_product_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Transaction date"
+            android:id="@+id/txt_transaction_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="end">
+
+        <TextView
+            android:text="253.50"
+            android:id="@+id/txt_total_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:text="PENDING"
+            android:id="@+id/txt_transaction_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:textColor="@android:color/holo_red_dark"/>
+
+    </LinearLayout>
 
 </LinearLayout>

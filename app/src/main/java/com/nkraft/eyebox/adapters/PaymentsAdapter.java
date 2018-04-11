@@ -18,7 +18,10 @@ public class PaymentsAdapter extends BaseListAdapter<PaymentsAdapter.ViewHolder,
     @Override
     void onDataBind(ViewHolder holder, Payment data) {
         holder.txtClientName.setText(data.getClientName());
-        holder.txtClientAddress.setText(data.getClientAddress());
+        holder.txtProductNumber.setText(data.getProductNumber());
+        holder.txtTransactionDate.setText(data.getFormattedTransactionDate());
+        holder.txtTotalPayment.setText( data.getFormattedTotalPayment());
+        holder.txtTransactionStatus.setText(data.getStatus());
     }
 
     @Override
@@ -29,12 +32,18 @@ public class PaymentsAdapter extends BaseListAdapter<PaymentsAdapter.ViewHolder,
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtClientName;
-        TextView txtClientAddress;
+        TextView txtProductNumber;
+        TextView txtTransactionDate;
+        TextView txtTotalPayment;
+        TextView txtTransactionStatus;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtClientName = itemView.findViewById(R.id.client_name);
-            txtClientAddress = itemView.findViewById(R.id.client_address);
+            txtClientName = itemView.findViewById(R.id.txt_client_name);
+            txtProductNumber = itemView.findViewById(R.id.txt_product_number);
+            txtTransactionDate = itemView.findViewById(R.id.txt_transaction_date);
+            txtTotalPayment = itemView.findViewById(R.id.txt_total_payment);
+            txtTransactionStatus = itemView.findViewById(R.id.txt_transaction_status);
         }
     }
 }

@@ -54,7 +54,7 @@ public abstract class ListActivity extends BaseActivity {
         }
 
         listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(getAdapter());
+        listView.setAdapter(buildAdapter());
     }
 
     @Override
@@ -90,7 +90,7 @@ public abstract class ListActivity extends BaseActivity {
         return null;
     }
 
-    abstract BaseListAdapter getAdapter();
+    abstract BaseListAdapter buildAdapter();
 
     public static class Header {
         public String columnName;

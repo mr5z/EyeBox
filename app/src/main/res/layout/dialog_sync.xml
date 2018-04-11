@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/client_transactions"
+        android:textAllCaps="true"
+        android:tag="1"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_transactions"
+        android:textAllCaps="true"
+        android:tag="2"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/products"
+        android:textAllCaps="true"
+        android:tag="4"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/client_visits"
+        android:textAllCaps="true"
+        android:tag="8"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light">
+
+        <Button
+            android:id="@+id/ds_btn_sync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:textColor="@android:color/white"
+            android:text="@string/sync"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

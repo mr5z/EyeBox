@@ -6,12 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nkraft.eyebox.models.Client;
+
 import java.util.List;
 
 public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolder, TModel> extends RecyclerView.Adapter<TViewHolder> {
 
+    public interface ItemClickListener<T> {
+        void onItemClick(T data);
+    }
+
     private List<TModel> dataList;
     private int rowLayoutId;
+
+    private ItemClickListener<TModel> itemClickListener;
 
     public BaseListAdapter(List<TModel> dataList, int rowLayoutId) {
         this.dataList = dataList;
@@ -22,6 +30,9 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
     public final void onBindViewHolder(@NonNull TViewHolder holder, int position) {
         TModel data = dataList.get(position);
         onDataBind(holder, data);
+        if (itemClickListener != null) {
+            holder.itemView.setOnClickListener(view -> itemClickListener.onItemClick(data));
+        }
     }
 
     @NonNull
@@ -29,6 +40,10 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
     public final TViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowView = LayoutInflater.from(parent.getContext()).inflate(rowLayoutId, parent, false);
         return onCreateRow(rowView);
+    }
+
+    public void setOnItemClickListener(ItemClickListener<TModel> itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override

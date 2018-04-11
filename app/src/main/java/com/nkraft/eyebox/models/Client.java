@@ -1,6 +1,15 @@
 package com.nkraft.eyebox.models;
 
-public class Client {
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.io.Serializable;
+
+@Entity(tableName = "Clients")
+public class Client implements Serializable {
+
+    @PrimaryKey
+    private long id;
 
     private String clientName;
 
@@ -22,4 +31,11 @@ public class Client {
         this.clientAddress = clientAddress;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

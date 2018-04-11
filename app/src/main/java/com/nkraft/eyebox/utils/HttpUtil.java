@@ -3,8 +3,10 @@ package com.nkraft.eyebox.utils;
 import android.util.Pair;
 
 import com.google.gson.GsonBuilder;
+import com.nkraft.eyebox.exceptions.NetworkException;
 import com.nkraft.eyebox.serializers.KeyValueSerializer;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.TimeZone;
@@ -18,7 +20,7 @@ import okhttp3.ResponseBody;
 public class HttpUtil {
 
     public static class KeyValue extends Pair<String, String> {
-        KeyValue(String first, String second) {
+        public KeyValue(String first, String second) {
             super(first, second);
         }
         public static KeyValue make(String first, String second) {
@@ -36,7 +38,7 @@ public class HttpUtil {
         return new Request.Builder().header("TimeZone-Id", timeZoneId);
     }
 
-    public static String get(String url, KeyValue... params) throws Exception {
+    public static String get(String url, KeyValue... params) throws IOException {
         String queryString = queryBuilder(params);
         String requestUrl = url + "?" + queryString;
         Request request = requestBuilder()
@@ -45,7 +47,7 @@ public class HttpUtil {
         return executeResponse(request);
     }
 
-    public static String post(String url, KeyValue... params) throws Exception {
+    public static String post(String url, KeyValue... params) throws IOException {
         FormBody formBody = toFormBody(params);
         Request request = requestBuilder()
                 .url(url)
@@ -54,11 +56,11 @@ public class HttpUtil {
         return executeResponse(request);
     }
 
-    private static String executeResponse(Request request) throws Exception {
+    private static String executeResponse(Request request) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) {
-            throw new Exception("request unsuccessful: " + response.message());
+            throw new NetworkException("request unsuccessful: " + response.message());
         }
         ResponseBody body = response.body();
         if (body == null) {

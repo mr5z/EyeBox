@@ -47,10 +47,11 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/main_txt_welcome_message"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:gravity="center"
-                android:text="Welcome, Aaron Zipagan"
+                android:text="Welcome, User"
                 android:layout_alignParentBottom="true"/>
 
             <Button
@@ -98,6 +99,7 @@
                         android:src="@drawable/ic_client" />
 
                     <TextView
+                        android:id="@+id/main_txt_transactions_count"
                         android:layout_width="wrap_content"
                         android:layout_height="44dp"
                         android:layout_toEndOf="@id/a"
@@ -105,7 +107,7 @@
                         android:gravity="center"
                         android:textSize="20sp"
                         android:textColor="@android:color/holo_red_dark"
-                        android:text="9"/>
+                        android:text="0"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -144,6 +146,7 @@
                         android:src="@drawable/ic_payments" />
 
                     <TextView
+                        android:id="@+id/main_txt_payments_count"
                         android:layout_width="wrap_content"
                         android:layout_height="44dp"
                         android:layout_toEndOf="@id/b"
@@ -191,6 +194,7 @@
                         android:src="@drawable/ic_cart" />
 
                     <TextView
+                        android:id="@+id/main_txt_clients_count"
                         android:layout_width="wrap_content"
                         android:layout_height="44dp"
                         android:layout_toEndOf="@id/c"
@@ -198,14 +202,14 @@
                         android:gravity="center"
                         android:textSize="20sp"
                         android:textColor="@android:color/holo_red_dark"
-                        android:text="1158"/>
+                        android:text="0"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:gravity="center"
-                        android:text="Payments"/>
+                        android:text="New Product Order"/>
 
                 </RelativeLayout>
 
@@ -237,6 +241,7 @@
                         android:src="@drawable/ic_order" />
 
                     <TextView
+                        android:id="@+id/main_txt_orders_count"
                         android:layout_width="wrap_content"
                         android:layout_height="44dp"
                         android:layout_toEndOf="@id/d"
@@ -251,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:gravity="center"
-                        android:text="Payments"/>
+                        android:text="Orders"/>
 
                 </RelativeLayout>
 

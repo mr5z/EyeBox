@@ -1,13 +1,21 @@
 package com.nkraft.eyebox.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+
+@Entity(tableName = "Products")
 public class Product {
 
+    @PrimaryKey
+    private long id;
     private String name;
-
-    private String subName;
-
-    private float price;
-
+    private String genericName;
+    private String units;
+    private double price;
     private int soh;
 
     public Product() {
@@ -21,19 +29,25 @@ public class Product {
         this.name = name;
     }
 
-    public String getSubName() {
-        return subName;
+    public String getGenericName() {
+        return genericName;
     }
 
-    public void setSubName(String subName) {
-        this.subName = subName;
+    public void setGenericName(String genericName) {
+        this.genericName = genericName;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public String getFormattedPrice() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        formatter.setCurrency(Currency.getInstance(new Locale("tl", "PH")));
+        return formatter.format(price);
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -43,5 +57,21 @@ public class Product {
 
     public void setSoh(int soh) {
         this.soh = soh;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

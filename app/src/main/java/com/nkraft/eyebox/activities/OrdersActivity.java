@@ -18,7 +18,7 @@ public class OrdersActivity extends ListActivity {
     }
 
     @Override
-    BaseListAdapter getAdapter() {
+    BaseListAdapter buildAdapter() {
         List<Order> orders = new ArrayList<>();
         return new OrdersAdapter(orders);
     }

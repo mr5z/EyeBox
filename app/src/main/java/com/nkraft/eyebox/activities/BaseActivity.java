@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
+import com.nkraft.eyebox.services.repositories.AppDatabase;
 import com.nkraft.eyebox.utils.Settings;
 import com.nkraft.eyebox.utils.ViewUtils;
 
@@ -27,6 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public interface ConfirmDialogListener {
         void onConfirm();
+    }
+
+    public AppDatabase database() {
+        return AppDatabase.instance(this);
     }
 
     Settings settings() {
@@ -45,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (_snackbar == null) {
             _snackbar = Snackbar.make(findViewById(android.R.id.content), "", duration);
         }
-        _snackbar.dismiss();
+        _snackbar.setDuration(duration).dismiss();
         return _snackbar;
     }
 
@@ -98,6 +103,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    void showLoader(boolean show, String message) {
+        loader().setMessage(message);
+        showLoader(show);
+    }
+
     void showLoader(boolean show, int titleId) {
         loader().setTitle(titleId);
         showLoader(show);
@@ -120,6 +130,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         snackbar().setText(message).show();
     }
 
+    void showSnackbar(String message, Object ...args) {
+        snackbar().setText(String.format(message, args)).show();
+    }
+
     void showSnackbar(String message, int duration) {
         Snackbar snackbar = snackbar(duration).setText(message);
         centerText(snackbar);
@@ -128,6 +142,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     void showSnackbar(int message, int duration) {
         snackbar(duration).setText(message).show();
+    }
+
+    void showSnackbar(int message) {
+        snackbar(Snackbar.LENGTH_LONG).setText(message).show();
     }
 
     void centerText(Snackbar snackbar) {

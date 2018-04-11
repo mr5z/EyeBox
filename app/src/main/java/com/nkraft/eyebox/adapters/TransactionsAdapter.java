@@ -19,7 +19,7 @@ public class TransactionsAdapter extends BaseListAdapter<TransactionsAdapter.Vie
     void onDataBind(ViewHolder holder, Transaction data) {
         holder.txtTitle.setText(data.getClientName());
         holder.txtDescription.setText(data.getClientAddress());
-        holder.txtBalance.setText(String.valueOf(data.getBalance()));
+        holder.txtBalance.setText(data.getFormattedBalance());
     }
 
     @Override

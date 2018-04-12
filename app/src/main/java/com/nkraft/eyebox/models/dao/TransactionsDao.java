@@ -11,7 +11,7 @@ import com.nkraft.eyebox.models.Transaction;
 import java.util.List;
 
 @Dao
-public interface TransactionDao {
+public interface TransactionsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTransactions(List<Transaction> transactions);

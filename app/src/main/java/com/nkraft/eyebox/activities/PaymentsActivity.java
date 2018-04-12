@@ -1,6 +1,8 @@
 package com.nkraft.eyebox.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -14,6 +16,20 @@ import java.util.UUID;
 
 public class PaymentsActivity extends ListActivity implements BaseListAdapter.ItemClickListener<Payment> {
 
+    private List<Payment> payments = new ArrayList<>();
+    private PaymentsAdapter adapter;
+
+    @Override
+    void initialize(@Nullable Bundle savedInstanceState) {
+        super.initialize(savedInstanceState);
+        async(() -> {
+            List<Payment> paymentList = database().payments().getAllPayments();
+            payments.clear();
+            payments.addAll(paymentList);
+            runOnUiThread(() -> adapter.notifyDataSetChanged());
+        });
+    }
+
     @Override
     List<Header> headerList() {
         return new ArrayList<Header>() {{
@@ -24,23 +40,15 @@ public class PaymentsActivity extends ListActivity implements BaseListAdapter.It
 
     @Override
     BaseListAdapter buildAdapter() {
-        List<Payment> payments = new ArrayList<>();
-        for(int i = 0;i < 5; ++i) {
-            Payment payment = new Payment();
-            payment.setClientName("Client #" + i);
-            payment.setProductNumber(UUID.randomUUID().toString().substring(0, 10));
-            payment.setStatus(i % 2 == 0 ? "PENDING" : "CANCELLED");
-            payment.setTotalPayment((float) (Math.random() * 500));
-            payment.setTransactionDate((new Date()).getTime());
-            payments.add(payment);
-        }
-        PaymentsAdapter adapter = new PaymentsAdapter(payments);
+        adapter = new PaymentsAdapter(payments);
         adapter.setOnItemClickListener(this);
         return adapter;
     }
 
     @Override
     public void onItemClick(Payment data) {
-        startActivity(new Intent(this, PaymentDetailsActivity.class));
+        Intent intent = new Intent(this, PaymentDetailsActivity.class);
+        intent.putExtra("payment", data);
+        startActivity(intent);
     }
 }

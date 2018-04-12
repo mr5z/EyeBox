@@ -28,23 +28,14 @@ public class PaymentDetailsActivity extends BaseActivity {
     @OnClick(R.id.btn_show_print_ativity)
     void onPrintSelectedClick(View view) {
         Intent intent = new Intent(this, PrintTemplateActivity.class);
+        intent.putExtra("payment", getPayment());
         startActivity(intent);
     }
 
     BaseListAdapter getAdapter() {
         List<Payment> dataList = new ArrayList<>();
-        for (int i = 0;i < 5; ++i) {
-            Payment payment = new Payment();
-            payment.setTransactionDate((new Date()).getTime());
-            payment.setTotalPayment((float) (Math.random() * 1000));
-            payment.setStatus(i % 2 == 0 ? "PENDING" : "CANCELLED");
-            payment.setProductNumber(UUID.randomUUID().toString().substring(0, 10));
-            payment.setBankName("Bank " + i);
-            payment.setClientName("Client #" + i);
-            payment.setBranch(i);
-            payment.setCheckDate((new Date()).getTime() - (60 * 60 * 24) * 7 * i);
-            payment.setOrderNumber(UUID.randomUUID().toString().substring(0, 5));
-            payment.setTerms(i + 1);
+        for (int i = 0;i < 1; ++i) {
+            Payment payment = getPayment();
             dataList.add(payment);
         }
         return new PaymentDetailsAdapter(dataList);
@@ -60,5 +51,10 @@ public class PaymentDetailsActivity extends BaseActivity {
     @Override
     int contentLayout() {
         return R.layout.activity_payment_details;
+    }
+
+    Payment getPayment() {
+        Intent intent = getIntent();
+        return intent.getParcelableExtra("payment");
     }
 }

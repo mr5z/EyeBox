@@ -1,5 +1,7 @@
 package com.nkraft.eyebox.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,10 +11,12 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
+@Entity(tableName = "Payments")
 public class Payment implements Parcelable {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());
 
+    @PrimaryKey
     private long id;
 
     private long payDate;
@@ -27,7 +31,7 @@ public class Payment implements Parcelable {
 
     private long salesId;
 
-    private int terms;
+    private String terms;
 
     private int branch;
 
@@ -39,7 +43,7 @@ public class Payment implements Parcelable {
 
     private long transactionDate;
 
-    private float totalPayment;
+    private double totalPayment;
 
     private String status;
 
@@ -53,13 +57,13 @@ public class Payment implements Parcelable {
         checkNumber = in.readString();
         receiver = in.readString();
         salesId = in.readLong();
-        terms = in.readInt();
+        terms = in.readString();
         branch = in.readInt();
         productNumber = in.readString();
         orderNumber = in.readString();
         clientName = in.readString();
         transactionDate = in.readLong();
-        totalPayment = in.readFloat();
+        totalPayment = in.readDouble();
         status = in.readString();
     }
 
@@ -107,11 +111,11 @@ public class Payment implements Parcelable {
         this.transactionDate = transactionDate;
     }
 
-    public float getTotalPayment() {
+    public double getTotalPayment() {
         return totalPayment;
     }
 
-    public void setTotalPayment(float totalPayment) {
+    public void setTotalPayment(double totalPayment) {
         this.totalPayment = totalPayment;
     }
 
@@ -125,6 +129,10 @@ public class Payment implements Parcelable {
 
     public String getFormattedTotalPayment() {
         return String.format(Locale.getDefault(), "%.02f", totalPayment);
+    }
+
+    public String getFormattedSalesId() {
+        return String.format(Locale.getDefault(), "Sales ID: %d", salesId);
     }
 
     public String getStatus() {
@@ -187,11 +195,11 @@ public class Payment implements Parcelable {
         this.salesId = salesId;
     }
 
-    public int getTerms() {
+    public String getTerms() {
         return terms;
     }
 
-    public void setTerms(int terms) {
+    public void setTerms(String terms) {
         this.terms = terms;
     }
 
@@ -225,13 +233,13 @@ public class Payment implements Parcelable {
         parcel.writeString(checkNumber);
         parcel.writeString(receiver);
         parcel.writeLong(salesId);
-        parcel.writeInt(terms);
+        parcel.writeString(terms);
         parcel.writeInt(branch);
         parcel.writeString(productNumber);
         parcel.writeString(orderNumber);
         parcel.writeString(clientName);
         parcel.writeLong(transactionDate);
-        parcel.writeFloat(totalPayment);
+        parcel.writeDouble(totalPayment);
         parcel.writeString(status);
     }
 }

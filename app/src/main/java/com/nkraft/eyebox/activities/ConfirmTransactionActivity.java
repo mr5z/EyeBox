@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.ConfirmTransactionAdapter;
+import com.nkraft.eyebox.controls.ConfirmPaymentDialog;
+import com.nkraft.eyebox.controls.PaymentAddedDialog;
 import com.nkraft.eyebox.controls.TransactionDetailsDialog;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Transaction;
@@ -23,7 +25,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ConfirmTransactionActivity extends BaseActivity implements TransactionDetailsDialog.DialogClickListener {
+public class ConfirmTransactionActivity extends BaseActivity implements TransactionDetailsDialog.DialogClickListener, ConfirmPaymentDialog.ClickListener {
 
     @BindView(R.id.act_list_client_sales)
     RecyclerView listSales;
@@ -40,6 +42,8 @@ public class ConfirmTransactionActivity extends BaseActivity implements Transact
     @BindView(R.id.act_txt_total_payment)
     TextView txtTotalPayment;
 
+    private List<Payment> dataList;
+
     @OnClick(R.id.act_img_edit)
     void onEditClick(View view) {
         Transaction transaction = getTransaction();
@@ -50,7 +54,7 @@ public class ConfirmTransactionActivity extends BaseActivity implements Transact
 
     @OnClick(R.id.act_btn_pay_selected)
     void onPaySelectedClick(View view) {
-
+        showConfirmDialog();
     }
 
     @Override
@@ -65,17 +69,40 @@ public class ConfirmTransactionActivity extends BaseActivity implements Transact
         txtTotalPayment.setText("0");
     }
 
+    void showConfirmDialog() {
+        ConfirmPaymentDialog dialog = new ConfirmPaymentDialog(this);
+        dialog.setClickListener(this);
+        dialog.show();
+    }
+
+    @Override
+    public void onConfirmTransaction() {
+        async(() -> {
+            Payment payment = dataList.get(0);
+            database().payments().insertPayment(payment);
+            runOnUiThread(this::showSuccessDialog);
+        });
+    }
+
+    private void showSuccessDialog() {
+        PaymentAddedDialog dialog = new PaymentAddedDialog(this);
+        dialog.show();
+    }
+
     void initList() {
-        List<Payment> dataList = new ArrayList<>();
-        for(int i = 0;i < 2; ++i) {
+        dataList = new ArrayList<>();
+        for(int i = 0;i < 1; ++i) {
+            Transaction transaction = getTransaction();
             Payment payment = new Payment();
-            payment.setTerms(2);
-            payment.setOrderNumber(UUID.randomUUID().toString());
-            payment.setCheckDate((new Date()).getTime());
-            payment.setClientName("Client #" + i);
+            payment.setId(transaction.getId());
+            payment.setSalesId(transaction.getId());
+            payment.setTerms(transaction.getTerms());
+            payment.setOrderNumber(transaction.getOrderNumber());
+            payment.setCheckDate(transaction.getCheckDate());
+            payment.setClientName(transaction.getClientName());
             payment.setBranch(i);
-            payment.setProductNumber(UUID.randomUUID().toString());
-            payment.setTotalPayment((float) (Math.random() * 1000));
+            payment.setProductNumber(transaction.getProductNumber());
+            payment.setTotalPayment(transaction.getBalance());
             dataList.add(payment);
         }
         ConfirmTransactionAdapter adapter = new ConfirmTransactionAdapter(dataList);

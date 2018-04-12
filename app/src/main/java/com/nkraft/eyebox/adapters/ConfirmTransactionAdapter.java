@@ -18,7 +18,7 @@ public class ConfirmTransactionAdapter extends BaseListAdapter<ConfirmTransactio
 
     @Override
     void onDataBind(ViewHolder holder, Payment data) {
-        holder.chkSales.setText(String.valueOf(data.getSalesId()));
+        holder.chkSales.setText(data.getFormattedSalesId());
         holder.txtSalesDate.setText(data.getFormattedCheckDate());
         holder.txtDueDate.setText(data.getFormattedPayDate());
         holder.txtSoNumber.setText(data.getOrderNumber());

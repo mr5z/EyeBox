@@ -6,12 +6,14 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Product;
 import com.nkraft.eyebox.models.Transaction;
 import com.nkraft.eyebox.models.User;
 import com.nkraft.eyebox.models.dao.ClientsDao;
+import com.nkraft.eyebox.models.dao.PaymentsDao;
 import com.nkraft.eyebox.models.dao.ProductsDao;
-import com.nkraft.eyebox.models.dao.TransactionDao;
+import com.nkraft.eyebox.models.dao.TransactionsDao;
 import com.nkraft.eyebox.models.dao.UserDao;
 
 @Database(
@@ -20,7 +22,8 @@ import com.nkraft.eyebox.models.dao.UserDao;
         User.class,
         Product.class,
         Transaction.class,
-        Client.class
+        Client.class,
+        Payment.class
     }
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -28,7 +31,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao users();
     public abstract ProductsDao products();
     public abstract ClientsDao clients();
-    public abstract TransactionDao transactions();
+    public abstract TransactionsDao transactions();
+    public abstract PaymentsDao payments();
 
     private static AppDatabase _instance;
     public static AppDatabase instance(Context context) {

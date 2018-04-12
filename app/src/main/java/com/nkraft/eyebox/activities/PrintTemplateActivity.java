@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PrintTemplateAdapter;
+import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.services.TextAlignment;
 
@@ -34,6 +35,7 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
     }
 
     PrintTemplate template1() {
+        Payment payment = getPayment();
         PrintTemplate template = new PrintTemplate("Sales Order (Manila)", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
         template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
@@ -42,44 +44,46 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         template.addPrintData("\n");
         template.addPrintData("Sales Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No:");
+        template.addPrintData("PR No: " + payment.getProductNumber());
         template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client:");
-        template.addPrintData("Amount:");
-        template.addPrintData("Total:");
+        template.addPrintData("Client: " + payment.getClientName());
+        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
+        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
         template.addPrintData("Received By:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
+        template.addPrintData("\n");
+        template.addPrintData("\n");
         return  template;
     }
 
     PrintTemplate template2() {
+        Payment payment = getPayment();
         PrintTemplate template = new PrintTemplate("SI-Felbros2", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
-        template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
-        template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
-        template.addPrintData("09985100306", TextAlignment.CENTER);
-        template.addPrintData("\n");
         template.addPrintData("Sales Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No:");
+        template.addPrintData("PR No: " + payment.getProductNumber());
         template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client:");
-        template.addPrintData("Amount:");
-        template.addPrintData("Total:");
+        template.addPrintData("Client: " + payment.getClientName());
+        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
+        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
         template.addPrintData("Received By:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
+        template.addPrintData("\n");
+        template.addPrintData("\n");
         return  template;
     }
 
     PrintTemplate template3() {
+        Payment payment = getPayment();
         PrintTemplate template = new PrintTemplate("Provinsional Receipt (Manila)", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
         template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
@@ -88,17 +92,19 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         template.addPrintData("\n");
         template.addPrintData("Sales Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No:");
+        template.addPrintData("PR No: " + payment.getProductNumber());
         template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client:");
-        template.addPrintData("Amount:");
-        template.addPrintData("Total:");
+        template.addPrintData("Client: " + payment.getClientName());
+        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
+        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
         template.addPrintData("Received By:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
-        template.addPrintData("___________________");
+        template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
+        template.addPrintData("\n");
+        template.addPrintData("\n");
         return  template;
     }
 
@@ -108,6 +114,11 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         int height = 64;
         int width = Math.round(height * aspectRatio);
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
+    }
+
+    private Payment getPayment() {
+        Intent intent = getIntent();
+        return intent.getParcelableExtra("payment");
     }
 
 }

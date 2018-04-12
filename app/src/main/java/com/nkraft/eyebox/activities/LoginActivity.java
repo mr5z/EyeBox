@@ -45,8 +45,8 @@ public class LoginActivity extends BaseActivity implements TaskWrapper.Task<Page
         if (result.isSuccess()) {
             accountService.currentUser = result.data;
             updateUserDb(result.data);
-            goToMainPage();
             startSession(result.data.getId());
+            goToMainPage();
         }
         else {
             showSnackbar(result.errorMessage);

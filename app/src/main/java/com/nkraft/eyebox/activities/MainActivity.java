@@ -168,12 +168,17 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         showStatusBar(false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        async(this::updateRecordsCount);
+    }
+
     void loadCurrentUserData() {
         async(() -> {
             long userId = settings().getUserId();
             accountService.currentUser = database().users().findUserById(userId);
             updateWelcomeText();
-            updateRecordsCount();
         });
     }
 
@@ -233,8 +238,10 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     void updateRecordsCount() {
         long clientsCount = database().clients().count();
         long transactionsCount = database().transactions().count();
+        long paymentsCount = database().payments().count();
         updateProcessCount(ProcessType.CLIENTS, clientsCount);
         updateProcessCount(ProcessType.TRANSACTIONS, transactionsCount);
+        updateProcessCount(ProcessType.PAYMENTS, paymentsCount);
     }
 
     void updateProgress(int current, int processTypes) {

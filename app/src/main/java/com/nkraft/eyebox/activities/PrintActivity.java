@@ -128,16 +128,14 @@ public class PrintActivity extends BaseActivity {
     }
 
     void asyncConnect(ConnectionListener connectionListener) {
-
         if (selectedDevice == null) {
             showSnackbar("No selected device");
         }
 
         async(() -> {
             try {
-                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-//                boolean status = BluetoothPrintDriver.open(adapter, selectedDevice);
                 try {
+                    printerService.disconnect();
                     printerService.connect(selectedDevice);
                     connectionListener.onConnect(true);
                 }

@@ -26,6 +26,7 @@
     <string name="select_module_to_sync">Select Module to Sync</string>
     <string name="client_transaction_details">Client Transaction Details</string>
     <string name="confirm_payment">Confirm Payment</string>
+    <string name="payment_added">Payment Added</string>
     <string-array name="terms_list">
         <item>COD</item>
         <item>30days</item>

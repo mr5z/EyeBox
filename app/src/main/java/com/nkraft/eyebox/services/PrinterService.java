@@ -37,7 +37,8 @@ public class PrinterService {
         if (deviceSocket != null && deviceSocket.isConnected()) {
             try {
                 deviceSocket.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 Debug.log("Error closing socket connection: %s", e.getMessage());
             }
         }

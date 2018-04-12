@@ -104,7 +104,6 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("\n");
-        template.addPrintData("\n");
         return  template;
     }
 

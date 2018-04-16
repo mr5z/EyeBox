@@ -10,10 +10,16 @@ import com.nkraft.eyebox.R;
 
 
 public class PaymentAddedDialog implements DialogInterface.OnClickListener {
+
+    public interface ClickListener {
+        void onConfirmPayment();
+    }
+
+    private ClickListener clickListener;
     private View view;
     private AlertDialog dialog;
 
-    public PaymentAddedDialog(Context context) {
+    public PaymentAddedDialog(Context context, ClickListener clickListener) {
         view = LayoutInflater.from(context).inflate(R.layout.dialog_payment_added, null);
         dialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.payment_added)
@@ -21,11 +27,14 @@ public class PaymentAddedDialog implements DialogInterface.OnClickListener {
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, this)
                 .create();
+        this.clickListener = clickListener;
     }
 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
-        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            clickListener.onConfirmPayment();
+        }
     }
 
     public void show() {

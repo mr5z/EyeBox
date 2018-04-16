@@ -14,7 +14,8 @@
     <TextView
         android:id="@+id/dtd_txt_product_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
     <TextView
         android:id="@+id/dtd_txt_receiver"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -42,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="number"
+            android:inputType="number|numberDecimal"
             android:maxLines="1" />
 
     </LinearLayout>

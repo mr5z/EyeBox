@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.nkraft.eyebox.models.Client;
 
 import java.util.List;
+import java.util.Locale;
 
 public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolder, TModel> extends RecyclerView.Adapter<TViewHolder> {
 
@@ -44,6 +45,10 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
 
     public void setOnItemClickListener(ItemClickListener<TModel> itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    String format(String message, Object ...args) {
+        return String.format(Locale.getDefault(), message, args);
     }
 
     @Override

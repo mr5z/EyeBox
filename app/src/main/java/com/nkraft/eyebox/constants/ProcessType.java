@@ -4,6 +4,7 @@ public enum ProcessType {
     UNDEFINED,
     TRANSACTIONS,
     PAYMENTS,
+    PRODUCTS,
     CLIENTS,
     ORDERS,
     VISITS;

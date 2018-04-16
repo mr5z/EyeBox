@@ -44,8 +44,8 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     @BindView(R.id.main_txt_payments_count)
     TextView txtPaymentsCount;
 
-    @BindView(R.id.main_txt_clients_count)
-    TextView txtClientsCount;
+    @BindView(R.id.main_txt_products_count)
+    TextView txtProductsCount;
 
     @BindView(R.id.main_txt_orders_count)
     TextView txtOrdersCount;
@@ -203,7 +203,6 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             if (result2.isSuccess()) {
                 database().clients().insertClients(result2.data);
                 updateProgress(2, processTypes);
-                updateProcessCount(ProcessType.CLIENTS, result2.totalCount);
             }
 
             PagedResult<List<Transaction>> result3 = transactionService
@@ -211,13 +210,16 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             if (result3.isSuccess()) {
                 database().transactions().insertTransactions(result3.data);
                 updateProgress(3, processTypes);
-                updateProcessCount(ProcessType.TRANSACTIONS, result3.totalCount);
             }
 
             boolean success =
                 result1.isSuccess() &&
                 result2.isSuccess() &&
                 result3.isSuccess();
+
+            if (success) {
+                updateRecordsCount();
+            }
 
             onPostSync(success);
         });
@@ -236,12 +238,14 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     }
 
     void updateRecordsCount() {
-        long clientsCount = database().clients().count();
         long transactionsCount = database().transactions().count();
         long paymentsCount = database().payments().count();
-        updateProcessCount(ProcessType.CLIENTS, clientsCount);
+        long productsCount = database().products().count();
+        long ordersCount = database().orders().count();
         updateProcessCount(ProcessType.TRANSACTIONS, transactionsCount);
         updateProcessCount(ProcessType.PAYMENTS, paymentsCount);
+        updateProcessCount(ProcessType.PRODUCTS, productsCount);
+        updateProcessCount(ProcessType.ORDERS, ordersCount);
     }
 
     void updateProgress(int current, int processTypes) {
@@ -288,17 +292,17 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         runOnUiThread(() -> {
             String stringCount = String.valueOf(count);
             switch (processType) {
-                case ORDERS:
-                    txtOrdersCount.setText(stringCount);
-                    break;
-                case CLIENTS:
-                    txtClientsCount.setText(stringCount);
+                case TRANSACTIONS:
+                    txtTransactionsCount.setText(stringCount);
                     break;
                 case PAYMENTS:
                     txtPaymentsCount.setText(stringCount);
                     break;
-                case TRANSACTIONS:
-                    txtTransactionsCount.setText(stringCount);
+                case PRODUCTS:
+                    txtProductsCount.setText(stringCount);
+                    break;
+                case ORDERS:
+                    txtOrdersCount.setText(stringCount);
                     break;
                 case VISITS:
                     break;

@@ -6,22 +6,20 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Order;
-import com.nkraft.eyebox.models.Product;
 
 import java.util.List;
 
-public class OrdersAdapter extends BaseListAdapter<OrdersAdapter.ViewHolder, Order> {
+public class CartAdapter extends BaseListAdapter<CartAdapter.ViewHolder, Order> {
 
-    public OrdersAdapter(List<Order> dataList) {
-        super(dataList, R.layout.row_order);
+    public CartAdapter(List<Order> dataList) {
+        super(dataList, R.layout.row_cart);
     }
 
     @Override
     void onDataBind(ViewHolder holder, Order data) {
-        Product product = data.getProduct();
-        holder.txtProductName.setText(product.getName());
-        holder.txtGenericName.setText(product.getGenericName());
-        holder.txtQuantity.setText(format("Quantity ( %d )", data.getQuantity()));
+        holder.txtProductName.setText(data.getProduct().getName());
+        holder.txtGenericName.setText(data.getProduct().getGenericName());
+        holder.txtQuantity.setText(format("Item(s) (%d)", data.getQuantity()));
     }
 
     @Override

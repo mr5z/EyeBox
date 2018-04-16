@@ -27,6 +27,10 @@
     <string name="client_transaction_details">Client Transaction Details</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="payment_added">Payment Added</string>
+    <string name="check_if_any_brand">Check if Any Brand</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="remove_from_cart">REMOVE FROM CART</string>
+    <string name="send_order">SEND ORDER</string>
     <string-array name="terms_list">
         <item>COD</item>
         <item>30days</item>

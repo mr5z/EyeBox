@@ -54,9 +54,13 @@
 
         <activity android:name=".activities.PrintActivity"
             android:parentActivityName=".activities.PrintTemplateActivity"/>
-        <activity android:name=".activities.SignatureActivity" />
-        <activity android:name=".activities.VisitsActivity" />
+        <activity android:name=".activities.SignatureActivity"
+            android:parentActivityName=".activities.ClientsActivity" />
+        <activity android:name=".activities.VisitsActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <activity android:name=".activities.ConfirmTransactionActivity" />
+        <activity android:name=".activities.ViewCartActivity"
+            android:parentActivityName=".activities.ProductsActivity" />
 
     </application>
 

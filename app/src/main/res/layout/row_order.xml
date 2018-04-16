@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:columnCount="3"
@@ -19,27 +20,18 @@
 
     <TextView
         style="@style/Base.TextAppearance.AppCompat.Large"
-        android:text="Product Name  dsasdasdsasdasd "
-        android:id="@+id/product_name"
+        android:text="Abdominal Binder"
+        android:id="@+id/vc_row_product_name"
         android:layout_column="1"
         android:layout_row="0"
+        android:layout_rowSpan="2"
         android:maxLines="2"
         android:maxEms="7"
         android:ellipsize="end" />
 
     <TextView
-        android:text="Php 100,000.00"
-        android:id="@+id/product_price"
-        android:layout_column="2"
-        android:layout_row="0"
-        android:layout_gravity="start|end"
-        android:gravity="end"
-        android:textStyle="bold"
-        android:maxLines="1" />
-
-    <TextView
-        android:text="Generic Name"
-        android:id="@+id/product_sub_name"
+        android:text="MEDASIA"
+        android:id="@+id/vc_row_generic_name"
         android:layout_column="1"
         android:layout_row="1"
         android:maxLines="3"
@@ -47,8 +39,8 @@
         android:ellipsize="end" />
 
     <TextView
-        android:text="SOH: 10"
-        android:id="@+id/product_soh"
+        android:text="Item(s) ( 2 )"
+        android:id="@+id/vc_row_quantity"
         android:layout_column="2"
         android:layout_row="1"
         android:layout_gravity="start|end"

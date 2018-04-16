@@ -25,7 +25,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ConfirmTransactionActivity extends BaseActivity implements TransactionDetailsDialog.DialogClickListener, ConfirmPaymentDialog.ClickListener {
+public class ConfirmTransactionActivity extends BaseActivity implements TransactionDetailsDialog.DialogClickListener, ConfirmPaymentDialog.ClickListener, PaymentAddedDialog.ClickListener {
 
     @BindView(R.id.act_list_client_sales)
     RecyclerView listSales;
@@ -85,7 +85,7 @@ public class ConfirmTransactionActivity extends BaseActivity implements Transact
     }
 
     private void showSuccessDialog() {
-        PaymentAddedDialog dialog = new PaymentAddedDialog(this);
+        PaymentAddedDialog dialog = new PaymentAddedDialog(this, this);
         dialog.show();
     }
 
@@ -124,5 +124,10 @@ public class ConfirmTransactionActivity extends BaseActivity implements Transact
     public void onTransactionUpdated(Transaction transaction) {
         Intent intent = getIntent();
         intent.putExtra("transaction", transaction);
+    }
+
+    @Override
+    public void onConfirmPayment() {
+        popToMainActivity();
     }
 }

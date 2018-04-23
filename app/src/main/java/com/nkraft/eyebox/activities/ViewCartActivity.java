@@ -1,5 +1,6 @@
 package com.nkraft.eyebox.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class ViewCartActivity extends ListActivity implements BaseListAdapter.ItemClickListener<Order>,CartEditDialog.ClickListener {
 
+    private OrdersAdapter adapter;
     private ArrayList<Order> orders;
 
     @Override
@@ -28,7 +30,7 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
 
     @Override
     BaseListAdapter buildAdapter() {
-        OrdersAdapter adapter = new OrdersAdapter(orders);
+        adapter = new OrdersAdapter(orders);
         adapter.setOnItemClickListener(this);
         return adapter;
     }
@@ -36,8 +38,7 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
     @Override
     List<Footer> footerList() {
         List<Footer> footers = new ArrayList<>();
-        Footer footer = new Footer(this,
-                getString(R.string.send_order),
+        Footer footer = new Footer(getString(R.string.send_order),
                 R.id.order_button,
                 android.R.color.white,
                 android.R.color.holo_blue_light,
@@ -50,7 +51,7 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
         async(() -> {
             Client client = getSelectedClient();
             for (Order order : orders) {
-                order.setClientName(client.getClientName());
+                order.setClientName(client.getName());
                 order.setDateOrdered((new Date()).getTime());
             }
             database().orders().insertOrders(orders);
@@ -70,7 +71,7 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
 
     @Override
     public void onItemClick(Order data) {
-        CartEditDialog dialog = new CartEditDialog(this, data.getId(), this);
+        CartEditDialog dialog = new CartEditDialog(this, data, this);
         dialog.show();
     }
 
@@ -78,10 +79,12 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
     public void onConfirmEdit(long orderId, boolean isDeleted, int newQuantity, boolean anyBrand) {
         if (isDeleted) {
             deleteOrder(orderId);
+            if (orders.isEmpty()) {
+                goBack();
+            }
         }
         else {
-            for (Iterator<Order> iterator  = orders.iterator(); iterator.hasNext(); ) {
-                Order order = iterator.next();
+            for (Order order : orders) {
                 if (order.getId() == orderId) {
                     order.setQuantity(newQuantity);
                     break;
@@ -90,11 +93,24 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        goBack();
+    }
+
+    private void goBack() {
+        Intent intent = new Intent();
+        intent.putExtra("orders", orders);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
     void deleteOrder(long orderId) {
         for (Iterator<Order> iterator  = orders.iterator(); iterator.hasNext(); ) {
             Order order = iterator.next();
             if (order.getId() == orderId) {
                 iterator.remove();
+                adapter.notifyDataSetChanged();
                 break;
             }
         }

@@ -18,17 +18,17 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
 
     @Override
     void onDataBind(ViewHolder holder, Payment data) {
-        holder.txtPayDate.setText(data.getFormattedPayDate());
+        holder.txtPayDate.setText(formatDate(data.getDueDate()));
         holder.txtBankName.setText(data.getBankName());
-        holder.txtCheckDate.setText(data.getFormattedCheckDate());
-        holder.txtCheckNo.setText(data.getCheckNumber());
-        holder.txtAmount.setText(data.getFormattedTotalPayment());
-        holder.txtReceivedBy.setText(data.getReceiver());
+        holder.txtCheckDate.setText(formatDate(data.getCheckDate()));
+        holder.txtCheckNo.setText(data.getCheckNo());
+        holder.txtAmount.setText(data.getFormattedAmount());
+        holder.txtReceivedBy.setText(data.getReceivedBy());
         holder.txtSalesId.setText(String.valueOf(data.getSalesId()));
         holder.txtTerms.setText(String.valueOf(data.getTerms()));
-        holder.txtBranch.setText(String.valueOf(data.getBranch()));
-        holder.txtProductNumber.setText(data.getProductNumber());
-        holder.txtOrderNumber.setText(data.getOrderNumber());
+        holder.txtBranch.setText(String.valueOf(data.getBranchNo()));
+        holder.txtProductNumber.setText(data.getPrNo());
+        holder.txtOrderNumber.setText(data.getOrNo());
         holder.statusView.setBackgroundColor(toStatusColor(data.getStatus()));
     }
 

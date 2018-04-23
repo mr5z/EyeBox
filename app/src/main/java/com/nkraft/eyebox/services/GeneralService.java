@@ -32,7 +32,7 @@ public class GeneralService extends BaseService {
         int assignedBranch = accountService.currentUser.getAssignedBranch();
         try {
             String stringResponse = post(String.format(
-                    "eyebox/api/get_all.php?key=%s&branch=%s&username=%s",
+                    "get_all.php?key=%s&branch=%s&username=%s",
                     API_KEY, assignedBranch, "aaronzipagan"),
                     HttpUtil.KeyValue.make("key", API_KEY));
             JSONObject jsonResponse = new JSONObject(stringResponse);

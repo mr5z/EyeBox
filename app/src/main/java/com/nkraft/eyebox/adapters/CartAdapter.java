@@ -19,7 +19,7 @@ public class CartAdapter extends BaseListAdapter<CartAdapter.ViewHolder, Order> 
     void onDataBind(ViewHolder holder, Order data) {
         holder.txtProductName.setText(data.getProduct().getName());
         holder.txtGenericName.setText(data.getProduct().getGenericName());
-        holder.txtQuantity.setText(format("Item(s) (%d)", data.getQuantity()));
+        holder.txtQuantity.setText(formatString("Item(s) (%d)", data.getQuantity()));
     }
 
     @Override

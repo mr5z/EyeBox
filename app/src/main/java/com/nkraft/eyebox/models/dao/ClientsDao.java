@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.models.Sale;
+import com.nkraft.eyebox.models.shit.Customer;
 
 import java.util.List;
 
@@ -23,13 +25,34 @@ public interface ClientsDao {
     void updateClients(List<Client> clients);
 
     @Update
-    void updateClient(Client user);
+    void updateClient(Client client);
 
     @Query("SELECT * FROM Clients")
     List<Client> getAllClients();
 
     @Query("SELECT * FROM Clients WHERE id = :clientId")
     Client findClientById(long clientId);
+
+//    @Query("SELECT " +
+//            "    id, " +
+//            "    name, " +
+//            "    address " +
+//            "    (SUM(Sales.totalamount) - SUM(Sales.payamount)) AS totalcredit " +
+//            "FROM " +
+//            "    Clients, Sales " +
+//            "WHERE " +
+//            "    Clients.id = Sales.customerid " +
+//            "AND " +
+//            "    Clients.branchlink = :branchLink " +
+//            "AND " +
+//            "    Sales.branchno = :branchLink " +
+//            "AND " +
+//            "    Sales.duedate <> 0 " +
+//            "AND " +
+//            "    (Sales.totalamount - Sales.payamount) > 0" +
+//            "GROUP BY " +
+//            "    Clients.id")
+//    List<Client> getActiveClients(int branchLink);
 
     @Query("SELECT COUNT(*) FROM Clients")
     long count();

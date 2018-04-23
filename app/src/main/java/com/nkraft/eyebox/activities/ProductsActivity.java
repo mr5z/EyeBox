@@ -1,6 +1,5 @@
 package com.nkraft.eyebox.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +8,7 @@ import android.widget.Button;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.ProductsAdapter;
-import com.nkraft.eyebox.controls.CartDialog;
+import com.nkraft.eyebox.controls.dialogs.CartDialog;
 import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Order;
 import com.nkraft.eyebox.models.Product;
@@ -26,6 +25,8 @@ public class ProductsActivity extends ListActivity implements
         TaskWrapper.Task<PagedResult<List<Product>>>,
         BaseListAdapter.ItemClickListener<Product>,
         CartDialog.ClickListener {
+
+    public static final int REQUEST_MODIFIED_ORDERS = 1;
 
     ProductsAdapter adapter;
     List<Product> products = new ArrayList<>();
@@ -47,15 +48,34 @@ public class ProductsActivity extends ListActivity implements
             Intent intent = new Intent(this, ViewCartActivity.class);
             intent.putExtra("selectedClient", getSelectedClient());
             intent.putParcelableArrayListExtra("orders", orders);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_MODIFIED_ORDERS);
         }
     }
 
-    void addToCart(Order order) {
+    private void addToCart(Order order) {
         cart.add(order);
-        @SuppressLint("ResourceType")
+        updateCartButtonCount();
+    }
+
+    private void updateCartButtonCount() {
         Button button = findViewById(R.id.cart_button);
         button.setText(String.format(Locale.getDefault(), "CART (%d)", cart.size()));
+    }
+
+    void onUpdateOrders(ArrayList<Order> newOrders) {
+        cart = new HashSet<>(newOrders);
+        updateCartButtonCount();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_MODIFIED_ORDERS:
+                ArrayList<Order> orders = data.getParcelableArrayListExtra("orders");
+                onUpdateOrders(orders);
+                break;
+        }
     }
 
     @Override
@@ -74,15 +94,14 @@ public class ProductsActivity extends ListActivity implements
     List<Header> headerList() {
         List<Header> headers = new ArrayList<>();
         Client client = getSelectedClient();
-        headers.add(new Header(client.getClientName()));
+        headers.add(new Header(client.getName()));
         return headers;
     }
 
     @Override
     List<Footer> footerList() {
         List<Footer> footers = new ArrayList<>();
-        Footer footer = new Footer(this,
-                "Cart (0)",
+        Footer footer = new Footer("Cart (0)",
                 R.id.cart_button,
                 android.R.color.white,
                 android.R.color.holo_blue_light,
@@ -120,7 +139,7 @@ public class ProductsActivity extends ListActivity implements
 
     @Override
     public void onItemClick(Product data) {
-        CartDialog dialog = new CartDialog(this, this);
+        CartDialog dialog = new CartDialog(this, data, this);
         dialog.show();
         selectedProduct = data;
     }
@@ -128,7 +147,11 @@ public class ProductsActivity extends ListActivity implements
     @Override
     public void onProceedAdd(int quantity) {
         if (quantity > 0) {
-            addToCart(new Order(selectedProduct, quantity));
+            Order.Product product = new Order.Product();
+            product.setId(selectedProduct.getId());
+            product.setName(selectedProduct.getName());
+            product.setGenericName(selectedProduct.getGenericName());
+            addToCart(new Order(product, quantity));
         }
     }
 }

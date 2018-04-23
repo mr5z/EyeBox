@@ -24,7 +24,7 @@ public class ProductService extends BaseService {
     public PagedResult<List<Product>> getProductsByBranch(int branchNumber) {
         try {
             String stringResponse = post(
-                    String.format(Locale.getDefault(), "eyebox/api/get_products.php?key=%s&branch=%d",
+                    String.format(Locale.getDefault(), "get_products.php?key=%s&branch=%d",
                             API_KEY, branchNumber),
                     HttpUtil.KeyValue.make("key", API_KEY));
             JSONObject jsonObject = new JSONObject(stringResponse);
@@ -44,7 +44,7 @@ public class ProductService extends BaseService {
                 product.setId(id);
                 product.setGenericName(genericName);
                 product.setName(name);
-                product.setUnits(units);;
+                product.setUnits(units);
                 product.setPrice(price);
                 product.setSoh(soh);
                 productList.add(product);

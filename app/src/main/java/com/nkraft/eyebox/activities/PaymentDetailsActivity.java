@@ -13,9 +13,7 @@ import com.nkraft.eyebox.adapters.PaymentDetailsAdapter;
 import com.nkraft.eyebox.models.Payment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;

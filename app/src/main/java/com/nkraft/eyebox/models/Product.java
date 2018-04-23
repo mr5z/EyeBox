@@ -65,12 +65,6 @@ public class Product implements Parcelable {
         return price;
     }
 
-    public String getFormattedPrice() {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        formatter.setCurrency(Currency.getInstance(new Locale("tl", "PH")));
-        return formatter.format(price);
-    }
-
     public void setPrice(double price) {
         this.price = price;
     }

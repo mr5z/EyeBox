@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Order;
-import com.nkraft.eyebox.models.Product;
 
 import java.util.List;
 
@@ -18,10 +17,10 @@ public class OrdersAdapter extends BaseListAdapter<OrdersAdapter.ViewHolder, Ord
 
     @Override
     void onDataBind(ViewHolder holder, Order data) {
-        Product product = data.getProduct();
+        Order.Product product = data.getProduct();
         holder.txtProductName.setText(product.getName());
         holder.txtGenericName.setText(product.getGenericName());
-        holder.txtQuantity.setText(format("Quantity ( %d )", data.getQuantity()));
+        holder.txtQuantity.setText(formatString("Quantity ( %d )", data.getQuantity()));
     }
 
     @Override

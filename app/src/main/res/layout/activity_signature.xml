@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.nkraft.eyebox.controls.SketchView
+        android:id="@+id/as_sketch_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/as_fab_clear"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
@@ -17,6 +23,7 @@
         android:backgroundTint="@color/gray" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/as_fab_save"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"

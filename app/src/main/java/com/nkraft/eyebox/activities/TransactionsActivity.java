@@ -9,6 +9,8 @@ import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.TransactionsAdapter;
 import com.nkraft.eyebox.controls.TransactionDetailsDialog;
 import com.nkraft.eyebox.models.Transaction;
+import com.nkraft.eyebox.models.shit.Bank;
+import com.nkraft.eyebox.models.shit.Terms;
 import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.utils.TaskWrapper;
 
@@ -77,17 +79,24 @@ public class TransactionsActivity extends ListActivity implements
 
     @Override
     public void onTransactionUpdated(Transaction transaction) {
-        goToConfirmTransactionAcivity(transaction);
+        goToConfirmSalesActivity(transaction);
     }
 
     void showDialogDetail(Transaction transaction) {
-        TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction);
-        dialog.setDialogClickListener(this);
-        dialog.show();
+        async(() -> {
+            List<Bank> bankList = database().banks().getAllBanks();
+            List<Terms> termsList = database().terms().getAllTerms();
+
+            runOnUiThread(() -> {
+                TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
+                dialog.setDialogClickListener(this);
+                dialog.show();
+            });
+        });
     }
 
-    void goToConfirmTransactionAcivity(Transaction transaction) {
-        Intent intent = new Intent(this, ConfirmTransactionActivity.class);
+    void goToConfirmSalesActivity(Transaction transaction) {
+        Intent intent = new Intent(this, ConfirmSalesActivity.class);
         intent.putExtra("transaction", transaction);
         startActivity(intent);
     }

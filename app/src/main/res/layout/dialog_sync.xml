@@ -33,6 +33,20 @@
         android:textAllCaps="true"
         android:tag="8"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sales"
+        android:textAllCaps="true"
+        android:tag="16"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_sales"
+        android:textAllCaps="true"
+        android:tag="32"
+        style="@style/Base.TextAppearance.AppCompat.Medium" />
 
     <RelativeLayout
         android:layout_width="match_parent"

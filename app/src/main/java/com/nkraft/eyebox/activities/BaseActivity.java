@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return Settings.instance(this);
     }
 
-    ViewUtils utils() {
+    ViewUtils views() {
         return ViewUtils.instance(this);
     }
 
@@ -148,6 +148,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     void showSnackbar(String message) {
         snackbar().setText(message).show();
+    }
+
+    void showSnackbar(String message, String action, View.OnClickListener clickListener) {
+        snackbar(Snackbar.LENGTH_LONG)
+                .setAction(action, clickListener)
+                .show();
     }
 
     void showSnackbar(String message, Object ...args) {

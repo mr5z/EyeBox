@@ -1,5 +1,7 @@
 package com.nkraft.eyebox.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -24,19 +26,21 @@ public class Order implements Parcelable {
     private int quantity;
     private long dateOrdered;
     private String clientName;
-    @Ignore
-    private Product product;
+    @Embedded
+    private Order.Product product;
 
     public Order() {
 
     }
 
-    public Order(Product product, int quantity) {
+    @Ignore
+    public Order(Order.Product product, int quantity) {
         this.id = generateId();
         this.quantity = quantity;
         this.product = product;
     }
 
+    @Ignore
     protected Order(Parcel in) {
         id = in.readLong();
         quantity = in.readInt();
@@ -117,5 +121,71 @@ public class Order implements Parcelable {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public static class Product implements Parcelable {
+
+        @ColumnInfo(name = "product_id")
+        private long id;
+        @ColumnInfo(name = "product_name")
+        private String name;
+        @ColumnInfo(name = "product_generic_name")
+        private String genericName;
+
+        public Product() {}
+
+        protected Product(Parcel in) {
+            id = in.readLong();
+            name = in.readString();
+            genericName = in.readString();
+        }
+
+        public static final Creator<Product> CREATOR = new Creator<Product>() {
+            @Override
+            public Product createFromParcel(Parcel in) {
+                return new Product(in);
+            }
+
+            @Override
+            public Product[] newArray(int size) {
+                return new Product[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeLong(id);
+            parcel.writeString(name);
+            parcel.writeString(genericName);
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getGenericName() {
+            return genericName;
+        }
+
+        public void setGenericName(String genericName) {
+            this.genericName = genericName;
+        }
     }
 }

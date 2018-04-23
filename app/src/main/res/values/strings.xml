@@ -16,7 +16,7 @@
     <string name="enter_password">Enter Password</string>
     <string name="enter_username">Enter Username</string>
     <string name="total_payment">Total Payment</string>
-    <string name="loading_data">Loading data...</string>
+    <string name="loading_data">Loading data…</string>
     <string name="failed_loading_data">Failed to load data</string>
     <string name="pay_selected">PAY SELECTED</string>
     <string name="payment_transactions">Payment Transactions</string>
@@ -31,20 +31,7 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="remove_from_cart">REMOVE FROM CART</string>
     <string name="send_order">SEND ORDER</string>
-    <string-array name="terms_list">
-        <item>COD</item>
-        <item>30days</item>
-        <item>60days</item>
-        <item>7days</item>
-        <item>15days</item>
-        <item>120days</item>
-        <item>90days</item>
-        <item>Donation</item>
-        <item>45days</item>
-        <item>Free Goods</item>
-        <item>150days</item>
-        <item>Closed</item>
-        <item>Return/Exchange</item>
-        <item>Product Recall</item>
-    </string-array>
+    <string name="sales">SALES</string>
+    <string name="submit_sales">SUBMIT SALES</string>
+    <string name="delete">Delete</string>
 </resources>

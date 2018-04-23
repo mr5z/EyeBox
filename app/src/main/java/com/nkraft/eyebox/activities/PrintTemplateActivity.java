@@ -9,10 +9,15 @@ import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PrintTemplateAdapter;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.PrintTemplate;
+import com.nkraft.eyebox.models.User;
+import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.services.TextAlignment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PrintTemplateActivity extends ListActivity implements BaseListAdapter.ItemClickListener<PrintTemplate> {
 
@@ -35,44 +40,45 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
     }
 
     PrintTemplate template1() {
+        User user = AccountService.instance().currentUser;
         Payment payment = getPayment();
-        PrintTemplate template = new PrintTemplate("Sales Order (Manila)", R.drawable.ic_tgp);
+        PrintTemplate template = new PrintTemplate("Sale Order (Manila)", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
         template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
         template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
         template.addPrintData("09985100306", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("Sales Order", TextAlignment.CENTER);
+        template.addPrintData("Sale Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No: " + payment.getProductNumber());
-        template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client: " + payment.getClientName());
-        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
-        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
+        template.addPrintData("PR No:        " + payment.getId());
+        template.addPrintData("Date:         " + dateNow());
+        template.addPrintData("Client:       " + payment.getReceivedBy());
+        template.addPrintData("Amount:       " + payment.getFormattedAmount());
+        template.addPrintData("Total:        " + payment.getFormattedAmount());
         template.addPrintData("Received By:");
-        template.addPrintData("________________________");
+        template.addPrintData(user.getName());
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
         template.addPrintData("________________________");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("\n");
-        template.addPrintData("\n");
         return  template;
     }
 
     PrintTemplate template2() {
+        User user = AccountService.instance().currentUser;
         Payment payment = getPayment();
         PrintTemplate template = new PrintTemplate("SI-Felbros2", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
-        template.addPrintData("Sales Order", TextAlignment.CENTER);
+        template.addPrintData("Sale Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No: " + payment.getProductNumber());
-        template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client: " + payment.getClientName());
-        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
-        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
+        template.addPrintData("PR No:        " + payment.getId());
+        template.addPrintData("Date:         " + dateNow());
+        template.addPrintData("Client:       " + payment.getReceivedBy());
+        template.addPrintData("Amount:       " + payment.getFormattedAmount());
+        template.addPrintData("Total:        " + payment.getFormattedAmount());
         template.addPrintData("Received By:");
-        template.addPrintData("________________________");
+        template.addPrintData(user.getName());
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
         template.addPrintData("________________________");
@@ -83,6 +89,7 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
     }
 
     PrintTemplate template3() {
+        User user = AccountService.instance().currentUser;
         Payment payment = getPayment();
         PrintTemplate template = new PrintTemplate("Provinsional Receipt (Manila)", R.drawable.ic_tgp);
         template.addPrintData(toBitmap(R.drawable.ic_tgp));
@@ -90,15 +97,16 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
         template.addPrintData("09985100306", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("Sales Order", TextAlignment.CENTER);
+        template.addPrintData("Sale Order", TextAlignment.CENTER);
         template.addPrintData("\n");
-        template.addPrintData("PR No: " + payment.getProductNumber());
-        template.addPrintData("Date:    2018-03-29");
-        template.addPrintData("Client: " + payment.getClientName());
-        template.addPrintData("Amount: " + payment.getFormattedTotalPayment());
-        template.addPrintData("Total: " + payment.getFormattedTotalPayment());
+        template.addPrintData("PR No:        " + payment.getId());
+        template.addPrintData("Date:         " + dateNow());
+        template.addPrintData("Client:       " + payment.getReceivedBy());
+        template.addPrintData("Amount:       " + payment.getFormattedAmount());
+        template.addPrintData("Total:        " + payment.getFormattedAmount());
         template.addPrintData("Received By:");
-        template.addPrintData("________________________");
+        template.addPrintData(user.getName());
+        template.addPrintData("(Signature over print name)");
         template.addPrintData("(Signature over print name)");
         template.addPrintData("Payor:");
         template.addPrintData("________________________");
@@ -119,5 +127,12 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         Intent intent = getIntent();
         return intent.getParcelableExtra("payment");
     }
+
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());
+
+    String dateNow() {
+        return simpleDateFormat.format(new Date());
+    }
+
 
 }

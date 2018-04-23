@@ -6,12 +6,20 @@ public enum ProcessType {
     PAYMENTS,
     PRODUCTS,
     CLIENTS,
+    SALES,
     ORDERS,
-    VISITS;
+    VISITS,
+    TERMS,
+    BANKS,
+    SUBMIT_SALES;
 
     public final int flag;
 
     ProcessType() {
         flag = 1 << this.ordinal();
+    }
+
+    public static boolean hasFlag(int flags, ProcessType processType) {
+        return (flags & processType.flag) != 0;
     }
 }

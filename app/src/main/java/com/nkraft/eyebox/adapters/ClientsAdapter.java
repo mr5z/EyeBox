@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Client;
-import com.nkraft.eyebox.models.Payment;
 
 import java.util.List;
 
@@ -18,8 +17,8 @@ public class ClientsAdapter extends BaseListAdapter<ClientsAdapter.ViewHolder, C
 
     @Override
     void onDataBind(ViewHolder holder, Client data) {
-        holder.txtClientName.setText(data.getClientName());
-        holder.txtClientAddress.setText(data.getClientAddress());
+        holder.txtClientName.setText(data.getName());
+        holder.txtClientAddress.setText(data.getAddress());
     }
 
     @Override

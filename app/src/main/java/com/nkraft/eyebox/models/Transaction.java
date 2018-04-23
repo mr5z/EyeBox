@@ -4,16 +4,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.Locale;
 
 @Entity(tableName = "Transactions")
 public class Transaction implements Parcelable {
 
     @PrimaryKey
-    private long id;
+    @NonNull
+    private String id;
     private String productNumber;
     private String clientName;
     private String clientAddress;
@@ -21,13 +21,15 @@ public class Transaction implements Parcelable {
     private long checkDate;
     private String checkNumber;
     private String orderNumber;
-    private String terms;
-    private String bank;
+    private int terms;
+    private int bank;
 
-    public Transaction() {}
+    public Transaction(@NonNull String id) {
+        this.id = id;
+    }
 
     protected Transaction(Parcel in) {
-        id = in.readLong();
+        id = in.readString();
         productNumber = in.readString();
         clientName = in.readString();
         clientAddress = in.readString();
@@ -35,7 +37,8 @@ public class Transaction implements Parcelable {
         checkDate = in.readLong();
         checkNumber = in.readString();
         orderNumber = in.readString();
-        terms = in.readString();
+        terms = in.readInt();
+        bank = in.readInt();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
@@ -62,10 +65,6 @@ public class Transaction implements Parcelable {
         return balance;
     }
 
-    public String getFormattedBalance() {
-        return String.format(Locale.getDefault(), "%.02f", balance);
-    }
-
     public void setBalance(double balance) {
         this.balance = balance;
     }
@@ -78,12 +77,8 @@ public class Transaction implements Parcelable {
         this.clientAddress = clientAddress;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getProductNumber() {
@@ -118,11 +113,11 @@ public class Transaction implements Parcelable {
         this.orderNumber = orderNumber;
     }
 
-    public String getTerms() {
+    public int getTerms() {
         return terms;
     }
 
-    public void setTerms(String terms) {
+    public void setTerms(int terms) {
         this.terms = terms;
     }
 
@@ -133,7 +128,7 @@ public class Transaction implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(id);
+        parcel.writeString(id);
         parcel.writeString(productNumber);
         parcel.writeString(clientName);
         parcel.writeString(clientAddress);
@@ -141,14 +136,15 @@ public class Transaction implements Parcelable {
         parcel.writeLong(checkDate);
         parcel.writeString(checkNumber);
         parcel.writeString(orderNumber);
-        parcel.writeString(terms);
+        parcel.writeInt(terms);
+        parcel.writeInt(bank);
     }
 
-    public String getBank() {
+    public int getBank() {
         return bank;
     }
 
-    public void setBank(String bank) {
+    public void setBank(int bank) {
         this.bank = bank;
     }
 }

@@ -19,7 +19,7 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
     void onDataBind(ViewHolder holder, Product data) {
         holder.name.setText(data.getName());
         holder.subName.setText(data.getGenericName());
-        holder.price.setText(data.getFormattedPrice());
+        holder.price.setText(formatCurrency(data.getPrice()));
         holder.soh.setText(String.valueOf(data.getSoh()));
     }
 

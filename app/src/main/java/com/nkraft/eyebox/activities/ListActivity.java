@@ -1,10 +1,7 @@
 package com.nkraft.eyebox.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -15,12 +12,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -101,7 +96,7 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
         if (headers == null)
             return;
 
-        int padding = utils().dpToPx(4);
+        int padding = views().dpToPx(4);
         listHeader.setPadding(padding, padding, padding, padding);
         for(Header header : headers) {
             listHeader.addView(new android.support.v7.widget.AppCompatTextView(this) {{
@@ -129,11 +124,15 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             layout.setBackgroundColor(color(footer.backgroundColor));
-            Button button = footer.button;
-            footer.button.setLayoutParams(new RelativeLayout.LayoutParams(
+            Button button = new Button(this);
+            button.setId(footer.buttonId);
+            button.setText(footer.buttonText);
+            button.setTextColor(color(footer.textColor));
+            button.setOnClickListener((v) -> footer.clickListener.onClick());
+            button.setLayoutParams(new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT));
-            utils().makeRippledBackground(button);
+            views().makeRippledBackground(button);
             layout.addView(button);
             listFooter.addView(layout, new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -155,6 +154,10 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
 
     }
 
+    <Model> void addContextAction(ContextAction<Model> contextAction) {
+        startActionMode(new ActionBarCallBack(contextAction));
+    }
+
     static class Header {
         String columnName;
         int columnNameId;
@@ -172,25 +175,92 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
             void onClick();
         }
 
-        private final Button button;
         final ClickListener clickListener;
         @ColorRes
         final int backgroundColor;
+        @IdRes
+        final int buttonId;
+        @ColorRes
+        final int textColor;
+        final String buttonText;
 
-        Footer(ListActivity activity,
-               String buttonText,
+        Footer(String buttonText,
                @IdRes int buttonId,
                @ColorRes int textColor,
                @ColorRes int backgroundColor,
                ClickListener clickListener) {
             this.backgroundColor = backgroundColor;
             this.clickListener = clickListener;
-            button = new Button(activity);
-            button.setId(buttonId);
-            button.setText(buttonText);
-            button.setTextColor(activity.color(textColor));
-            button.setOnClickListener((v) -> clickListener.onClick());
+            this.buttonId = buttonId;
+            this.textColor = textColor;
+            this.buttonText = buttonText;
         }
+    }
+
+    static class ContextAction<T> {
+        interface Action<T> {
+            boolean onClick(T data);
+        }
+        final Action<T> destructiveAction;
+        public ContextAction(Action<T> destructiveAction) {
+            this.destructiveAction = destructiveAction;
+        }
+    }
+
+    static class ActionBarCallBack<T> implements android.view.ActionMode.Callback {
+
+        private final ContextAction<T> contextAction;
+
+        public ActionBarCallBack(ContextAction<T> contextAction) {
+            this.contextAction = contextAction;
+        }
+
+        @Override
+        public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(android.view.ActionMode actionMode, Menu menu) {
+            actionMode.setTitle("Delete row");
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
+            return contextAction.destructiveAction.onClick(null);
+        }
+
+        @Override
+        public void onDestroyActionMode(android.view.ActionMode actionMode) {
+
+        }
+
+//        @Override
+//        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//            // TODO Auto-generated method stub
+//            mode.getMenuInflater().inflate(R.menu.menu_contextual, menu);
+//            return true;
+//        }
+//
+//        @Override
+//        public void onDestroyActionMode(ActionMode mode) {
+//            // TODO Auto-generated method stub
+//
+//        }
+//
+//        @Override
+//        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+//            // TODO Auto-generated method stub
+//            mode.setTitle("Delete row");
+//            return false;
+//        }
 
     }
 }

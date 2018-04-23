@@ -1,6 +1,12 @@
 package com.nkraft.eyebox.models.shit;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity(tableName = "Terms")
 public class Terms {
+
+    @PrimaryKey
     private long id;
     private int days;
     private String namex;
@@ -36,5 +42,10 @@ public class Terms {
 
     public void setDateDelay(int dateDelay) {
         this.dateDelay = dateDelay;
+    }
+
+    @Override
+    public String toString() {
+        return namex;
     }
 }

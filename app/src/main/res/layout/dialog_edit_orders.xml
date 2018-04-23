@@ -30,6 +30,7 @@
 
     <TextView
         android:text="Absorbent Cotton Wool 20x12"
+        android:id="@+id/deo_txt_product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"/>

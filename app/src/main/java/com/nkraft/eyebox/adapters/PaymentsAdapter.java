@@ -17,10 +17,10 @@ public class PaymentsAdapter extends BaseListAdapter<PaymentsAdapter.ViewHolder,
 
     @Override
     void onDataBind(ViewHolder holder, Payment data) {
-        holder.txtClientName.setText(data.getClientName());
-        holder.txtProductNumber.setText(data.getProductNumber());
-        holder.txtTransactionDate.setText(data.getFormattedTransactionDate());
-        holder.txtTotalPayment.setText( data.getFormattedTotalPayment());
+        holder.txtClientName.setText(data.getCheckName());
+        holder.txtProductNumber.setText(data.getPrNo());
+        holder.txtTransactionDate.setText(formatDate(data.getCheckDate()));
+        holder.txtTotalPayment.setText(data.getFormattedAmount());
         holder.txtTransactionStatus.setText(data.getStatus());
     }
 

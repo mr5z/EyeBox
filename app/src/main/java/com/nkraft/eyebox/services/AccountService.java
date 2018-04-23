@@ -22,7 +22,7 @@ public class AccountService extends BaseService {
 
     public PagedResult<User> login(String userName, String password) {
         try {
-            String response = get("eyebox/api/login.php",
+            String response = get("login.php",
                     new HttpUtil.KeyValue("key", API_KEY),
                     new HttpUtil.KeyValue("username", userName),
                     new HttpUtil.KeyValue("password", password));

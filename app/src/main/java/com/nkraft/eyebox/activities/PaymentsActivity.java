@@ -10,9 +10,7 @@ import com.nkraft.eyebox.adapters.PaymentsAdapter;
 import com.nkraft.eyebox.models.Payment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class PaymentsActivity extends ListActivity implements BaseListAdapter.ItemClickListener<Payment> {
 

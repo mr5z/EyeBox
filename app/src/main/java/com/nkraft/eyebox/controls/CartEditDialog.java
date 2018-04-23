@@ -3,11 +3,15 @@ package com.nkraft.eyebox.controls;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
+import com.nkraft.eyebox.models.Order;
 
 public class CartEditDialog implements DialogInterface.OnClickListener, View.OnClickListener {
 
@@ -19,17 +23,23 @@ public class CartEditDialog implements DialogInterface.OnClickListener, View.OnC
     private AlertDialog dialog;
     private long orderId;
 
-    public CartEditDialog(Context context, long orderId, CartEditDialog.ClickListener clickListener) {
+    public CartEditDialog(Context context, Order order, CartEditDialog.ClickListener clickListener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_orders, null);
         dialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.add_to_cart)
-                .setIcon(R.drawable.ic_question_mark)
-                .setView(R.layout.dialog_edit_orders)
+                .setView(view)
                 .setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, this)
                 .create();
-        this.orderId = orderId;
+        orderId = order.getId();
         this.clickListener = clickListener;
-        dialog.findViewById(R.id.deo_btn_remove_order).setOnClickListener(this);
+
+        Button button = view.findViewById(R.id.deo_btn_remove_order);
+        TextView txtProductName = view.findViewById(R.id.deo_txt_product_name);
+        EditText editQuantity = view.findViewById(R.id.deo_edit_quantity);
+
+        button.setOnClickListener(this);
+        editQuantity.setText(String.valueOf(order.getQuantity()));
+        txtProductName.setText(order.getProduct().getName());
     }
 
     public void show() {

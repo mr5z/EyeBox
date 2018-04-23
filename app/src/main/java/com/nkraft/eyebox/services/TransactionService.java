@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionService extends BaseService {
 
@@ -25,22 +26,18 @@ public class TransactionService extends BaseService {
 
     public PagedResult<List<Transaction>> getAllTransactionsByUser(User user) {
         try {
-            String stringResponse = post(String.format(
-                    "eyebox/api/get_all.php?key=%s&branch=%s&username=%s",
-                    API_KEY, user.getAssignedBranch(), user.getUserName()),
+            String rawResponse = get("get_transactions.php",
+                    HttpUtil.KeyValue.make("branch", user.getAssignedBranch()),
                     HttpUtil.KeyValue.make("key", API_KEY));
-            JSONObject jsonResponse = new JSONObject(stringResponse);
-            JSONArray jsonTable = jsonResponse.getJSONArray("tables");
-            JSONArray jsonCustomers = jsonTable.getJSONObject(1).getJSONArray("customers");
+            JSONArray jsonArray = new JSONArray(rawResponse);
             List<Transaction> transactions = new ArrayList<>();
-            for (int i = 0;i < jsonCustomers.length(); ++i) {
-                JSONObject jsonObject = jsonCustomers.getJSONObject(i);
-                long id = jsonObject.getLong("customersid");
+            for (int i = 0;i < jsonArray.length(); ++i) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("customersid");
                 String name = jsonObject.getString("customername");
                 String address = jsonObject.getString("address");
                 double totalCredit = jsonObject.getDouble("totalcredit");
-                Transaction transaction = new Transaction();
-                transaction.setId(id);
+                Transaction transaction = new Transaction(id);
                 transaction.setClientName(name);
                 transaction.setClientAddress(address);
                 transaction.setBalance(totalCredit);

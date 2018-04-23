@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e4e0a36968fad1eb5fb17e357897687f",
+    "identityHash": "afa94e50b4bb2ae12f6208dc415a532f",
     "entities": [
       {
         "tableName": "Users",
@@ -94,12 +94,12 @@
       },
       {
         "tableName": "Transactions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `productNumber` TEXT, `clientName` TEXT, `clientAddress` TEXT, `balance` REAL NOT NULL, `checkDate` INTEGER NOT NULL, `checkNumber` TEXT, `orderNumber` TEXT, `terms` TEXT, `bank` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `productNumber` TEXT, `clientName` TEXT, `clientAddress` TEXT, `balance` REAL NOT NULL, `checkDate` INTEGER NOT NULL, `checkNumber` TEXT, `orderNumber` TEXT, `terms` INTEGER NOT NULL, `bank` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -147,14 +147,14 @@
           {
             "fieldPath": "terms",
             "columnName": "terms",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "bank",
             "columnName": "bank",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -168,7 +168,7 @@
       },
       {
         "tableName": "Clients",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `clientName` TEXT, `clientAddress` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `address` TEXT, `contactPerson` TEXT, `contactNo` TEXT, `emailX` TEXT, `creditLimit` REAL NOT NULL, `terms` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `delAll` INTEGER NOT NULL, `userLogs` TEXT, `branchLink` INTEGER NOT NULL, `salesDistrict` TEXT, `salesDivision` TEXT, `districtManager` TEXT, `salesManager` TEXT, `salesAgent` TEXT, `totalCredit` REAL NOT NULL, `tinX` TEXT, `totalSales` TEXT, `adjustmentId` TEXT, `addOn` TEXT, `agent` TEXT, `checkedBy` TEXT, `deliveredBy` TEXT, `salesType` TEXT, `salesAccount` TEXT, `blocked` TEXT, `password` TEXT, `username` TEXT, `dueRestrict` TEXT, `creditRestrict` TEXT, `dateClosed` TEXT, `status` TEXT, `remarks` TEXT, `creditExt` TEXT, `mobileNo` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -177,14 +177,218 @@
             "notNull": true
           },
           {
-            "fieldPath": "clientName",
-            "columnName": "clientName",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "clientAddress",
-            "columnName": "clientAddress",
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contactPerson",
+            "columnName": "contactPerson",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contactNo",
+            "columnName": "contactNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "emailX",
+            "columnName": "emailX",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "creditLimit",
+            "columnName": "creditLimit",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "terms",
+            "columnName": "terms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateX",
+            "columnName": "dateX",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "delAll",
+            "columnName": "delAll",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userLogs",
+            "columnName": "userLogs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchLink",
+            "columnName": "branchLink",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salesDistrict",
+            "columnName": "salesDistrict",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesDivision",
+            "columnName": "salesDivision",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtManager",
+            "columnName": "districtManager",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesManager",
+            "columnName": "salesManager",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesAgent",
+            "columnName": "salesAgent",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalCredit",
+            "columnName": "totalCredit",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tinX",
+            "columnName": "tinX",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalSales",
+            "columnName": "totalSales",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjustmentId",
+            "columnName": "adjustmentId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "addOn",
+            "columnName": "addOn",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "agent",
+            "columnName": "agent",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "checkedBy",
+            "columnName": "checkedBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveredBy",
+            "columnName": "deliveredBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesType",
+            "columnName": "salesType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesAccount",
+            "columnName": "salesAccount",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "blocked",
+            "columnName": "blocked",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dueRestrict",
+            "columnName": "dueRestrict",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "creditRestrict",
+            "columnName": "creditRestrict",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateClosed",
+            "columnName": "dateClosed",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "remarks",
+            "columnName": "remarks",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "creditExt",
+            "columnName": "creditExt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mobileNo",
+            "columnName": "mobileNo",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -200,7 +404,7 @@
       },
       {
         "tableName": "Payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `payDate` INTEGER NOT NULL, `bankName` TEXT, `checkDate` INTEGER NOT NULL, `checkNumber` TEXT, `receiver` TEXT, `salesId` INTEGER NOT NULL, `terms` TEXT, `branch` INTEGER NOT NULL, `productNumber` TEXT, `orderNumber` TEXT, `clientName` TEXT, `transactionDate` INTEGER NOT NULL, `totalPayment` REAL NOT NULL, `status` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` TEXT, `bankName` TEXT, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` TEXT, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` TEXT, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` TEXT, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -209,10 +413,10 @@
             "notNull": true
           },
           {
-            "fieldPath": "payDate",
-            "columnName": "payDate",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "dateX",
+            "columnName": "dateX",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "bankName",
@@ -227,14 +431,32 @@
             "notNull": true
           },
           {
-            "fieldPath": "checkNumber",
-            "columnName": "checkNumber",
+            "fieldPath": "checkNo",
+            "columnName": "checkNo",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "receiver",
-            "columnName": "receiver",
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receivedBy",
+            "columnName": "receivedBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "delAll",
+            "columnName": "delAll",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userLogs",
+            "columnName": "userLogs",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -247,43 +469,31 @@
           {
             "fieldPath": "terms",
             "columnName": "terms",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "branch",
-            "columnName": "branch",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "productNumber",
-            "columnName": "productNumber",
+            "fieldPath": "remarks",
+            "columnName": "remarks",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "orderNumber",
-            "columnName": "orderNumber",
+            "fieldPath": "checkName",
+            "columnName": "checkName",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "clientName",
-            "columnName": "clientName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "transactionDate",
-            "columnName": "transactionDate",
+            "fieldPath": "branchNo",
+            "columnName": "branchNo",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "totalPayment",
-            "columnName": "totalPayment",
-            "affinity": "REAL",
+            "fieldPath": "dateDeposited",
+            "columnName": "dateDeposited",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -291,6 +501,78 @@
             "columnName": "status",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customerId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "drNo",
+            "columnName": "drNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "prNo",
+            "columnName": "prNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesDate",
+            "columnName": "salesDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orNo",
+            "columnName": "orNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dueDate",
+            "columnName": "dueDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "checkDays",
+            "columnName": "checkDays",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "controlNo",
+            "columnName": "controlNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deposited",
+            "columnName": "deposited",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "debit",
+            "columnName": "debit",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "validatedBy",
+            "columnName": "validatedBy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receiptLayout",
+            "columnName": "receiptLayout",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -304,7 +586,7 @@
       },
       {
         "tableName": "Orders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `dateOrdered` INTEGER NOT NULL, `clientName` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `dateOrdered` INTEGER NOT NULL, `clientName` TEXT, `product_id` INTEGER, `product_name` TEXT, `product_generic_name` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -329,6 +611,428 @@
             "columnName": "clientName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "product.id",
+            "columnName": "product_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "product.name",
+            "columnName": "product_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "product.genericName",
+            "columnName": "product_generic_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Sales",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `customerId` INTEGER NOT NULL, `companyName` TEXT, `agent` INTEGER NOT NULL, `checkedBy` TEXT, `deliveredBy` INTEGER NOT NULL, `adjustments` TEXT, `adjustmentAmount` TEXT, `userLogs` TEXT, `delAll` TEXT, `drNo` TEXT, `siNo` TEXT, `prNo` TEXT, `orNo` TEXT, `amount` REAL NOT NULL, `salesDate` INTEGER NOT NULL, `totalAmount` REAL NOT NULL, `salesType` TEXT, `salesAccount` INTEGER NOT NULL, `remarks` TEXT, `origTotal` REAL NOT NULL, `branchNo` INTEGER NOT NULL, `debit` REAL NOT NULL, `payAmount` REAL NOT NULL, `balance` REAL NOT NULL, `syncX` TEXT, `modified` TEXT, `dateModified` INTEGER NOT NULL, `deliveryDate` INTEGER NOT NULL, `transaction` REAL NOT NULL, `blocked` TEXT, `dueDate` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `printX` TEXT, `printlayout` INTEGER NOT NULL, `audit` TEXT, `paymentMethod` TEXT, `dateDeposit` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `notification` TEXT, `itemCount` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "companyName",
+            "columnName": "companyName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "agent",
+            "columnName": "agent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "checkedBy",
+            "columnName": "checkedBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveredBy",
+            "columnName": "deliveredBy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "adjustments",
+            "columnName": "adjustments",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjustmentAmount",
+            "columnName": "adjustmentAmount",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userLogs",
+            "columnName": "userLogs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "delAll",
+            "columnName": "delAll",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "drNo",
+            "columnName": "drNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siNo",
+            "columnName": "siNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "prNo",
+            "columnName": "prNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orNo",
+            "columnName": "orNo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salesDate",
+            "columnName": "salesDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalAmount",
+            "columnName": "totalAmount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salesType",
+            "columnName": "salesType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesAccount",
+            "columnName": "salesAccount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remarks",
+            "columnName": "remarks",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "origTotal",
+            "columnName": "origTotal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "branchNo",
+            "columnName": "branchNo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "debit",
+            "columnName": "debit",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payAmount",
+            "columnName": "payAmount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balance",
+            "columnName": "balance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncX",
+            "columnName": "syncX",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "modified",
+            "columnName": "modified",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateModified",
+            "columnName": "dateModified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deliveryDate",
+            "columnName": "deliveryDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transaction",
+            "columnName": "transaction",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "blocked",
+            "columnName": "blocked",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dueDate",
+            "columnName": "dueDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "terms",
+            "columnName": "terms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "printX",
+            "columnName": "printX",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "printlayout",
+            "columnName": "printlayout",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audit",
+            "columnName": "audit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paymentMethod",
+            "columnName": "paymentMethod",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateDeposit",
+            "columnName": "dateDeposit",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "checkDate",
+            "columnName": "checkDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notification",
+            "columnName": "notification",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "itemCount",
+            "columnName": "itemCount",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Visits",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customerId` INTEGER NOT NULL, `clientSignaturePath` TEXT, `dateVisit` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientSignaturePath",
+            "columnName": "clientSignaturePath",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateVisit",
+            "columnName": "dateVisit",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Banks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `company` TEXT, `accountName` TEXT, `accountNumber` TEXT, `namex` TEXT, `userLogs` TEXT, `delall` INTEGER NOT NULL, `branchNo` INTEGER NOT NULL, `bankAddress` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "company",
+            "columnName": "company",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accountName",
+            "columnName": "accountName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accountNumber",
+            "columnName": "accountNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "namex",
+            "columnName": "namex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userLogs",
+            "columnName": "userLogs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "delall",
+            "columnName": "delall",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "branchNo",
+            "columnName": "branchNo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bankAddress",
+            "columnName": "bankAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Terms",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `days` INTEGER NOT NULL, `namex` TEXT, `dateDelay` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "days",
+            "columnName": "days",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "namex",
+            "columnName": "namex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateDelay",
+            "columnName": "dateDelay",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -343,7 +1047,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e4e0a36968fad1eb5fb17e357897687f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"afa94e50b4bb2ae12f6208dc415a532f\")"
     ]
   }
 }

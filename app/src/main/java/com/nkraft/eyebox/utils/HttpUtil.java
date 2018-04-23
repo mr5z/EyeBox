@@ -27,6 +27,10 @@ public class HttpUtil {
             Pair<String, String> pair = Pair.create(first, second);
             return new KeyValue(pair.first, pair.second);
         }
+        public static KeyValue make(String first, int second) {
+            Pair<String, String> pair = Pair.create(first, String.valueOf(second));
+            return new KeyValue(pair.first, pair.second);
+        }
     }
 
     private static String getLocalTimeZoneId() {

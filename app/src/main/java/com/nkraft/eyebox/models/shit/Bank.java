@@ -1,6 +1,12 @@
 package com.nkraft.eyebox.models.shit;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity(tableName = "Banks")
 public class Bank {
+
+    @PrimaryKey
     private long id;
     private String company;
     private String accountName;
@@ -81,5 +87,10 @@ public class Bank {
 
     public void setBankAddress(String bankAddress) {
         this.bankAddress = bankAddress;
+    }
+
+    @Override
+    public String toString() {
+        return namex;
     }
 }

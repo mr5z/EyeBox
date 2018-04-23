@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 import java.util.Locale;
@@ -17,10 +18,15 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         void onItemClick(T data);
     }
 
+    public interface LongItemClickListener<T> {
+        boolean onLongItemClick(T data);
+    }
+
     private List<TModel> dataList;
     private int rowLayoutId;
 
     private ItemClickListener<TModel> itemClickListener;
+    private LongItemClickListener<TModel> longItemClickListener;
 
     public BaseListAdapter(List<TModel> dataList, int rowLayoutId) {
         this.dataList = dataList;
@@ -33,6 +39,9 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         onDataBind(holder, data);
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener(view -> itemClickListener.onItemClick(data));
+        }
+        if (longItemClickListener != null) {
+            holder.itemView.setOnLongClickListener(view -> longItemClickListener.onLongItemClick(data));
         }
     }
 
@@ -47,8 +56,20 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         this.itemClickListener = itemClickListener;
     }
 
-    String format(String message, Object ...args) {
-        return String.format(Locale.getDefault(), message, args);
+    public void setOnLongItemClickListener(LongItemClickListener<TModel> longItemClickListener) {
+        this.longItemClickListener = longItemClickListener;
+    }
+
+    static String formatString(String message, Object... args) {
+        return Formatter.string(message, args);
+    }
+
+    static String formatDate(long date) {
+        return Formatter.date(date);
+    }
+
+    static String formatCurrency(double amount) {
+        return Formatter.currency(amount);
     }
 
     @Override

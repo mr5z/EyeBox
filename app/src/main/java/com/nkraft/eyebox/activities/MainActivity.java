@@ -56,34 +56,6 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     @BindView(R.id.main_txt_orders_count)
     TextView txtOrdersCount;
 
-//    @OnClick({
-//        R.id.btn_client_transactions,
-//        R.id.btn_payments,
-//        R.id.btn_clients,
-//        R.id.btn_orders,
-//        R.id.btn_visits,
-//        R.id.btn_sign_out,
-//        R.id.fab_sync,
-//    })
-//    void onButtonClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_client_transactions:
-//                break;
-//            case R.id.btn_payments:
-//                break;
-//            case R.id.btn_clients:
-//                break;
-//            case R.id.btn_orders:
-//                break;
-//            case R.id.btn_visits:
-//                break;
-//            case R.id.btn_sign_out:
-//                break;
-//            case R.id.fab_sync:
-//                break;
-//        }
-//    }
-
     @OnClick(R.id.btn_client_transactions)
     void onTransactionsClick(View view) {
         startActivity(new Intent(this, TransactionsActivity.class));

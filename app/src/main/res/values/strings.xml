@@ -34,4 +34,5 @@
     <string name="sales">SALES</string>
     <string name="submit_sales">SUBMIT SALES</string>
     <string name="delete">Delete</string>
+    <string name="required">Required!</string>
 </resources>

@@ -7,12 +7,14 @@ import android.support.annotation.Nullable;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PaymentsAdapter;
+import com.nkraft.eyebox.controls.dialogs.DeletePaymentDialog;
 import com.nkraft.eyebox.models.Payment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentsActivity extends ListActivity implements BaseListAdapter.ItemClickListener<Payment> {
+public class PaymentsActivity extends ListActivity implements
+        BaseListAdapter.ItemClickListener<Payment>,BaseListAdapter.LongItemClickListener<Payment> {
 
     private List<Payment> payments = new ArrayList<>();
     private PaymentsAdapter adapter;
@@ -26,6 +28,17 @@ public class PaymentsActivity extends ListActivity implements BaseListAdapter.It
             payments.addAll(paymentList);
             runOnUiThread(() -> adapter.notifyDataSetChanged());
         });
+        setContextualMenuListener((position -> {
+            payments.remove(position);
+            adapter.notifyItemRemoved(position);
+            return true;
+        }));
+
+//        addContextAction(new ContextAction<Payment>((view, data) -> {
+//            payments.remove((Payment)data);
+//            adapter.notifyDataSetChanged();
+//            return false;
+//        }));
     }
 
     @Override
@@ -37,9 +50,10 @@ public class PaymentsActivity extends ListActivity implements BaseListAdapter.It
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new PaymentsAdapter(payments);
         adapter.setOnItemClickListener(this);
+        adapter.setOnLongClickListener(this);
         return adapter;
     }
 
@@ -48,5 +62,26 @@ public class PaymentsActivity extends ListActivity implements BaseListAdapter.It
         Intent intent = new Intent(this, PaymentDetailsActivity.class);
         intent.putExtra("payment", data);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onLongItemClick(Payment data) {
+        DeletePaymentDialog dialog = new DeletePaymentDialog(this, data);
+        dialog.setDeleteListener(this::deleteItem);
+        dialog.show();
+        return true;
+    }
+
+    void deleteItem(Payment payment) {
+        int position = payments.indexOf(payment);
+        async(() -> {
+            int rows = database().payments().deletePayment(payment.getId());
+            runOnUiThread(() -> {
+                if (rows > 0) {
+                    payments.remove(position);
+                    adapter.notifyItemRemoved(position);
+                }
+            });
+        });
     }
 }

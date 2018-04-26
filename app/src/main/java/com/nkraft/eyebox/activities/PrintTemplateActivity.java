@@ -22,7 +22,7 @@ import java.util.Locale;
 public class PrintTemplateActivity extends ListActivity implements BaseListAdapter.ItemClickListener<PrintTemplate> {
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         List<PrintTemplate> dataList = new ArrayList<>();
         dataList.add(template1());
         dataList.add(template2());

@@ -37,6 +37,7 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
     public final void onBindViewHolder(@NonNull TViewHolder holder, int position) {
         TModel data = dataList.get(position);
         onDataBind(holder, data);
+        holder.itemView.setLongClickable(true);
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener(view -> itemClickListener.onItemClick(data));
         }
@@ -56,7 +57,7 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         this.itemClickListener = itemClickListener;
     }
 
-    public void setOnLongItemClickListener(LongItemClickListener<TModel> longItemClickListener) {
+    public void setOnLongClickListener(LongItemClickListener<TModel> longItemClickListener) {
         this.longItemClickListener = longItemClickListener;
     }
 

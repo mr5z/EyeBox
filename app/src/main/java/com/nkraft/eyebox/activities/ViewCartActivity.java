@@ -29,7 +29,7 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new OrdersAdapter(orders);
         adapter.setOnItemClickListener(this);
         return adapter;

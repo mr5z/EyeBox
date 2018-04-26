@@ -1,46 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="?attr/selectableItemBackground">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="6">
+    <TextView
+        android:text="Client Name Bla Bla BL fsd fds a"
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        style="@style/Base.TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:text="Client Name Bla Bla BL fsd fds a"
-            android:id="@+id/txt_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxEms="8"
-            android:ellipsize="end"
-            android:maxLines="1"
-            style="@style/Base.TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:text="Client address 1 2 3 4 5 6 dfkj sdfkj ksdlfj df dfdsf sdf"
-            android:id="@+id/txt_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxEms="10"
-            android:ellipsize="end"
-            android:maxLines="3" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_title"
+        android:layout_alignStart="@+id/txt_title"
+        android:ellipsize="end"
+        android:maxEms="10"
+        android:maxLines="3"
+        android:text="Client address 1 2 3 4 5 6 dfkj sdfkj ksdlfj df dfdsf sdf" />
 
     <TextView
         android:id="@+id/txt_balance"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txt_description"
+        android:layout_alignParentEnd="true"
         android:gravity="end|center_vertical"
-        android:textSize="24sp"
+        android:maxLines="1"
         android:text="100, 000.00"
-        android:maxLines="1"/>
+        android:textSize="24sp" />
 
-</LinearLayout>
+</RelativeLayout>

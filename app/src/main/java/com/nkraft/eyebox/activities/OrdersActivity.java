@@ -39,7 +39,7 @@ public class OrdersActivity extends ListActivity {
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new OrdersAdapter(orders);
         return adapter;
     }

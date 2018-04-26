@@ -31,6 +31,12 @@ public interface PaymentsDao {
     @Query("SELECT * FROM Payments WHERE id = :paymentId")
     Payment findPaymentById(long paymentId);
 
+    @Query("SELECT * FROM Payments WHERE customerId = :customerId")
+    List<Payment> getPaymentsByClientId(long customerId);
+
+    @Query("DELETE FROM Payments WHERE id = :paymentId")
+    int deletePayment(long paymentId);
+
     @Query("SELECT COUNT(*) FROM Payments")
     long count();
 }

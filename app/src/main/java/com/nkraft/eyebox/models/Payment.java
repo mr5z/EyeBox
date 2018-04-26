@@ -33,7 +33,7 @@ public class Payment implements Parcelable {
     private int branchNo;
     private long dateDeposited;
     private String status;
-    private String customerId;
+    private long customerId;
     private String drNo;
     private String prNo;
     private long salesDate;
@@ -69,7 +69,7 @@ public class Payment implements Parcelable {
         branchNo = in.readInt();
         dateDeposited = in.readLong();
         status = in.readString();
-        customerId = in.readString();
+        customerId = in.readLong();
         drNo = in.readString();
         prNo = in.readString();
         salesDate = in.readLong();
@@ -216,11 +216,11 @@ public class Payment implements Parcelable {
         this.dateDeposited = dateDeposited;
     }
 
-    public String getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 
@@ -349,7 +349,7 @@ public class Payment implements Parcelable {
         parcel.writeInt(branchNo);
         parcel.writeLong(dateDeposited);
         parcel.writeString(status);
-        parcel.writeString(customerId);
+        parcel.writeLong(customerId);
         parcel.writeString(drNo);
         parcel.writeString(prNo);
         parcel.writeLong(salesDate);

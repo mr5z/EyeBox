@@ -111,7 +111,7 @@ public class ProductsActivity extends ListActivity implements
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new ProductsAdapter(products);
         return adapter;
     }

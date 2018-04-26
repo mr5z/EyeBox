@@ -54,7 +54,7 @@ public class ClientsActivity extends ListActivity
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new ClientsAdapter(clients);
         adapter.setOnItemClickListener(this);
         return adapter;

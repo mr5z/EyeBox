@@ -11,8 +11,9 @@ import android.widget.TextView;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.ConfirmSalesAdapter;
 import com.nkraft.eyebox.controls.ConfirmPaymentDialog;
-import com.nkraft.eyebox.controls.dialogs.PaymentAddedDialog;
 import com.nkraft.eyebox.controls.TransactionDetailsDialog;
+import com.nkraft.eyebox.controls.dialogs.AlertDialog;
+import com.nkraft.eyebox.controls.dialogs.PaymentAddedDialog;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.models.Transaction;
@@ -22,20 +23,15 @@ import com.nkraft.eyebox.models.shit.Terms;
 import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.utils.Formatter;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ConfirmSalesActivity extends BaseActivity implements
-        TransactionDetailsDialog.DialogClickListener,
-        ConfirmPaymentDialog.ClickListener,
-        ConfirmSalesAdapter.CheckListener {
+public class ConfirmSalesActivity extends BaseActivity {
 
     @BindView(R.id.act_list_client_sales)
     RecyclerView listSales;
@@ -66,7 +62,10 @@ public class ConfirmSalesActivity extends BaseActivity implements
             runOnUiThread(() -> {
                 Transaction transaction = getTransaction();
                 TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
-                dialog.setDialogClickListener(this);
+                dialog.setDialogClickListener((t) ->{
+                    Intent intent = getIntent();
+                    intent.putExtra("transaction", t);
+                });
                 dialog.show();
             });
         });
@@ -74,7 +73,12 @@ public class ConfirmSalesActivity extends BaseActivity implements
 
     @OnClick(R.id.act_btn_pay_selected)
     void onPaySelectedClick(View view) {
-        showConfirmDialog();
+        if (!hasPaymentSelection()) {
+            showAlertDialog();
+        }
+        else {
+            showConfirmDialog();
+        }
     }
 
     @Override
@@ -96,17 +100,12 @@ public class ConfirmSalesActivity extends BaseActivity implements
 
     void showConfirmDialog() {
         ConfirmPaymentDialog dialog = new ConfirmPaymentDialog(this);
-        dialog.setClickListener(this);
-        dialog.show();
-    }
-
-    @Override
-    public void onConfirmTransaction() {
-        async(() -> {
+        dialog.setClickListener(() -> async(() -> {
             Payment payment = createPayment();
             database().payments().insertPayment(payment);
             runOnUiThread(this::showSuccessDialog);
-        });
+        }));
+        dialog.show();
     }
 
     private void showSuccessDialog() {
@@ -115,9 +114,22 @@ public class ConfirmSalesActivity extends BaseActivity implements
         dialog.show();
     }
 
+    private void showAlertDialog() {
+        AlertDialog alertDialog = new AlertDialog(this, "Please select items to pay!");
+        alertDialog.show();
+    }
+
+    private boolean hasPaymentSelection() {
+        for(Sale sale : dataList) {
+            if (sale.isChecked())
+                return true;
+        }
+        return false;
+    }
+
     void initList() {
         adapter = new ConfirmSalesAdapter(dataList);
-        adapter.setCheckListener(this);
+        adapter.setCheckListener(this::updateTotalPayment);
         listSales.setLayoutManager(new LinearLayoutManager(this));
         listSales.setAdapter(adapter);
         async(() -> {
@@ -137,12 +149,6 @@ public class ConfirmSalesActivity extends BaseActivity implements
     @Override
     int contentLayout() {
         return R.layout.activity_confirm_transaction;
-    }
-
-    @Override
-    public void onTransactionUpdated(Transaction transaction) {
-        Intent intent = getIntent();
-        intent.putExtra("transaction", transaction);
     }
 
     private Payment createPayment() {
@@ -174,11 +180,11 @@ public class ConfirmSalesActivity extends BaseActivity implements
         payment.setTerms(transaction.getTerms());
         payment.setBankName(bankName);
         payment.setValidatedBy(user.getId());
+        payment.setReceivedBy(user.getName());
         return payment;
     }
 
-    @Override
-    public void onCheck(boolean checked, Sale data) {
+    private void updateTotalPayment(boolean checked, Sale data) {
         double totalPayment = 0;
         for (Sale sale : dataList) {
             if (sale.isChecked()) {
@@ -188,4 +194,5 @@ public class ConfirmSalesActivity extends BaseActivity implements
         txtTotalPayment.setText(Formatter.currency(totalPayment));
         adapter.notifyDataSetChanged();
     }
+
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PaymentDetailsAdapter;
+import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Payment;
 
 import java.util.ArrayList;
@@ -30,20 +31,19 @@ public class PaymentDetailsActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    BaseListAdapter getAdapter() {
-        List<Payment> dataList = new ArrayList<>();
-        for (int i = 0;i < 1; ++i) {
-            Payment payment = getPayment();
-            dataList.add(payment);
-        }
-        return new PaymentDetailsAdapter(dataList);
-    }
-
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
-        paymentDetailList.setLayoutManager(new LinearLayoutManager(this));
-        paymentDetailList.setAdapter(getAdapter());
+        async(() -> {
+            Payment payment = getPayment();
+            long customerId = payment.getCustomerId();
+            List<Payment> dataList = database().payments().getPaymentsByClientId(customerId);
+            runOnUiThread(() -> {
+                PaymentDetailsAdapter adapter = new PaymentDetailsAdapter(dataList);
+                paymentDetailList.setLayoutManager(new LinearLayoutManager(this));
+                paymentDetailList.setAdapter(adapter);
+            });
+        });
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PaymentDetailsActivity extends BaseActivity {
         return R.layout.activity_payment_details;
     }
 
-    Payment getPayment() {
+    private Payment getPayment() {
         Intent intent = getIntent();
         return intent.getParcelableExtra("payment");
     }

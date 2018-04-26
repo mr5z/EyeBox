@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionsActivity extends ListActivity implements
-        TaskWrapper.Task<PagedResult<List<Transaction>>>,
-        BaseListAdapter.ItemClickListener<Transaction>,TransactionDetailsDialog.DialogClickListener {
+        TaskWrapper.Task<PagedResult<List<Transaction>>> {
 
     private TaskWrapper<PagedResult<List<Transaction>>> clientTask() {
         return new TaskWrapper<>(this);
@@ -42,9 +41,9 @@ public class TransactionsActivity extends ListActivity implements
     }
 
     @Override
-    BaseListAdapter buildAdapter() {
+    BaseListAdapter getAdapter() {
         adapter = new TransactionsAdapter(transactions);
-        adapter.setOnItemClickListener(this);
+        adapter.setOnItemClickListener(this::showDialogDetail);
         return adapter;
     }
 
@@ -72,16 +71,6 @@ public class TransactionsActivity extends ListActivity implements
         }
     }
 
-    @Override
-    public void onItemClick(Transaction data) {
-        showDialogDetail(data);
-    }
-
-    @Override
-    public void onTransactionUpdated(Transaction transaction) {
-        goToConfirmSalesActivity(transaction);
-    }
-
     void showDialogDetail(Transaction transaction) {
         async(() -> {
             List<Bank> bankList = database().banks().getAllBanks();
@@ -89,7 +78,7 @@ public class TransactionsActivity extends ListActivity implements
 
             runOnUiThread(() -> {
                 TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
-                dialog.setDialogClickListener(this);
+                dialog.setDialogClickListener(this::goToConfirmSalesActivity);
                 dialog.show();
             });
         });

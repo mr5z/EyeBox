@@ -16,8 +16,9 @@ public abstract class BaseDialog<T> {
         void onDialogOkay(T data);
     }
 
-    private final AlertDialog dialog;
+    private AlertDialog dialog;
     private final T data;
+    private Context context;
 
     protected void onCreateView(View view, T data) {
 
@@ -36,44 +37,50 @@ public abstract class BaseDialog<T> {
         return 0;
     }
 
-    protected BaseDialog(Context context, @Nullable T data) {
+    BaseDialog(Context context, @Nullable T data) {
         this.data = data;
-        dialog = new AlertDialog.Builder(context).create();
-        initialize(context, data, false);
+        this.context = context;
+        initializeDialog(context, data, false);
     }
 
-    protected BaseDialog(Context context, @Nullable T data, boolean hasCancelButton) {
+    BaseDialog(Context context, @Nullable T data, boolean hasCancelButton) {
         this.data = data;
-        dialog = new AlertDialog.Builder(context).create();
-        initialize(context, data, hasCancelButton);
+        this.context = context;
+        initializeDialog(context, data, hasCancelButton);
     }
 
     public void setOnClickListener(PositiveClickListener<T> clickListener) {
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                dialog.getContext().getText(android.R.string.ok),
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getText(android.R.string.ok),
                 (d, w) -> clickListener.onDialogOkay(data));
     }
 
     public void setOnClickListener(PositiveClickListener<T> clickListener, CharSequence proceedText) {
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                proceedText,
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, proceedText,
                 (d, w) -> clickListener.onDialogOkay(data));
     }
 
-    private void initialize(Context context, T data, boolean hasCancelButton) {
+    private void initializeDialog(Context context, T data, boolean hasCancelButton) {
         View view = LayoutInflater.from(context).inflate(layout(), null);
-        dialog.setView(view);
-        dialog.setIcon(icon());
-        dialog.setTitle(title());
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setView(view)
+                .setIcon(icon());
+        int title = title();
+        if (title > 0) {
+            builder.setTitle(title);
+        }
         if (hasCancelButton) {
-            dialog.setButton(DialogInterface.BUTTON_NEGATIVE,
-                    context.getText(android.R.string.cancel),
+            builder.setNegativeButton(context.getText(android.R.string.cancel),
                     (d, w) -> {});
         }
+        dialog = builder.create();
         onCreateView(view, data);
     }
 
     public void show() {
         dialog.show();
+    }
+
+    public void dismiss() {
+        dialog.dismiss();
     }
 }

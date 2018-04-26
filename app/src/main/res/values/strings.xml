@@ -32,7 +32,7 @@
     <string name="remove_from_cart">REMOVE FROM CART</string>
     <string name="send_order">SEND ORDER</string>
     <string name="sales">SALES</string>
-    <string name="submit_sales">SUBMIT SALES</string>
+    <string name="submit_payments">SUBMIT PAYMENTS</string>
     <string name="delete">Delete</string>
     <string name="required">Required!</string>
 </resources>

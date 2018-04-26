@@ -1,5 +1,6 @@
 package com.nkraft.eyebox.services;
 
+import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.utils.Debug;
 import com.nkraft.eyebox.utils.HttpUtil;

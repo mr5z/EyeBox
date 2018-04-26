@@ -12,6 +12,7 @@ import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.constants.ProcessType;
 import com.nkraft.eyebox.controls.SyncDialog;
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Product;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.models.Transaction;
@@ -22,6 +23,7 @@ import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.services.BankService;
 import com.nkraft.eyebox.services.ClientService;
 import com.nkraft.eyebox.services.PagedResult;
+import com.nkraft.eyebox.services.PaymentService;
 import com.nkraft.eyebox.services.ProductService;
 import com.nkraft.eyebox.services.SalesService;
 import com.nkraft.eyebox.services.TermsService;
@@ -120,6 +122,9 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         if ((processTypes & ProcessType.SALES.flag) != 0) {
             Debug.log("sync SALES");
         }
+        if ((processTypes & ProcessType.SUBMIT_PAYMENTS.flag) != 0) {
+            Debug.log("sync SUBMIT_PAYMENTS");
+        }
         showStatusBar(true);
         updateProgress(0, processTypes);
         performSync(processTypes);
@@ -136,6 +141,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         if ((processTypes & ProcessType.SALES.flag) != 0) count ++;
         if ((processTypes & ProcessType.BANKS.flag) != 0) count ++;
         if ((processTypes & ProcessType.TERMS.flag) != 0) count ++;
+        if ((processTypes & ProcessType.SUBMIT_PAYMENTS.flag) != 0) count ++;
         return count;
     }
 
@@ -180,6 +186,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             BankService bankService = BankService.instance();
             TermsService termsService = TermsService.instance();
             SalesService salesService = SalesService.instance();
+            PaymentService paymentService = PaymentService.instance();
 
             User user = accountService.currentUser;
             int assignedBranch = user.getAssignedBranch();
@@ -242,6 +249,28 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 PagedResult<List<Sale>> result6 = salesService.getSalesByBranch(user.getAssignedBranch());
                 if (result6.isSuccess()) {
                     database().sales().insertSales(result6.data);
+                    updateProgress(++progress, processTypes);
+                }
+                else {
+                    success = false;
+                }
+            }
+
+            if (ProcessType.hasFlag(processTypes, ProcessType.PAYMENTS)) {
+                PagedResult<List<Payment>> result = paymentService.getPaymentsByUser(user);
+                if (result.isSuccess()) {
+                    database().payments().insertPayments(result.data);
+                    updateProgress(++progress, processTypes);
+                }
+                else {
+                    success = false;
+                }
+            }
+
+            if (ProcessType.hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
+                List<Payment> payments = database().payments().getAllPayments();
+                PagedResult<Payment> result = paymentService.submitPayments(payments);
+                if (result.isSuccess()) {
                     updateProgress(++progress, processTypes);
                 }
                 else {

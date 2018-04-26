@@ -11,7 +11,7 @@ public enum ProcessType {
     VISITS,
     TERMS,
     BANKS,
-    SUBMIT_SALES;
+    SUBMIT_PAYMENTS;
 
     public final int flag;
 

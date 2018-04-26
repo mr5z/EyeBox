@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.nkraft.eyebox.R;
+import com.nkraft.eyebox.constants.ProcessType;
 
 public class SyncDialog implements View.OnClickListener {
 
@@ -60,7 +61,7 @@ public class SyncDialog implements View.OnClickListener {
                 CheckBox checkBox = (CheckBox) view;
                 if (checkBox.isChecked()) {
                     int tag = Integer.parseInt((String) checkBox.getTag());
-                    flags |= tag;
+                    flags |= ProcessType.values()[tag].flag;
                 }
             }
         }

@@ -25,11 +25,13 @@ public class CartDialog extends BaseDialog<Product> {
     @Override
     protected void onCreateView(View view, Product data) {
         TextView txtProductName = view.findViewById(R.id.dac_txt_produt_name);
+        TextView txtUnitName = view.findViewById(R.id.dac_txt_unit);
         txtProductName.setText(data.getName());
+        txtUnitName.setText(data.getUnits());
         setOnClickListener((p) -> {
             EditText editText = view.findViewById(R.id.dac_edit_quantity);
             String strQuantity = editText.getText().toString();
-            int quantity = Integer.parseInt(strQuantity);
+            int quantity = Integer.parseInt("0" + strQuantity);
             clickListener.onProceedAdd(quantity);
         });
     }

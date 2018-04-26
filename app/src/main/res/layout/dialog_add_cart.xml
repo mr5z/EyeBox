@@ -39,7 +39,7 @@
             android:maxLength="4" />
 
         <TextView
-            android:text="Roll(s)"
+            android:id="@+id/dac_txt_unit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

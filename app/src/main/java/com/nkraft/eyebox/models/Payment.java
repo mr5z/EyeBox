@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.text.NumberFormat;
@@ -17,33 +18,61 @@ import java.util.Locale;
 public class Payment implements Parcelable {
 
     @PrimaryKey
+    @SerializedName("idcode")
     private long id;
-    private String dateX;
-    private String bankName;
+    @SerializedName("datex")
+    private long dateX;
+    @SerializedName("bankname")
+    private long bankName;
+    @SerializedName("checkdate")
     private long checkDate;
+    @SerializedName("checkno")
     private String checkNo;
+    @SerializedName("amount")
     private double amount;
-    private String receivedBy;
+    @SerializedName("receivedby")
+    private long receivedBy;
+    @SerializedName("delall")
     private String delAll;
+    @SerializedName("userlogs")
     private String userLogs;
+    @SerializedName("salesid")
     private long salesId;
+    @SerializedName("terms")
     private int terms;
+    @SerializedName("remarks")
     private String remarks;
+    @SerializedName("checkname")
     private String checkName;
+    @SerializedName("branchno")
     private int branchNo;
+    @SerializedName("datedeposited")
     private long dateDeposited;
+    @SerializedName("astatus")
     private String status;
+    @SerializedName("customerid")
     private long customerId;
+    @SerializedName("drno")
     private String drNo;
+    @SerializedName("prno")
     private String prNo;
+    @SerializedName("salesdate")
     private long salesDate;
+    @SerializedName("orno")
     private String orNo;
+    @SerializedName("duedate")
     private long dueDate;
-    private String checkDays;
+    @SerializedName("checkdays")
+    private long checkDays;
+    @SerializedName("controlno")
     private String controlNo;
+    @SerializedName("deposited")
     private String deposited;
+    @SerializedName("debit")
     private double debit;
+    @SerializedName("validatedby")
     private long validatedBy;
+    @SerializedName("receiptlayout")
     private int receiptLayout;
     @Ignore
     private List<Sale> sales;
@@ -54,12 +83,12 @@ public class Payment implements Parcelable {
 
     protected Payment(Parcel in) {
         id = in.readLong();
-        dateX = in.readString();
-        bankName = in.readString();
+        dateX = in.readLong();
+        bankName = in.readLong();
         checkDate = in.readLong();
         checkNo = in.readString();
         amount = in.readDouble();
-        receivedBy = in.readString();
+        receivedBy = in.readLong();
         delAll = in.readString();
         userLogs = in.readString();
         salesId = in.readLong();
@@ -75,7 +104,7 @@ public class Payment implements Parcelable {
         salesDate = in.readLong();
         orNo = in.readString();
         dueDate = in.readLong();
-        checkDays = in.readString();
+        checkDays = in.readLong();
         controlNo = in.readString();
         deposited = in.readString();
         status = in.readString();
@@ -104,19 +133,19 @@ public class Payment implements Parcelable {
         this.id = id;
     }
 
-    public String getDateX() {
+    public long getDateX() {
         return dateX;
     }
 
-    public void setDateX(String dateX) {
+    public void setDateX(long dateX) {
         this.dateX = dateX;
     }
 
-    public String getBankName() {
+    public long getBankName() {
         return bankName;
     }
 
-    public void setBankName(String bankName) {
+    public void setBankName(long bankName) {
         this.bankName = bankName;
     }
 
@@ -144,11 +173,11 @@ public class Payment implements Parcelable {
         this.amount = amount;
     }
 
-    public String getReceivedBy() {
+    public long getReceivedBy() {
         return receivedBy;
     }
 
-    public void setReceivedBy(String receivedBy) {
+    public void setReceivedBy(long receivedBy) {
         this.receivedBy = receivedBy;
     }
 
@@ -264,11 +293,11 @@ public class Payment implements Parcelable {
         this.dueDate = dueDate;
     }
 
-    public String getCheckDays() {
+    public long getCheckDays() {
         return checkDays;
     }
 
-    public void setCheckDays(String checkDays) {
+    public void setCheckDays(long checkDays) {
         this.checkDays = checkDays;
     }
 
@@ -334,12 +363,12 @@ public class Payment implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(id);
-        parcel.writeString(dateX);
-        parcel.writeString(bankName);
+        parcel.writeLong(dateX);
+        parcel.writeLong(bankName);
         parcel.writeLong(checkDate);
         parcel.writeString(checkNo);
         parcel.writeDouble(amount);
-        parcel.writeString(receivedBy);
+        parcel.writeLong(receivedBy);
         parcel.writeString(delAll);
         parcel.writeString(userLogs);
         parcel.writeLong(salesId);
@@ -355,7 +384,7 @@ public class Payment implements Parcelable {
         parcel.writeLong(salesDate);
         parcel.writeString(orNo);
         parcel.writeLong(dueDate);
-        parcel.writeString(checkDays);
+        parcel.writeLong(checkDays);
         parcel.writeString(controlNo);
         parcel.writeString(deposited);
         parcel.writeString(status);

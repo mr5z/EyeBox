@@ -1,50 +1,46 @@
 package com.nkraft.eyebox.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.User;
 import com.nkraft.eyebox.utils.HttpUtil;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
-public class PaymentService extends BaseService {
+import static com.nkraft.eyebox.utils.HttpUtil.get;
+
+public class PaymentService extends RBaseService<Payment> {
 
     private static PaymentService _instance;
 
+    private PaymentService(String servicePath) {
+        super(servicePath);
+    }
+
     public static PaymentService instance() {
         if (_instance == null) {
-            _instance = new PaymentService();
+            _instance = new PaymentService("payments.php");
         }
         return _instance;
     }
 
     public PagedResult<List<Payment>> getPaymentsByUser(User user) {
-        try {
-            String rawResponse = get("get_payments.php",
-                    HttpUtil.KeyValue.make("branch", user.getAssignedBranch()),
-                    HttpUtil.KeyValue.make("username", user.getUserName()),
-                    HttpUtil.KeyValue.make("key", API_KEY));
-            return new PagedResult<>(rawResponse);
-        }
-        catch (Exception e) {
-            return new PagedResult<>(e.getMessage());
-        }
+        return getList(key(),
+                identity(user.getId()),
+                action("get"),
+                HttpUtil.KeyValue.make("branch", user.getAssignedBranch()));
     }
 
-    public PagedResult<Boolean> submitPayments(Payment payment) {
-        try {
-            Gson gson = new Gson();
-            String credits = gson.toJson(payment.getSales());
-            String paymentItemValuues = gson.toJson(payment.getSales());
-            String rawResponse = post("submit_payments.php",
-                HttpUtil.KeyValue.make("key", API_KEY),
-                HttpUtil.KeyValue.make("credits", credits),
-                HttpUtil.KeyValue.make("payment_items_values", paymentItemValuues)
-            );
-            return new PagedResult<>(true, 1);
-        }
-        catch (Exception e) {
-            return new PagedResult<>(e.getMessage());
-        }
+    public PagedResult<Payment> submitPayments(List<Payment> payments) {
+        GsonBuilder gb = new GsonBuilder();
+        gb.serializeNulls();
+        Gson gson = gb.create();
+        String paymentItemValues = gson.toJson(payments);
+        return postObject(
+                action("submit"),
+                HttpUtil.KeyValue.make("payments", paymentItemValues));
     }
 }

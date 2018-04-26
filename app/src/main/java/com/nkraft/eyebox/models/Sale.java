@@ -57,7 +57,7 @@ public class Sale {
     private double origTotal;
     @SerializedName("branchno")
     private int branchNo;
-    @SerializedName("salesidx")
+    @SerializedName("debit")
     private double debit;
     @SerializedName("payamount")
     private double payAmount;

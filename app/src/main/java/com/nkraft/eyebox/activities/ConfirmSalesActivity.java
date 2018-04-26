@@ -160,16 +160,6 @@ public class ConfirmSalesActivity extends BaseActivity {
         }
         User user = AccountService.instance().currentUser;
         Transaction transaction = getTransaction();
-        String bankName = "";
-        if (bankList != null && transaction.getBank() != 0) {
-            for (int i = 0; i < bankList.size(); ++i) {
-                Bank bank = bankList.get(i);
-                if (transaction.getBank() == i) {
-                    bankName = bank.getNamex();
-                    break;
-                }
-            }
-        }
         Payment payment = new Payment();
         payment.setId((new Date()).getTime());
         payment.setCheckName(transaction.getClientName());
@@ -178,9 +168,9 @@ public class ConfirmSalesActivity extends BaseActivity {
         payment.setAmount(totalPayment);
         payment.setBranchNo(user.getAssignedBranch());
         payment.setTerms(transaction.getTerms());
-        payment.setBankName(bankName);
+        payment.setBankName(transaction.getBank());
         payment.setValidatedBy(user.getId());
-        payment.setReceivedBy(user.getName());
+        payment.setReceivedBy(user.getId());
         return payment;
     }
 

@@ -24,28 +24,28 @@
         android:layout_height="wrap_content"
         android:text="@string/products"
         android:textAllCaps="true"
-        android:tag="4"
+        android:tag="3"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/client_visits"
         android:textAllCaps="true"
-        android:tag="8"
+        android:tag="4"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sales"
         android:textAllCaps="true"
-        android:tag="16"
+        android:tag="5"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit_sales"
+        android:text="@string/submit_payments"
         android:textAllCaps="true"
-        android:tag="32"
+        android:tag="10"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
 
     <RelativeLayout

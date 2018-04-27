@@ -31,6 +31,9 @@ public interface OrdersDao {
     @Query("SELECT * FROM Orders WHERE id = :orderId")
     Order findOrderById(long orderId);
 
+    @Query("DELETE FROM Orders")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Orders")
     long count();
 }

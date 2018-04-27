@@ -31,6 +31,9 @@ public interface TransactionsDao {
     @Query("SELECT * FROM Transactions WHERE id = :transactionId")
     Transaction findTransactionById(long transactionId);
 
+    @Query("DELETE FROM Transactions")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Transactions")
     long count();
 }

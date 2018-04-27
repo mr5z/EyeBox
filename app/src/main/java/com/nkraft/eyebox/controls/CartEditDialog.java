@@ -36,10 +36,12 @@ public class CartEditDialog implements DialogInterface.OnClickListener, View.OnC
         Button button = view.findViewById(R.id.deo_btn_remove_order);
         TextView txtProductName = view.findViewById(R.id.deo_txt_product_name);
         EditText editQuantity = view.findViewById(R.id.deo_edit_quantity);
+        TextView txtUnit = view.findViewById(R.id.deo_txt_unit);
 
         button.setOnClickListener(this);
         editQuantity.setText(String.valueOf(order.getQuantity()));
         txtProductName.setText(order.getProduct().getName());
+        txtUnit.setText(order.getProduct().getUnit());
     }
 
     public void show() {

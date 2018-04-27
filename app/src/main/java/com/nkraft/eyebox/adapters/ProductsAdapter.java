@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Product;
+import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
     void onDataBind(ViewHolder holder, Product data) {
         holder.name.setText(data.getName());
         holder.subName.setText(data.getGenericName());
-        holder.price.setText(formatCurrency(data.getPrice()));
-        holder.soh.setText(String.valueOf(data.getSoh()));
+        holder.price.setText("PHP " + formatCurrency(data.getPrice()));
+        holder.soh.setText(formatString("SOH: %d", data.getSoh()));
     }
 
     @Override

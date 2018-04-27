@@ -33,12 +33,6 @@ public class PaymentsActivity extends ListActivity implements
             adapter.notifyItemRemoved(position);
             return true;
         }));
-
-//        addContextAction(new ContextAction<Payment>((view, data) -> {
-//            payments.remove((Payment)data);
-//            adapter.notifyDataSetChanged();
-//            return false;
-//        }));
     }
 
     @Override

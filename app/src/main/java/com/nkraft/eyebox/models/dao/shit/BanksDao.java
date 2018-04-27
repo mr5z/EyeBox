@@ -30,6 +30,9 @@ public interface BanksDao {
     @Query("SELECT * FROM Banks WHERE id = :bankId")
     Bank findBankById(long bankId);
 
+    @Query("DELETE FROM Banks")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Banks")
     long count();
 }

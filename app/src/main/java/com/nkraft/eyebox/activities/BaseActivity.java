@@ -22,6 +22,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
+import com.nkraft.eyebox.models.dao.ClientsDao;
+import com.nkraft.eyebox.models.dao.OrdersDao;
+import com.nkraft.eyebox.models.dao.PaymentsDao;
+import com.nkraft.eyebox.models.dao.ProductsDao;
+import com.nkraft.eyebox.models.dao.SalesDao;
+import com.nkraft.eyebox.models.dao.TransactionsDao;
+import com.nkraft.eyebox.models.dao.UserDao;
+import com.nkraft.eyebox.models.dao.VisitsDao;
+import com.nkraft.eyebox.models.dao.shit.BanksDao;
+import com.nkraft.eyebox.models.dao.shit.TermsDao;
 import com.nkraft.eyebox.services.repositories.AppDatabase;
 import com.nkraft.eyebox.utils.Settings;
 import com.nkraft.eyebox.utils.ViewUtils;
@@ -190,7 +200,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     void endSession() {
-        settings().clear();
+        async(() -> {
+            settings().clear();
+            database().users().deleteAll();
+            database().products().deleteAll();
+            database().clients().deleteAll();
+            database().transactions().deleteAll();
+            database().payments().deleteAll();
+            database().orders().deleteAll();
+            database().sales().deleteAll();
+            database().visits().deleteAll();
+            database().banks().deleteAll();
+            database().terms().deleteAll();
+        });
     }
 
     boolean isLoggedIn() {

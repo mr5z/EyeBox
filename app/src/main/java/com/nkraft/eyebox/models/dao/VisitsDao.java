@@ -30,6 +30,9 @@ public interface VisitsDao {
     @Query("SELECT * FROM Visits WHERE customerId = :customerId")
     Visit findVisitByCustomerId(long customerId);
 
+    @Query("DELETE FROM Visits")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Visits")
     long count();
 }

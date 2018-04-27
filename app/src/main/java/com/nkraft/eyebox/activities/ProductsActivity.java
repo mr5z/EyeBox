@@ -151,6 +151,7 @@ public class ProductsActivity extends ListActivity implements
             product.setId(selectedProduct.getId());
             product.setName(selectedProduct.getName());
             product.setGenericName(selectedProduct.getGenericName());
+            product.setUnit(selectedProduct.getUnits());
             addToCart(new Order(product, quantity));
         }
     }

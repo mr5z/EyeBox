@@ -3,10 +3,12 @@ package com.nkraft.eyebox.adapters;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Payment;
+import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 
@@ -18,18 +20,23 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
 
     @Override
     void onDataBind(ViewHolder holder, Payment data) {
+        holder.chkPaymentId.setText(Formatter.string("ID: %d", data.getId()));
         holder.txtPayDate.setText(formatDate(data.getDueDate()));
-        holder.txtBankName.setText(String.valueOf(data.getBankName()));
+        holder.txtBankName.setText(data.getBankNameStr());
         holder.txtCheckDate.setText(formatDate(data.getCheckDate()));
         holder.txtCheckNo.setText(data.getCheckNo());
         holder.txtAmount.setText(data.getFormattedAmount());
         holder.txtReceivedBy.setText(String.valueOf(data.getReceivedBy()));
         holder.txtSalesId.setText(String.valueOf(data.getSalesId()));
-        holder.txtTerms.setText(String.valueOf(data.getTerms()));
+        holder.txtTerms.setText(data.getTermsName());
         holder.txtBranch.setText(String.valueOf(data.getBranchNo()));
         holder.txtProductNumber.setText(data.getPrNo());
         holder.txtOrderNumber.setText(data.getOrNo());
         holder.statusView.setBackgroundColor(toStatusColor(data.getStatus()));
+
+        async(() -> {
+
+        });
     }
 
     @Override
@@ -39,13 +46,18 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
 
     int toStatusColor(String status) {
         if (status != null) {
-            return status.equals("PENDING") ? Color.RED : Color.GREEN;
+            return status.equals("OK") ? Color.GREEN : Color.RED;
         }
         return Color.RED;
     }
 
+    void async(Runnable task) {
+        new Thread(task).start();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
+        CheckBox chkPaymentId;
         TextView txtPayDate;
         TextView txtBankName;
         TextView txtCheckDate;
@@ -62,6 +74,7 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
         ViewHolder(View itemView) {
             super(itemView);
 
+            chkPaymentId = itemView.findViewById(R.id.pd_chk_payment_id);
             txtPayDate = itemView.findViewById(R.id.pd_txt_pay_date);
             txtBankName = itemView.findViewById(R.id.pd_txt_bank_name);
             txtCheckDate = itemView.findViewById(R.id.pd_txt_check_date);

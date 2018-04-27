@@ -7,6 +7,7 @@
     android:padding="10dp">
 
     <CheckBox
+        android:id="@+id/pd_chk_payment_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Base.TextAppearance.AppCompat.Large"

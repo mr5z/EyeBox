@@ -59,9 +59,6 @@ public class TransactionDetailsDialog implements
         bankList.add(0, new Bank() {{
             setId(-1);
         }});
-        termsList.add(0, new Terms() {{
-            setId(-1);
-        }});
         configure(bankList, termsList);
     }
 

@@ -34,6 +34,9 @@ public interface SalesDao {
     @Query("SELECT * FROM Sales WHERE customerId = :customerId")
     List<Sale> getActiveSalesByCustomerId(String customerId);
 
+    @Query("DELETE FROM Sales")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Sales")
     long count();
 }

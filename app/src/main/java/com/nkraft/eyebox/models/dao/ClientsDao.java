@@ -53,6 +53,8 @@ public interface ClientsDao {
 //            "GROUP BY " +
 //            "    Clients.id")
 //    List<Client> getActiveClients(int branchLink);
+    @Query("DELETE FROM Clients")
+    int deleteAll();
 
     @Query("SELECT COUNT(*) FROM Clients")
     long count();

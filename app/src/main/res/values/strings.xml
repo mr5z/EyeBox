@@ -35,4 +35,7 @@
     <string name="submit_payments">SUBMIT PAYMENTS</string>
     <string name="delete">Delete</string>
     <string name="required">Required!</string>
+    <string name="are_you_sure_you_want_to_continue">Are you sure you want to continue?</string>
+    <string name="submit_orders">SUBMIT ORDERS</string>
+    <string name="confirm_signout">Confirm Sign Out</string>
 </resources>

@@ -30,6 +30,9 @@ public interface ProductsDao {
     @Query("SELECT * FROM Products WHERE id = :productId")
     Product findProductById(long productId);
 
+    @Query("DELETE FROM Products")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Products")
     long count();
 }

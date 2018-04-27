@@ -30,6 +30,9 @@ public interface UserDao {
     @Query("SELECT * FROM Users WHERE id = :userId")
     User findUserById(long userId);
 
+    @Query("DELETE FROM Users")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Users")
     long count();
 }

@@ -2,15 +2,19 @@ package com.nkraft.eyebox.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.constants.ProcessType;
 import com.nkraft.eyebox.controls.SyncDialog;
+import com.nkraft.eyebox.controls.dialogs.ConfirmLogoutDialog;
 import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Product;
@@ -58,6 +62,9 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     @BindView(R.id.main_txt_orders_count)
     TextView txtOrdersCount;
 
+    @BindView(R.id.fab_sync)
+    FloatingActionButton fabSync;
+
     @OnClick(R.id.btn_client_transactions)
     void onTransactionsClick(View view) {
         startActivity(new Intent(this, TransactionsActivity.class));
@@ -85,9 +92,14 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
 
     @OnClick(R.id.btn_sign_out)
     void onSignoutClick(View view) {
-        endSession();
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        User user = accountService.currentUser;
+        ConfirmLogoutDialog dialog = new ConfirmLogoutDialog(this, user);
+        dialog.setOnClickListener((u) -> {
+            endSession();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
+        dialog.show();
     }
 
     @OnClick(R.id.fab_sync)
@@ -99,8 +111,11 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
 
     @Override
     public void onSync(int processTypes) {
+        startAnimateSync();
+
         processTypes |= ProcessType.BANKS.flag;
         processTypes |= ProcessType.TERMS.flag;
+
         if ((processTypes & ProcessType.VISITS.flag) != 0) {
             Debug.log("sync VISITS");
         }
@@ -130,18 +145,28 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         performSync(processTypes);
     }
 
+    void startAnimateSync() {
+        int fiveMinutes = 60 * 1000 * 5;
+        ViewCompat.animate(fabSync)
+                .rotation((fiveMinutes / 1000 / 5) * 360)
+                .withLayer()
+                .setDuration(fiveMinutes)
+                .setInterpolator(new OvershootInterpolator())
+                .start();
+    }
+
+    void stopAnimateSync() {
+        ViewCompat.animate(fabSync)
+                .cancel();
+    }
+
     int getSyncCount(int processTypes) {
         int count = 0;
-        if ((processTypes & ProcessType.CLIENTS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.ORDERS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.PAYMENTS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.TRANSACTIONS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.VISITS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.PRODUCTS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.SALES.flag) != 0) count ++;
-        if ((processTypes & ProcessType.BANKS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.TERMS.flag) != 0) count ++;
-        if ((processTypes & ProcessType.SUBMIT_PAYMENTS.flag) != 0) count ++;
+        for(int i = 0;i < ProcessType.values().length; ++i) {
+            int flag = ProcessType.values()[i].flag;
+            if ((processTypes & flag) != 0)
+                count++;
+        }
         return count;
     }
 
@@ -196,6 +221,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
 
             PagedResult<List<Bank>> bankResult = bankService.getBanks(user.getAssignedBranch());
             if (bankResult.isSuccess()) {
+                database().banks().deleteAll();
                 database().banks().insertBanks(bankResult.data);
                 updateProgress(++progress, processTypes);
             }
@@ -205,6 +231,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
 
             PagedResult<List<Terms>> termsResult = termsService.getTerms();
             if (termsResult.isSuccess()) {
+                database().terms().deleteAll();
                 database().terms().insertTerms(termsResult.data);
                 updateProgress(++progress, processTypes);
             }
@@ -216,6 +243,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 PagedResult<List<Product>> result = productService
                         .getProductsByBranch(assignedBranch);
                 if (result.isSuccess()) {
+                    database().products().deleteAll();
                     database().products().insertProducts(result.data);
                     updateProgress(++progress, processTypes);
                 }
@@ -228,6 +256,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 PagedResult<List<Client>> result = clientService
                         .getClientListByUser(user);
                 if (result.isSuccess()) {
+                    database().clients().deleteAll();
                     database().clients().insertClients(result.data);
                     updateProgress(++progress, processTypes);
                 }
@@ -240,6 +269,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 PagedResult<List<Transaction>> result = transactionService
                         .getAllTransactionsByUser(user);
                 if (result.isSuccess()) {
+                    database().transactions().deleteAll();
                     database().transactions().insertTransactions(result.data);
                     updateProgress(++progress, processTypes);
                 }
@@ -248,6 +278,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             if (ProcessType.hasFlag(processTypes, ProcessType.SALES)) {
                 PagedResult<List<Sale>> result6 = salesService.getSalesByBranch(user.getAssignedBranch());
                 if (result6.isSuccess()) {
+                    database().sales().deleteAll();
                     database().sales().insertSales(result6.data);
                     updateProgress(++progress, processTypes);
                 }
@@ -259,6 +290,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             if (ProcessType.hasFlag(processTypes, ProcessType.PAYMENTS)) {
                 PagedResult<List<Payment>> result = paymentService.getPaymentsByUser(user);
                 if (result.isSuccess()) {
+                    database().payments().deleteAll();
                     database().payments().insertPayments(result.data);
                     updateProgress(++progress, processTypes);
                 }
@@ -268,6 +300,17 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (ProcessType.hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
+                List<Payment> payments = database().payments().getAllPayments();
+                PagedResult<Payment> result = paymentService.submitPayments(payments);
+                if (result.isSuccess()) {
+                    updateProgress(++progress, processTypes);
+                }
+                else {
+                    success = false;
+                }
+            }
+
+            if (ProcessType.hasFlag(processTypes, ProcessType.ORDERS)) {
                 List<Payment> payments = database().payments().getAllPayments();
                 PagedResult<Payment> result = paymentService.submitPayments(payments);
                 if (result.isSuccess()) {
@@ -288,14 +331,17 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
 
 
     void onPostSync(boolean success) {
-        runOnUiThread(() -> showSnackbar(success ? "Sync successfully" : "Failed to sync"));
+        runOnUiThread(() -> {
+            showSnackbar(success ? "Sync successfully" : "Failed to sync");
+            stopAnimateSync();
+        });
         showStatusBar(false);
     }
 
     void updateWelcomeText() {
         runOnUiThread(() ->
                 txtWelcomeMessage.setText(
-                        String.format("Welcome, %s", accountService.currentUser.getName())));
+                        Formatter.string("Welcome, %s", accountService.currentUser.getName())));
     }
 
     void updateRecordsCount() {

@@ -131,6 +131,8 @@ public class Order implements Parcelable {
         private String name;
         @ColumnInfo(name = "product_generic_name")
         private String genericName;
+        @ColumnInfo(name = "product_unit")
+        private String unit;
 
         public Product() {}
 
@@ -138,6 +140,7 @@ public class Order implements Parcelable {
             id = in.readLong();
             name = in.readString();
             genericName = in.readString();
+            unit = in.readString();
         }
 
         public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -162,6 +165,7 @@ public class Order implements Parcelable {
             parcel.writeLong(id);
             parcel.writeString(name);
             parcel.writeString(genericName);
+            parcel.writeString(unit);
         }
 
         public long getId() {
@@ -186,6 +190,14 @@ public class Order implements Parcelable {
 
         public void setGenericName(String genericName) {
             this.genericName = genericName;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
         }
     }
 }

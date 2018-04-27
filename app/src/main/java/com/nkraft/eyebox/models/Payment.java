@@ -77,6 +77,11 @@ public class Payment implements Parcelable {
     @Ignore
     private List<Sale> sales;
 
+    @Ignore
+    private String bankNameStr;
+    @Ignore
+    private String termsName;
+
     public Payment() {
 
     }
@@ -350,9 +355,7 @@ public class Payment implements Parcelable {
     }
 
     public String getFormattedAmount() {
-        NumberFormat format = NumberFormat.getNumberInstance(Locale.getDefault());
-        format.setGroupingUsed(true);
-        return format.format(amount);
+        return Formatter.currency(amount);
     }
 
     @Override
@@ -399,5 +402,29 @@ public class Payment implements Parcelable {
 
     public void setSales(List<Sale> sales) {
         this.sales = sales;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Payment payment = (Payment) obj;
+        if (payment == null)
+            return false;
+        return getId() == payment.getId();
+    }
+
+    public String getBankNameStr() {
+        return bankNameStr;
+    }
+
+    public void setBankNameStr(String bankNameStr) {
+        this.bankNameStr = bankNameStr;
+    }
+
+    public String getTermsName() {
+        return termsName;
+    }
+
+    public void setTermsName(String termsName) {
+        this.termsName = termsName;
     }
 }

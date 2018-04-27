@@ -32,6 +32,9 @@ public interface TermsDao {
     @Query("SELECT * FROM Terms WHERE id = :termsId")
     Terms findTermsById(long termsId);
 
+    @Query("DELETE FROM Terms")
+    int deleteAll();
+
     @Query("SELECT COUNT(*) FROM Terms")
     long count();
 }

@@ -1,149 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:stretchColumns="*">
 
-    <CheckBox
-        android:id="@+id/pd_chk_payment_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Large"
-        android:text="Payment ID: 12345649"/>
+    <TableRow>
+        <CheckBox
+            android:id="@+id/pd_chk_payment_id"
+            android:layout_span="2"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:text="Payment ID: 12345649"/>
+    </TableRow>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Pay Date:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bank Name:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Check Date:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Check No:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Amount:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Received By:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sales ID:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Terms:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Branch:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="PR #:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="OR #:" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Validated:" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
+            android:text="Pay Date:" />
+        <TextView
+            android:id="@+id/pd_txt_pay_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:text="2018-03-29" />
+    </TableRow>
 
-            <TextView
-                android:id="@+id/pd_txt_pay_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2018-03-29" />
-            <TextView
-                android:id="@+id/pd_txt_bank_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0" />
-            <TextView
-                android:id="@+id/pd_txt_check_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=" 2017-05-06" />
-            <TextView
-                android:id="@+id/pd_txt_check_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="46545623" />
-            <TextView
-                android:id="@+id/pd_txt_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="$412,500" />
-            <TextView
-                android:id="@+id/pd_txt_received_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sponge Bob" />
-            <TextView
-                android:id="@+id/pd_txt_sales_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="123465798321" />
-            <TextView
-                android:id="@+id/pd_txt_terms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1" />
-            <TextView
-                android:id="@+id/pd_txt_branch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="100" />
-            <TextView
-                android:id="@+id/pd_txt_pr_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="65465456798" />
-            <TextView
-                android:id="@+id/pd_txt_or_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="N/A" />
-            <View
-                android:id="@+id/pd_status"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@android:color/holo_red_dark"/>
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bank Name:" />
+        <TextView
+            android:id="@+id/pd_txt_bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0" />
+    </TableRow>
 
-        </LinearLayout>
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Check Date:" />
+        <TextView
+            android:id="@+id/pd_txt_check_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" 2017-05-06" />
+    </TableRow>
 
-    </LinearLayout>
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Check No:" />
+        <TextView
+            android:id="@+id/pd_txt_check_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="46545623" />
+    </TableRow>
 
-</LinearLayout>
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount:" />
+        <TextView
+            android:id="@+id/pd_txt_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$412,500" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Received By:" />
+        <TextView
+            android:id="@+id/pd_txt_received_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sponge Bob" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sales ID:" />
+        <TextView
+            android:id="@+id/pd_txt_sales_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="123465798321" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terms:" />
+        <TextView
+            android:id="@+id/pd_txt_terms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Branch:" />
+        <TextView
+            android:id="@+id/pd_txt_branch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="100" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PR #:" />
+        <TextView
+            android:id="@+id/pd_txt_pr_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="65465456798" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OR #:" />
+        <TextView
+            android:id="@+id/pd_txt_or_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="N/A" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Validated:" />
+        <View
+            android:id="@+id/pd_status"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@android:color/holo_red_dark"/>
+
+    </TableRow>
+
+</TableLayout>

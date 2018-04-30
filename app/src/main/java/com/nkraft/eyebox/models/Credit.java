@@ -11,17 +11,81 @@ public class Credit {
     @SerializedName("id")
     private long id;
     @SerializedName("datex")
-    private String dateX;
-    @SerializedName("salesid")
-    private String salesid;
+    private long dateX;
+    @SerializedName("salesId")
+    private long salesId;
     @SerializedName("customerid")
-    private String customerId;
+    private long customerId;
     @SerializedName("prno")
-    private String prNo;
+    private long prNo;
     @SerializedName("payid")
-    private String payId;
+    private long payId;
     @SerializedName("payamount")
-    private String payAmount;
+    private double payAmount;
     @SerializedName("totalpayable")
-    private String totalPayable;
+    private double totalPayable;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getDateX() {
+        return dateX;
+    }
+
+    public void setDateX(long dateX) {
+        this.dateX = dateX;
+    }
+
+    public long getSalesId() {
+        return salesId;
+    }
+
+    public void setSalesId(long salesId) {
+        this.salesId = salesId;
+    }
+
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
+
+    public long getPrNo() {
+        return prNo;
+    }
+
+    public void setPrNo(long prNo) {
+        this.prNo = prNo;
+    }
+
+    public long getPayId() {
+        return payId;
+    }
+
+    public void setPayId(long payId) {
+        this.payId = payId;
+    }
+
+    public double getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(double payAmount) {
+        this.payAmount = payAmount;
+    }
+
+    public double getTotalPayable() {
+        return totalPayable;
+    }
+
+    public void setTotalPayable(double totalPayable) {
+        this.totalPayable = totalPayable;
+    }
 }

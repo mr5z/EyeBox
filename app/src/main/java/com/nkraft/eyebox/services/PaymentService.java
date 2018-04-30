@@ -35,9 +35,7 @@ public class PaymentService extends RBaseService<Payment> {
     }
 
     public PagedResult<Payment> submitPayments(List<Payment> payments) {
-        GsonBuilder gb = new GsonBuilder();
-        gb.serializeNulls();
-        Gson gson = gb.create();
+        Gson gson = new GsonBuilder().serializeNulls().create();
         String paymentItemValues = gson.toJson(payments);
         return postObject(
                 action("submit"),

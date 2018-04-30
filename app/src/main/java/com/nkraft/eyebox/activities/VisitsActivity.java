@@ -27,7 +27,7 @@ public class VisitsActivity extends BaseActivity implements TaskWrapper.Task<Lis
     RecyclerView visitList;
 
     private TaskWrapper<List<Visit>> visitTask() {
-        return new TaskWrapper<List<Visit>>(this);
+        return new TaskWrapper<>(this);
     }
 
     void configureList() {

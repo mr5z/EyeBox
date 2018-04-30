@@ -16,13 +16,13 @@ public interface CreditsDao {
     void insertCreditIds(List<Credit> credits);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCreditId(Credit credit);
+    void insertCredit(Credit credit);
 
     @Update
-    void updateCreditIds(List<Credit> credits);
+    void updateCredits(List<Credit> credits);
 
     @Update
-    void updateCreditId(Credit credit);
+    void updateCredit(Credit credit);
 
     @Query("SELECT * FROM Credits")
     List<Credit> getAllCredits();

@@ -3,7 +3,9 @@ package com.nkraft.eyebox.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -17,20 +19,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class ViewCartActivity extends ListActivity implements BaseListAdapter.ItemClickListener<Order>,CartEditDialog.ClickListener {
-
-    private OrdersAdapter adapter;
-    private ArrayList<Order> orders;
+public class ViewCartActivity extends ListActivity<Order> implements
+        BaseListAdapter.ItemClickListener<Order>,
+        CartEditDialog.ClickListener {
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
-        orders = getOrders();
         super.initialize(savedInstanceState);
     }
 
     @Override
-    BaseListAdapter getAdapter() {
-        adapter = new OrdersAdapter(orders);
+    BaseListAdapter initializeAdapter() {
+        setDataList(getOrders());
+        OrdersAdapter adapter = new OrdersAdapter(getDataList());
         adapter.setOnItemClickListener(this);
         return adapter;
     }
@@ -47,14 +48,20 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
         return footers;
     }
 
+    @Override
+    String getSearchableField(Order order) {
+        return order.getClientName();
+    }
+
     void sendOrders() {
         async(() -> {
             Client client = getSelectedClient();
-            for (Order order : orders) {
+            List<Order> orderList = getDataList();
+            for (Order order : orderList) {
                 order.setClientName(client.getName());
                 order.setDateOrdered((new Date()).getTime());
             }
-            database().orders().insertOrders(orders);
+            database().orders().insertOrders(orderList);
             runOnUiThread(this::popToMainActivity);
         });
     }
@@ -79,12 +86,12 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
     public void onConfirmEdit(long orderId, boolean isDeleted, int newQuantity, boolean anyBrand) {
         if (isDeleted) {
             deleteOrder(orderId);
-            if (orders.isEmpty()) {
+            if (isDataListEmpty()) {
                 goBack();
             }
         }
         else {
-            for (Order order : orders) {
+            for (Order order : getDataList()) {
                 if (order.getId() == orderId) {
                     order.setQuantity(newQuantity);
                     break;
@@ -100,17 +107,18 @@ public class ViewCartActivity extends ListActivity implements BaseListAdapter.It
 
     private void goBack() {
         Intent intent = new Intent();
-        intent.putExtra("orders", orders);
+        ArrayList<Order> orders = (ArrayList<Order>) getDataList();
+        intent.putParcelableArrayListExtra("orders", orders);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
     void deleteOrder(long orderId) {
-        for (Iterator<Order> iterator  = orders.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Order> iterator  = getDataList().iterator(); iterator.hasNext(); ) {
             Order order = iterator.next();
             if (order.getId() == orderId) {
                 iterator.remove();
-                adapter.notifyDataSetChanged();
+                notifyDataSetChanged();
                 break;
             }
         }

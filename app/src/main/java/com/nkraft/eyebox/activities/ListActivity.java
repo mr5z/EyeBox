@@ -12,16 +12,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.ActionMode;
-import android.view.ContextMenu;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,17 +26,16 @@ import android.widget.RelativeLayout;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 
-public abstract class ListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
-
-    interface ContextualMenuListener {
-        boolean onRemove(int position);
-    }
-
-    static final int MENU_CONTEXT_DELETE_ID = 1;
+public abstract class ListActivity<TModel>
+        extends BaseActivity implements
+        SwipeRefreshLayout.OnRefreshListener,
+        SearchView.OnQueryTextListener {
 
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
@@ -53,7 +49,9 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
     @BindView(R.id.list_footer)
     LinearLayout listFooter;
 
-    private ContextualMenuListener contextualMenuListener;
+    private List<TModel> temp;
+    private List<TModel> dataList = new ArrayList<>();
+    private BaseListAdapter adapter;
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
@@ -64,8 +62,9 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
         configureHeader();
         configureFooter();
 
+        adapter = initializeAdapter();
         listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(getAdapter());
+        listView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(this);
     }
 
@@ -83,6 +82,7 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
             if (searchView != null) {
                 assert searchManager != null;
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                searchView.setOnQueryTextListener(this);
             }
         }
         return super.onCreateOptionsMenu(menu);
@@ -159,26 +159,95 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
         return null;
     }
 
-    abstract BaseListAdapter getAdapter();
+    void addData(TModel model) {
+        dataList.add(model);
+    }
+
+    void setDataList(List<TModel> dataList) {
+        this.dataList.clear();
+        this.dataList.addAll(dataList);
+    }
+
+    List<TModel> getDataList() {
+        return dataList;
+    }
+
+    void clearDataList() {
+        dataList.clear();
+    }
+
+    TModel getDataAt(int index) {
+        return dataList.get(index);
+    }
+
+    TModel removeDataAt(int index) {
+        return dataList.remove(index);
+    }
+
+    int getIndexOf(TModel data) {
+        return dataList.indexOf(data);
+    }
+
+    boolean isDataListEmpty() {
+        return dataList.isEmpty();
+    }
+
+    void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
+    void notifyItemRemoved(int position) {
+        adapter.notifyItemRemoved(position);
+    }
+
+    abstract BaseListAdapter initializeAdapter();
 
     @Override
     public void onRefresh() {
-
+        setRefreshing(false);
     }
 
-    public void setContextualMenuListener(ContextualMenuListener contextualMenuListener) {
-        this.contextualMenuListener = contextualMenuListener;
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
     }
 
-    <Model> void addContextAction(ContextAction<Model> contextAction) {
 
-//        BaseListAdapter adapter = getAdapter();
-//        adapter.setOnLongClickListener((data) -> {
-//            ActionMode actionMode = startActionMode(new ActionBarCallBack<>(contextAction));
-//
-//            adapter.notifyDataSetChanged();
-//            return true;
-//        });
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (adapter == null)
+            return false;
+
+        boolean isEmpty = TextUtils.isEmpty(newText);
+        if (!isEmpty) {
+            newText = newText.toLowerCase();
+            if (temp == null)
+                temp = new ArrayList<>(dataList);
+            for(Iterator<TModel> iterator = dataList.iterator(); iterator.hasNext();) {
+                TModel model = iterator.next();
+                String searchField = getSearchableField(model);
+                if (TextUtils.isEmpty(searchField))
+                    continue;
+
+                boolean matches = searchField.toLowerCase().contains(newText);
+                if (!matches) {
+                    iterator.remove();
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+        else {
+            if (temp != null && !temp.isEmpty()) {
+                dataList.clear();
+                dataList.addAll(temp);
+                adapter.notifyDataSetChanged();
+            }
+        }
+        return true;
+    }
+
+    String getSearchableField(TModel model) {
+        return null;
     }
 
     static class Header {
@@ -220,72 +289,4 @@ public abstract class ListActivity extends BaseActivity implements SwipeRefreshL
         }
     }
 
-    static class ContextAction<T> {
-        interface Action<T> {
-            boolean onClick(T data);
-        }
-        final Action<T> destructiveAction;
-        final String title;
-        public ContextAction(Action<T> destructiveAction, String title) {
-            this.destructiveAction = destructiveAction;
-            this.title = title;
-        }
-    }
-
-    static class ActionBarCallBack<T> implements android.view.ActionMode.Callback {
-
-        private final ContextAction<T> contextAction;
-
-        public ActionBarCallBack(ContextAction<T> contextAction) {
-            this.contextAction = contextAction;
-        }
-
-        @Override
-        public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(android.view.ActionMode actionMode, Menu menu) {
-            actionMode.setTitle(contextAction.title);
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
-            return contextAction.destructiveAction.onClick(null);
-        }
-
-        @Override
-        public void onDestroyActionMode(android.view.ActionMode actionMode) {
-
-        }
-
-//        @Override
-//        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-//            // TODO Auto-generated method stub
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//            // TODO Auto-generated method stub
-//            mode.getMenuInflater().inflate(R.menu.menu_contextual, menu);
-//            return true;
-//        }
-//
-//        @Override
-//        public void onDestroyActionMode(ActionMode mode) {
-//            // TODO Auto-generated method stub
-//
-//        }
-//
-//        @Override
-//        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//            // TODO Auto-generated method stub
-//            mode.setTitle("Delete row");
-//            return false;
-//        }
-
-    }
 }

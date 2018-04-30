@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5b5ea37629fe6d4226dc7f41bb2bdd93",
+    "identityHash": "956e8c52e34002b1bfd1feebb017a1a1",
     "entities": [
       {
         "tableName": "Users",
@@ -945,6 +945,68 @@
         "foreignKeys": []
       },
       {
+        "tableName": "Credits",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `salesId` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `prNo` INTEGER NOT NULL, `payId` INTEGER NOT NULL, `payAmount` REAL NOT NULL, `totalPayable` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateX",
+            "columnName": "dateX",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salesId",
+            "columnName": "salesId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prNo",
+            "columnName": "prNo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payId",
+            "columnName": "payId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payAmount",
+            "columnName": "payAmount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalPayable",
+            "columnName": "totalPayable",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "Banks",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `company` TEXT, `accountName` TEXT, `accountNumber` TEXT, `namex` TEXT, `userLogs` TEXT, `delall` INTEGER NOT NULL, `branchNo` INTEGER NOT NULL, `bankAddress` TEXT, PRIMARY KEY(`id`))",
         "fields": [
@@ -1053,7 +1115,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5b5ea37629fe6d4226dc7f41bb2bdd93\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"956e8c52e34002b1bfd1feebb017a1a1\")"
     ]
   }
 }

@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.nkraft.eyebox.models.Credit;
 import com.nkraft.eyebox.utils.HttpUtil;
 
+import java.util.List;
+
 public class CreditService extends RBaseService<Credit> {
 
     private static CreditService _instance;
@@ -20,12 +22,10 @@ public class CreditService extends RBaseService<Credit> {
         super("credits.php");
     }
 
-    public PagedResult<Credit> submitCredit(Credit credit) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.serializeNulls();
-        Gson gson = builder.create();
-        String postData = gson.toJson(credit);
-        return postObject(action("submit"), HttpUtil.KeyValue.make("credit", postData));
+    public PagedResult<Credit> submitCredits(List<Credit> credits) {
+        Gson gson = new Gson();
+        String postData = gson.toJson(credits);
+        return postObject(action("submit"), HttpUtil.KeyValue.make("credits", postData));
     }
 
 }

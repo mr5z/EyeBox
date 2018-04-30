@@ -6,6 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.models.Credit;
 import com.nkraft.eyebox.models.Order;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Product;
@@ -38,6 +39,7 @@ import com.nkraft.eyebox.models.shit.Terms;
         Order.class,
         Sale.class,
         Visit.class,
+        Credit.class,
         Bank.class,
         Terms.class
     }

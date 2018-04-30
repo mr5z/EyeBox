@@ -15,7 +15,7 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/payment_transactions"
+        android:text="@string/submit_payments"
         android:textAllCaps="true"
         android:tag="2"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
@@ -43,16 +43,9 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit_payments"
-        android:textAllCaps="true"
-        android:tag="10"
-        style="@style/Base.TextAppearance.AppCompat.Medium" />
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/submit_orders"
         android:textAllCaps="true"
-        android:tag="11"
+        android:tag="10"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
 
     <RelativeLayout

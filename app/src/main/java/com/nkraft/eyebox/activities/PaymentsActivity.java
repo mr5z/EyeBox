@@ -3,6 +3,7 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -11,28 +12,20 @@ import com.nkraft.eyebox.controls.dialogs.DeletePaymentDialog;
 import com.nkraft.eyebox.models.Payment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class PaymentsActivity extends ListActivity implements
+public class PaymentsActivity extends ListActivity<Payment> implements
         BaseListAdapter.ItemClickListener<Payment>,BaseListAdapter.LongItemClickListener<Payment> {
-
-    private List<Payment> payments = new ArrayList<>();
-    private PaymentsAdapter adapter;
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
         async(() -> {
             List<Payment> paymentList = database().payments().getAllPayments();
-            payments.clear();
-            payments.addAll(paymentList);
-            runOnUiThread(() -> adapter.notifyDataSetChanged());
+            setDataList(paymentList);
+            runOnUiThread(this::notifyDataSetChanged);
         });
-        setContextualMenuListener((position -> {
-            payments.remove(position);
-            adapter.notifyItemRemoved(position);
-            return true;
-        }));
     }
 
     @Override
@@ -44,8 +37,8 @@ public class PaymentsActivity extends ListActivity implements
     }
 
     @Override
-    BaseListAdapter getAdapter() {
-        adapter = new PaymentsAdapter(payments);
+    BaseListAdapter initializeAdapter() {
+        PaymentsAdapter adapter = new PaymentsAdapter(getDataList());
         adapter.setOnItemClickListener(this);
         adapter.setOnLongClickListener(this);
         return adapter;
@@ -66,16 +59,19 @@ public class PaymentsActivity extends ListActivity implements
         return true;
     }
 
+    @Override
+    String getSearchableField(Payment payment) {
+        return payment.getCheckName();
+    }
+
     void deleteItem(Payment payment) {
-        int position = payments.indexOf(payment);
+        int position = getIndexOf(payment);
         async(() -> {
             int rows = database().payments().deletePayment(payment.getId());
-            runOnUiThread(() -> {
-                if (rows > 0) {
-                    payments.remove(position);
-                    adapter.notifyItemRemoved(position);
-                }
-            });
+            if (rows > 0) {
+                removeDataAt(position);
+                runOnUiThread(() -> notifyItemRemoved(position));
+            }
         });
     }
 }

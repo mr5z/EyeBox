@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 @Entity(tableName = "Clients")
 public class Client implements Serializable {
@@ -351,5 +352,18 @@ public class Client implements Serializable {
 
     public void setDateX(String dateStr) {
         // 01/02/2008 12:24:24 pm
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        Client client = (Client) o;
+        return id == client.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -3,6 +3,7 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.Button;
 
 import com.nkraft.eyebox.R;
@@ -17,19 +18,18 @@ import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class ProductsActivity extends ListActivity implements
+public class ProductsActivity extends ListActivity<Product> implements
         TaskWrapper.Task<PagedResult<List<Product>>>,
         BaseListAdapter.ItemClickListener<Product>,
         CartDialog.ClickListener {
 
     public static final int REQUEST_MODIFIED_ORDERS = 1;
 
-    ProductsAdapter adapter;
-    List<Product> products = new ArrayList<>();
     Set<Order> cart = new HashSet<>();
     Product selectedProduct;
 
@@ -81,7 +81,6 @@ public class ProductsActivity extends ListActivity implements
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
-        adapter.setOnItemClickListener(this);
         productTask().execute();
     }
 
@@ -111,8 +110,9 @@ public class ProductsActivity extends ListActivity implements
     }
 
     @Override
-    BaseListAdapter getAdapter() {
-        adapter = new ProductsAdapter(products);
+    BaseListAdapter initializeAdapter() {
+        ProductsAdapter adapter = new ProductsAdapter(getDataList());
+        adapter.setOnItemClickListener(this);
         return adapter;
     }
 
@@ -130,9 +130,8 @@ public class ProductsActivity extends ListActivity implements
     public void onTaskEnd(PagedResult<List<Product>> result) {
         if (result.isSuccess()) {
             assert result.data != null;
-            products.clear();
-            products.addAll(result.data);
-            adapter.notifyDataSetChanged();
+            setDataList(result.data);
+            notifyDataSetChanged();
         }
         setRefreshing(false);
     }
@@ -154,5 +153,10 @@ public class ProductsActivity extends ListActivity implements
             product.setUnit(selectedProduct.getUnits());
             addToCart(new Order(product, quantity));
         }
+    }
+
+    @Override
+    String getSearchableField(Product product) {
+        return product.getName();
     }
 }

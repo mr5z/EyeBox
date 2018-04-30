@@ -28,6 +28,12 @@ public interface PaymentsDao {
     @Query("SELECT * FROM Payments")
     List<Payment> getAllPayments();
 
+    @Query("SELECT * FROM Payments WHERE status = 'unsubmitted'")
+    List<Payment> getAllUnsubmittedPayments();
+
+    @Query("UPDATE Payments SET status = 'submitted' WHERE status = 'unsubmitted'")
+    int markAllSubmitted();
+
     @Query("SELECT * FROM Payments WHERE id = :paymentId")
     Payment findPaymentById(long paymentId);
 

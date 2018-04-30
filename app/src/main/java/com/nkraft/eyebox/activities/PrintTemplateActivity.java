@@ -3,6 +3,7 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -12,22 +13,23 @@ import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.models.User;
 import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.services.TextAlignment;
+import com.nkraft.eyebox.utils.Formatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public class PrintTemplateActivity extends ListActivity implements BaseListAdapter.ItemClickListener<PrintTemplate> {
+public class PrintTemplateActivity extends ListActivity<PrintTemplate> implements BaseListAdapter.ItemClickListener<PrintTemplate> {
 
     @Override
-    BaseListAdapter getAdapter() {
-        List<PrintTemplate> dataList = new ArrayList<>();
-        dataList.add(template1());
-        dataList.add(template2());
-        dataList.add(template3());
-        PrintTemplateAdapter adapter = new PrintTemplateAdapter(dataList);
+    BaseListAdapter initializeAdapter() {
+        addData(template1());
+        addData(template2());
+        addData(template3());
+        PrintTemplateAdapter adapter = new PrintTemplateAdapter(getDataList());
         adapter.setOnItemClickListener(this);
         return adapter;
     }
@@ -37,6 +39,11 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         Intent intent = new Intent(this, PrintActivity.class);
         intent.putExtra("selectedTemplate", data);
         startActivity(intent);
+    }
+
+    @Override
+    String getSearchableField(PrintTemplate printTemplate) {
+        return printTemplate.getTitle();
     }
 
     PrintTemplate template1() {
@@ -128,11 +135,7 @@ public class PrintTemplateActivity extends ListActivity implements BaseListAdapt
         return intent.getParcelableExtra("payment");
     }
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());
-
     String dateNow() {
-        return simpleDateFormat.format(new Date());
+        return Formatter.date((new Date().getTime()));
     }
-
-
 }

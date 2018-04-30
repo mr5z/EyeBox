@@ -3,7 +3,7 @@ package com.nkraft.eyebox.constants;
 public enum ProcessType {
     UNDEFINED,
     TRANSACTIONS,
-    PAYMENTS,
+    SUBMIT_PAYMENTS,
     PRODUCTS,
     CLIENTS,
     SALES,
@@ -11,8 +11,8 @@ public enum ProcessType {
     VISITS,
     TERMS,
     BANKS,
-    SUBMIT_PAYMENTS,
-    SUBMIT_ORDERS;
+    SUBMIT_ORDERS,
+    CREDITS;
 
     public final int flag;
 

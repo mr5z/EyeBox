@@ -3,6 +3,7 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -12,9 +13,11 @@ import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class ClientsActivity extends ListActivity
+public class ClientsActivity extends ListActivity<Client>
         implements
         BaseListAdapter.ItemClickListener<Client>,
         TaskWrapper.Task<PagedResult<List<Client>>> {
@@ -22,9 +25,6 @@ public class ClientsActivity extends ListActivity
     private TaskWrapper<PagedResult<List<Client>>> customerTask() {
         return new TaskWrapper<>(this);
     }
-
-    private ClientsAdapter adapter;
-    private List<Client> clients = new ArrayList<>();
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
@@ -47,15 +47,14 @@ public class ClientsActivity extends ListActivity
     public void onTaskEnd(PagedResult<List<Client>> result) {
         showLoader(false);
         if (result.isSuccess()) {
-            clients.clear();
-            clients.addAll(result.data);
-            adapter.notifyDataSetChanged();
+            setDataList(result.data);
+            notifyDataSetChanged();
         }
     }
 
     @Override
-    BaseListAdapter getAdapter() {
-        adapter = new ClientsAdapter(clients);
+    BaseListAdapter initializeAdapter() {
+        ClientsAdapter adapter = new ClientsAdapter(getDataList());
         adapter.setOnItemClickListener(this);
         return adapter;
     }
@@ -73,9 +72,13 @@ public class ClientsActivity extends ListActivity
         startActivity(intent);
     }
 
+    @Override
+    String getSearchableField(Client client) {
+        return client.getName();
+    }
+
     boolean isMakingSignature() {
         Intent intent = getIntent();
         return intent.getBooleanExtra("isMakingSignature", false);
     }
-
 }

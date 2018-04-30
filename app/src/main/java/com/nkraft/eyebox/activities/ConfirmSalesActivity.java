@@ -162,6 +162,7 @@ public class ConfirmSalesActivity extends BaseActivity {
         Transaction transaction = getTransaction();
         Payment payment = new Payment();
         payment.setId((new Date()).getTime());
+        payment.setStatus("unsubmitted");
         payment.setCheckName(transaction.getClientName());
         payment.setCheckDate((new Date()).getTime());
         payment.setSalesDate((new Date()).getTime());

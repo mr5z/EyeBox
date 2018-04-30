@@ -21,12 +21,23 @@ public class PaymentsAdapter extends BaseListAdapter<PaymentsAdapter.ViewHolder,
         holder.txtProductNumber.setText(data.getPrNo());
         holder.txtTransactionDate.setText(formatDate(data.getCheckDate()));
         holder.txtTotalPayment.setText(data.getFormattedAmount());
-        holder.txtTransactionStatus.setText(data.getStatus());
+        holder.txtTransactionStatus.setText(convertStatusToSomething(data.getStatus()));
     }
 
     @Override
     ViewHolder onCreateRow(View rowView) {
         return new ViewHolder(rowView);
+    }
+
+    private static String convertStatusToSomething(String status) {
+        switch (status) {
+            case "unsubmitted":
+                return "PENDING";
+            case "pending":
+                return "";
+            default:
+                return "";
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

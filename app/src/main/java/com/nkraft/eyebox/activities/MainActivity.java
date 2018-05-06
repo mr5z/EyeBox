@@ -6,8 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
@@ -22,6 +20,7 @@ import com.nkraft.eyebox.models.Product;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.models.Transaction;
 import com.nkraft.eyebox.models.User;
+import com.nkraft.eyebox.models.Visit;
 import com.nkraft.eyebox.models.shit.Bank;
 import com.nkraft.eyebox.models.shit.Terms;
 import com.nkraft.eyebox.services.AccountService;
@@ -34,10 +33,10 @@ import com.nkraft.eyebox.services.ProductService;
 import com.nkraft.eyebox.services.SalesService;
 import com.nkraft.eyebox.services.TermsService;
 import com.nkraft.eyebox.services.TransactionService;
+import com.nkraft.eyebox.services.VisitService;
 import com.nkraft.eyebox.utils.Debug;
 import com.nkraft.eyebox.utils.Formatter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -116,29 +115,34 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     public void onSync(int processTypes) {
         startAnimateSync();
 
-        processTypes |= ProcessType.BANKS.flag;
-        processTypes |= ProcessType.TERMS.flag;
-        processTypes |= ProcessType.CREDITS.flag;
+        if (hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
+            processTypes |= ProcessType.BANKS.flag;
+            processTypes |= ProcessType.TERMS.flag;
+        }
 
-        if ((processTypes & ProcessType.VISITS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
+            processTypes |= ProcessType.CREDITS.flag;
+        }
+
+        if (hasFlag(processTypes, ProcessType.VISITS)) {
             Debug.log("sync VISITS");
         }
-        if ((processTypes & ProcessType.TRANSACTIONS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
             Debug.log("sync TRANSACTIONS");
         }
-        if ((processTypes & ProcessType.SUBMIT_PAYMENTS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
             Debug.log("sync SUBMIT_PAYMENTS");
         }
-        if ((processTypes & ProcessType.ORDERS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.ORDERS)) {
             Debug.log("sync ORDERS");
         }
-        if ((processTypes & ProcessType.CLIENTS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.CLIENTS)) {
             Debug.log("sync CLIENTS");
         }
-        if ((processTypes & ProcessType.PRODUCTS.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.PRODUCTS)) {
             Debug.log("sync PRODUCTS");
         }
-        if ((processTypes & ProcessType.SALES.flag) != 0) {
+        if (hasFlag(processTypes, ProcessType.SALES)) {
             Debug.log("sync SALES");
         }
         showStatusBar(true);
@@ -165,8 +169,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         int count = 0;
         for(int i = 0;i < ProcessType.values().length; ++i) {
             int flag = ProcessType.values()[i].flag;
-            if ((processTypes & flag) != 0)
-                count++;
+            count = count + (((processTypes & flag) != 0) ? 1 : 0);
         }
         return count;
     }
@@ -202,6 +205,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         });
     }
 
+    //TODO fix this
     void performSync(int processTypes) {
         async(() -> {
             ProductService productService = ProductService.instance();
@@ -212,6 +216,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             SalesService salesService = SalesService.instance();
             PaymentService paymentService = PaymentService.instance();
             CreditService creditService = CreditService.instance();
+            VisitService visitService = VisitService.instance();
 
             User user = accountService.currentUser;
             int assignedBranch = user.getAssignedBranch();
@@ -219,27 +224,30 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             boolean success = true;
             int progress = 0;
 
-            PagedResult<List<Bank>> bankResult = bankService.getBanks(user.getAssignedBranch());
-            if (bankResult.isSuccess()) {
-                database().banks().deleteAll();
-                database().banks().insertBanks(bankResult.data);
-                updateProgress(++progress, processTypes);
-            }
-            else {
-                success = false;
+
+            if (hasFlag(processTypes, ProcessType.BANKS)) {
+                PagedResult<List<Bank>> result = bankService.getBanks(user.getAssignedBranch());
+                if (result.isSuccess()) {
+                    database().banks().deleteAll();
+                    database().banks().insertBanks(result.data);
+                    updateProgress(++progress, processTypes);
+                } else {
+                    success = false;
+                }
             }
 
-            PagedResult<List<Terms>> termsResult = termsService.getTerms();
-            if (termsResult.isSuccess()) {
-                database().terms().deleteAll();
-                database().terms().insertTerms(termsResult.data);
-                updateProgress(++progress, processTypes);
-            }
-            else {
-                success = false;
+            if (hasFlag(processTypes, ProcessType.TERMS)) {
+                PagedResult<List<Terms>> result = termsService.getTerms();
+                if (result.isSuccess()) {
+                    database().terms().deleteAll();
+                    database().terms().insertTerms(result.data);
+                    updateProgress(++progress, processTypes);
+                } else {
+                    success = false;
+                }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.PRODUCTS)) {
+            if (hasFlag(processTypes, ProcessType.PRODUCTS)) {
                 PagedResult<List<Product>> result = productService
                         .getProductsByBranch(assignedBranch);
                 if (result.isSuccess()) {
@@ -252,7 +260,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.CLIENTS)) {
+            if (hasFlag(processTypes, ProcessType.CLIENTS)) {
                 PagedResult<List<Client>> result = clientService
                         .getClientListByUser(user);
                 if (result.isSuccess()) {
@@ -265,19 +273,23 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
+            if (hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
                 List<Payment> payments = database().payments().getAllUnsubmittedPayments();
-                PagedResult<Payment> result = paymentService.submitPayments(payments);
-                if (result.isSuccess()) {
-                    database().payments().markAllSubmitted();
-                    updateProgress(++progress, processTypes);
+                if (!payments.isEmpty()) {
+                    PagedResult<Payment> result = paymentService.submitPayments(payments);
+                    if (result.isSuccess()) {
+                        database().payments().markAllSubmitted();
+                        updateProgress(++progress, processTypes);
+                    } else {
+                        success = false;
+                    }
                 }
                 else {
-                    success = false;
+                    updateProgress(++progress, processTypes);
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
+            if (hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
                 PagedResult<List<Transaction>> result = transactionService
                         .getAllTransactionsByUser(user);
                 if (result.isSuccess()) {
@@ -287,11 +299,11 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.SALES)) {
-                PagedResult<List<Sale>> result6 = salesService.getSalesByBranch(user.getAssignedBranch());
-                if (result6.isSuccess()) {
+            if (hasFlag(processTypes, ProcessType.SALES)) {
+                PagedResult<List<Sale>> result = salesService.getSalesByBranch(user.getAssignedBranch());
+                if (result.isSuccess()) {
                     database().sales().deleteAll();
-                    database().sales().insertSales(result6.data);
+                    database().sales().insertSales(result.data);
                     updateProgress(++progress, processTypes);
                 }
                 else {
@@ -299,35 +311,50 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.ORDERS)) {
+            if (hasFlag(processTypes, ProcessType.ORDERS)) {
                 List<Payment> payments = database().payments().getAllPayments();
-                PagedResult<Payment> result = paymentService.submitPayments(payments);
-                if (result.isSuccess()) {
-                    updateProgress(++progress, processTypes);
+                if (!payments.isEmpty()) {
+                    PagedResult<Payment> result = paymentService.submitPayments(payments);
+                    if (result.isSuccess()) {
+                        updateProgress(++progress, processTypes);
+                    } else {
+                        success = false;
+                    }
                 }
                 else {
-                    success = false;
+                    updateProgress(++progress, processTypes);
                 }
             }
 
-            if (ProcessType.hasFlag(processTypes, ProcessType.CREDITS)) {
-//                List<Credit> credits = database().credits().getAllCredits();
-                List<Credit> credits = new ArrayList<>();
-
-                for(int i = 0;i < 5; ++i) {
-                    Credit credit = new Credit();
-                    credit.setId((long) (Math.random() * 100));
-                    credit.setCustomerId((long) (Math.random() * 200));
-                    credit.setPayAmount(Math.random() * 2000);
-                    credits.add(credit);
-                }
-
-                PagedResult<Credit> result = creditService.submitCredits(credits);
-                if (result.isSuccess()) {
-                    updateProgress(++progress, processTypes);
+            if (hasFlag(processTypes, ProcessType.CREDITS)) {
+                List<Credit> credits = database().credits().getAllCredits();
+                if (!credits.isEmpty()) {
+                    PagedResult<Credit> result = creditService.submitCredits(credits);
+                    if (result.isSuccess()) {
+                        database().credits().deleteAll();
+                        updateProgress(++progress, processTypes);
+                    } else {
+                        success = false;
+                    }
                 }
                 else {
-                    success = false;
+                    updateProgress(++progress, processTypes);
+                }
+            }
+
+            if (hasFlag(processTypes, ProcessType.VISITS)) {
+                List<Visit> visits = database().visits().getAllVisits();
+                if (!visits.isEmpty()) {
+                    PagedResult<Visit> result = visitService.submitVisits(visits);
+                    if (result.isSuccess()) {
+                        database().credits().deleteAll();
+                        updateProgress(++progress, processTypes);
+                    } else {
+                        success = false;
+                    }
+                }
+                else {
+                    updateProgress(++progress, processTypes);
                 }
             }
 
@@ -351,6 +378,10 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         runOnUiThread(() ->
                 txtWelcomeMessage.setText(
                         Formatter.string("Welcome, %s", user.getName())));
+    }
+
+    boolean hasFlag(int processTypes, ProcessType flag) {
+        return ProcessType.hasFlag(processTypes, flag);
     }
 
     void updateRecordsCount() {
@@ -382,22 +413,6 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         startActivity(new Intent(this, LoginActivity.class));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the destructiveAction bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle destructiveAction bar item clicks here. The destructiveAction bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     int contentLayout() {

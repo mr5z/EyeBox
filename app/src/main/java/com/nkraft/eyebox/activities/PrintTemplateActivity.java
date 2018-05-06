@@ -42,7 +42,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate> implement
     }
 
     @Override
-    String getSearchableField(PrintTemplate printTemplate) {
+    String getSearchableFields(PrintTemplate printTemplate) {
         return printTemplate.getTitle();
     }
 

@@ -105,7 +105,7 @@ public class TransactionDetailsDialog implements
         String checkNumber = editCheckNumber.getText().toString();
         String orderNumber = editOrderNumber.getText().toString();
 
-        transaction.setBalance(amount);
+        transaction.setAmount(amount);
         transaction.setBank(selectedBank);
         transaction.setCheckDate(checkDate);
         transaction.setCheckNumber(checkNumber);
@@ -136,8 +136,8 @@ public class TransactionDetailsDialog implements
         spinnerBank.setAdapter(banksAdapter);
         spinnerTerms.setAdapter(termsAdapter);
 
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.setTimeInMillis(transaction.getCheckDate());
+//        GregorianCalendar gc = new GregorianCalendar();
+//        gc.setTimeInMillis(transaction.getCheckDate());
         editCheckDate.setOnClickListener(this);
         spinnerBank.setSelection(transaction.getBank());
         spinnerTerms.setSelection(transaction.getTerms());

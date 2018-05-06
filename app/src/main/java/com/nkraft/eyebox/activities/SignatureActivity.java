@@ -1,6 +1,7 @@
 package com.nkraft.eyebox.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.controls.SketchView;
+import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Visit;
 import com.nkraft.eyebox.utils.Debug;
 
@@ -47,10 +49,14 @@ public class SignatureActivity extends BaseActivity {
 
     void saveSignatureAsync(Bitmap bitmap, FileWriteListener fileWriteListener) {
         async(() -> {
+            Client client = getClient();
             String path = saveSignature(bitmap);
             Visit visit = new Visit();
-            visit.setDateVisit((new Date()).getTime());
-            visit.setClientSignaturePath(path);
+            visit.setDate((new Date()).getTime());
+            visit.setSignature(path);
+            visit.setCustomerId(client.getId());
+            visit.setFileWidth(bitmap.getWidth());
+            visit.setFileHeight(bitmap.getHeight());
             database().visits().insertVisit(visit);
             fileWriteListener.onFinish(path != null);
         });
@@ -79,5 +85,10 @@ public class SignatureActivity extends BaseActivity {
     @Override
     int contentLayout() {
         return R.layout.activity_signature;
+    }
+
+    Client getClient() {
+        Intent intent = getIntent();
+        return (Client) intent.getSerializableExtra("selectedClient");
     }
 }

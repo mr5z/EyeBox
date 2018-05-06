@@ -12,7 +12,7 @@ public class Credit {
     private long id;
     @SerializedName("datex")
     private long dateX;
-    @SerializedName("salesId")
+    @SerializedName("salesid")
     private long salesId;
     @SerializedName("customerid")
     private long customerId;

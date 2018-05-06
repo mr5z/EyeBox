@@ -14,6 +14,7 @@ import com.nkraft.eyebox.controls.ConfirmPaymentDialog;
 import com.nkraft.eyebox.controls.TransactionDetailsDialog;
 import com.nkraft.eyebox.controls.dialogs.AlertDialog;
 import com.nkraft.eyebox.controls.dialogs.PaymentAddedDialog;
+import com.nkraft.eyebox.models.Credit;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.models.Transaction;
@@ -88,7 +89,7 @@ public class ConfirmSalesActivity extends BaseActivity {
         initList();
         Transaction transaction = getTransaction();
         txtClientName.setText(String.format(Locale.getDefault(), "Client: %s", transaction.getClientName()));
-        txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getBalance())));
+        txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getAmount())));
         txtTotalBalance.setText(Formatter.currency(transaction.getBalance()));
         txtTotalPayment.setText("0");
 
@@ -102,7 +103,9 @@ public class ConfirmSalesActivity extends BaseActivity {
         ConfirmPaymentDialog dialog = new ConfirmPaymentDialog(this);
         dialog.setClickListener(() -> async(() -> {
             Payment payment = createPayment();
+            Credit credit = createCredit(payment.getId());
             database().payments().insertPayment(payment);
+            database().credits().insertCredit(credit);
             runOnUiThread(this::showSuccessDialog);
         }));
         dialog.show();
@@ -133,10 +136,11 @@ public class ConfirmSalesActivity extends BaseActivity {
         listSales.setLayoutManager(new LinearLayoutManager(this));
         listSales.setAdapter(adapter);
         async(() -> {
-            String customerId = getTransaction().getId();
+            long customerId = getTransaction().getId();
             List<Sale> sales = database().sales().getActiveSalesByCustomerId(customerId);
             dataList.clear();
             dataList.addAll(sales);
+            updateSalesInteractiveness();
             runOnUiThread(adapter::notifyDataSetChanged);
         });
     }
@@ -151,28 +155,62 @@ public class ConfirmSalesActivity extends BaseActivity {
         return R.layout.activity_confirm_transaction;
     }
 
-    private Payment createPayment() {
+    private double getTotalPayment() {
         double totalPayment = 0;
         for(Sale sale : dataList) {
             if (sale.isChecked()) {
                 totalPayment += sale.getTotalAmount();
             }
         }
+        return totalPayment;
+    }
+
+    private double getTotalPayable() {
+        double totalPayable = 0;
+        for(Sale sale : dataList) {
+            totalPayable += sale.getTotalAmount();
+        }
+        return totalPayable;
+    }
+
+    private Payment createPayment() {
         User user = AccountService.instance().currentUser;
         Transaction transaction = getTransaction();
         Payment payment = new Payment();
         payment.setId((new Date()).getTime());
+        payment.setCustomerId(transaction.getId());
         payment.setStatus("unsubmitted");
         payment.setCheckName(transaction.getClientName());
         payment.setCheckDate((new Date()).getTime());
         payment.setSalesDate((new Date()).getTime());
-        payment.setAmount(totalPayment);
+        payment.setAmount(getTotalPayment());
         payment.setBranchNo(user.getAssignedBranch());
         payment.setTerms(transaction.getTerms());
         payment.setBankName(transaction.getBank());
         payment.setValidatedBy(user.getId());
         payment.setReceivedBy(user.getId());
+        payment.setReceiverName(user.getName());
+        payment.setSalesId(generateId(2018));
+        payment.setPrNo(String.valueOf(generateId(50320)));
         return payment;
+    }
+
+    private Credit createCredit(long paymentId) {
+        Transaction transaction = getTransaction();
+        Credit credit = new Credit();
+        credit.setId(paymentId);
+        credit.setPayAmount(getTotalPayment());
+        credit.setCustomerId(transaction.getId());
+        credit.setDateX(new Date().getTime());
+        credit.setPayId(new Date().getTime());
+        credit.setPrNo(new Date().getTime());
+        credit.setSalesId(new Date().getTime());
+        credit.setTotalPayable(getTotalPayable());
+        return credit;
+    }
+
+    static long generateId(long prefix) {
+        return Long.parseLong(prefix + "" + (new Date().getTime() / 1000));
     }
 
     private void updateTotalPayment(boolean checked, Sale data) {
@@ -183,7 +221,21 @@ public class ConfirmSalesActivity extends BaseActivity {
             }
         }
         txtTotalPayment.setText(Formatter.currency(totalPayment));
+        updateSalesInteractiveness();
         adapter.notifyDataSetChanged();
+    }
+
+    private void updateSalesInteractiveness() {
+        Transaction transaction = getTransaction();
+        double remainingPayment = transaction.getAmount();
+        for(Sale sale : dataList) {
+            remainingPayment = remainingPayment - (sale.isChecked() ? sale.getTotalAmount() : 0);
+        }
+        for(Sale sale : dataList) {
+            if (!sale.isChecked()) {
+                sale.setDisabled(remainingPayment < sale.getTotalAmount());
+            }
+        }
     }
 
 }

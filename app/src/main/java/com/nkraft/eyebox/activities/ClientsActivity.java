@@ -73,7 +73,7 @@ public class ClientsActivity extends ListActivity<Client>
     }
 
     @Override
-    String getSearchableField(Client client) {
+    String getSearchableFields(Client client) {
         return client.getName();
     }
 

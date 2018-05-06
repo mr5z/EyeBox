@@ -2,16 +2,13 @@ package com.nkraft.eyebox.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.OrdersAdapter;
-import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Order;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class OrdersActivity extends ListActivity<Order> {
@@ -43,7 +40,7 @@ public class OrdersActivity extends ListActivity<Order> {
     }
 
     @Override
-    String getSearchableField(Order order) {
+    String getSearchableFields(Order order) {
         return order.getClientName();
     }
 }

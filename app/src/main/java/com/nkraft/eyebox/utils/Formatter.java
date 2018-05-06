@@ -7,13 +7,15 @@ import java.util.Locale;
 
 public class Formatter {
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
     public static String string(String message, Object ...args) {
         return String.format(Locale.getDefault(), message, args);
     }
 
     public static String date(long date) {
+        if (date <= 0)
+            return null;
         return simpleDateFormat.format(new Date(date));
     }
 

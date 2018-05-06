@@ -99,6 +99,9 @@ public class Sale {
     @Ignore
     private boolean isChecked;
 
+    @Ignore
+    private boolean isDisabled;
+
     public Sale(@NonNull String id) {
         this.id = id;
     }
@@ -439,6 +442,22 @@ public class Sale {
         return balance;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public boolean isDisabled() {
+        return isDisabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        isDisabled = disabled;
+    }
+
     @Override
     public boolean equals(Object obj) {
         Sale other = (Sale) obj;
@@ -446,13 +465,5 @@ public class Sale {
         String id1 = getId();
         String id2 = other.getId();
         return id1 != null && id1.equals(id2);
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
     }
 }

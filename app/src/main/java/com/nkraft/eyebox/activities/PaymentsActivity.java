@@ -60,7 +60,7 @@ public class PaymentsActivity extends ListActivity<Payment> implements
     }
 
     @Override
-    String getSearchableField(Payment payment) {
+    String getSearchableFields(Payment payment) {
         return payment.getCheckName();
     }
 
@@ -71,6 +71,12 @@ public class PaymentsActivity extends ListActivity<Payment> implements
             if (rows > 0) {
                 removeDataAt(position);
                 runOnUiThread(() -> notifyItemRemoved(position));
+            }
+            else {
+                showSnackbar(
+                    "There's a problem deleting entry",
+                    "Retry", (v) -> deleteItem(payment)
+                );
             }
         });
     }

@@ -33,7 +33,7 @@ public class TransactionService extends BaseService {
             List<Transaction> transactions = new ArrayList<>();
             for (int i = 0;i < jsonArray.length(); ++i) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String id = jsonObject.getString("customersid");
+                long id = jsonObject.getLong("customersid");
                 String name = jsonObject.getString("customername");
                 String address = jsonObject.getString("address");
                 double totalCredit = jsonObject.getDouble("totalcredit");

@@ -20,8 +20,8 @@ public class VisitsAdapter extends BaseListAdapter<VisitsAdapter.ViewHolder, Vis
 
     @Override
     void onDataBind(ViewHolder holder, Visit data) {
-        holder.txtDateVisit.setText(formatDate(data.getDateVisit()));
-        Bitmap bitmap = BitmapFactory.decodeFile(data.getClientSignaturePath());
+        holder.txtDateVisit.setText(data.getFormattedDate());
+        Bitmap bitmap = BitmapFactory.decodeFile(data.getSignature());
         holder.imgClientSignature.setImageBitmap(bitmap);
     }
 

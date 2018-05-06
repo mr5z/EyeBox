@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "956e8c52e34002b1bfd1feebb017a1a1",
+    "identityHash": "575865a323c5754c1333224e695dafc3",
     "entities": [
       {
         "tableName": "Users",
@@ -94,12 +94,12 @@
       },
       {
         "tableName": "Transactions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `productNumber` TEXT, `clientName` TEXT, `clientAddress` TEXT, `balance` REAL NOT NULL, `checkDate` INTEGER NOT NULL, `checkNumber` TEXT, `orderNumber` TEXT, `terms` INTEGER NOT NULL, `bank` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `productNumber` TEXT, `clientName` TEXT, `clientAddress` TEXT, `balance` REAL NOT NULL, `amount` REAL NOT NULL, `checkDate` INTEGER NOT NULL, `checkNumber` TEXT, `orderNumber` TEXT, `terms` INTEGER NOT NULL, `bank` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -123,6 +123,12 @@
           {
             "fieldPath": "balance",
             "columnName": "balance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
             "affinity": "REAL",
             "notNull": true
           },
@@ -404,7 +410,7 @@
       },
       {
         "tableName": "Payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -573,6 +579,12 @@
             "columnName": "receiptLayout",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "receiverName",
+            "columnName": "receiverName",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -908,11 +920,23 @@
       },
       {
         "tableName": "Visits",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customerId` INTEGER NOT NULL, `clientSignaturePath` TEXT, `dateVisit` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `agent` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `code` TEXT, `status` TEXT, `latitude` REAL NOT NULL, `longtitude` REAL NOT NULL, `signature` TEXT, `fileSize` INTEGER NOT NULL, `fileType` TEXT, `fileWidth` INTEGER NOT NULL, `fileHeight` INTEGER NOT NULL, `fileName` TEXT, `time` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "agent",
+            "columnName": "agent",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -923,14 +947,68 @@
             "notNull": true
           },
           {
-            "fieldPath": "clientSignaturePath",
-            "columnName": "clientSignaturePath",
+            "fieldPath": "code",
+            "columnName": "code",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "dateVisit",
-            "columnName": "dateVisit",
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longtitude",
+            "columnName": "longtitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signature",
+            "columnName": "signature",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fileSize",
+            "columnName": "fileSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileType",
+            "columnName": "fileType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fileWidth",
+            "columnName": "fileWidth",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileHeight",
+            "columnName": "fileHeight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "fileName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -1115,7 +1193,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"956e8c52e34002b1bfd1feebb017a1a1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"575865a323c5754c1333224e695dafc3\")"
     ]
   }
 }

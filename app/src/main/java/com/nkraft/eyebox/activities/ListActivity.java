@@ -223,9 +223,10 @@ public abstract class ListActivity<TModel>
             newText = newText.toLowerCase();
             if (temp == null)
                 temp = new ArrayList<>(dataList);
-            for(Iterator<TModel> iterator = dataList.iterator(); iterator.hasNext();) {
+            Iterator<TModel> iterator = dataList.iterator();
+            while (iterator.hasNext()) {
                 TModel model = iterator.next();
-                String searchField = getSearchableField(model);
+                String searchField = getSearchableFields(model);
                 if (TextUtils.isEmpty(searchField))
                     continue;
 
@@ -246,7 +247,8 @@ public abstract class ListActivity<TModel>
         return true;
     }
 
-    String getSearchableField(TModel model) {
+    //TODO return an array of String
+    String getSearchableFields(TModel model) {
         return null;
     }
 

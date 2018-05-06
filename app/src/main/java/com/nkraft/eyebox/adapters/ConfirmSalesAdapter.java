@@ -7,7 +7,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
-import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Sale;
 import com.nkraft.eyebox.utils.Formatter;
 
@@ -32,8 +31,9 @@ public class ConfirmSalesAdapter extends BaseListAdapter<ConfirmSalesAdapter.Vie
         holder.chkSales.setOnCheckedChangeListener(null);
         holder.chkSales.setChecked(data.isChecked());
         holder.chkSales.setOnCheckedChangeListener(this);
+        holder.chkSales.setEnabled(!data.isDisabled());
         holder.chkSales.setText(data.getFormattedId());
-        holder.txtSalesDate.setText(formatDate(data.getCheckDate()));
+        holder.txtSalesDate.setText(formatDate(data.getSalesDate()));
         holder.txtDueDate.setText(formatDate(data.getDueDate()));
         holder.txtSoNumber.setText(data.getFormattedTransaction());
         holder.txtTotalNet.setText(Formatter.currency(data.getPayAmount()));

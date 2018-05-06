@@ -9,10 +9,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
-import java.text.NumberFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Entity(tableName = "Payments")
 public class Payment implements Parcelable {
@@ -81,6 +78,10 @@ public class Payment implements Parcelable {
     private String bankNameStr;
     @Ignore
     private String termsName;
+    @Ignore
+    private boolean isChecked;
+
+    private String receiverName;
 
     public Payment() {
 
@@ -426,5 +427,21 @@ public class Payment implements Parcelable {
 
     public void setTermsName(String termsName) {
         this.termsName = termsName;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 }

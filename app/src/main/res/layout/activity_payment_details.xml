@@ -5,6 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/red">
+
+        <CheckBox
+            android:id="@+id/ap_chk_check_all"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="4dp">
+
+            <TextView
+                android:text="Client: Mock Data"
+                android:id="@+id/ap_txt_client_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:text="Payment Amount: 16,800.00"
+                android:id="@+id/ap_txt_amount"
+                style="@style/Base.TextAppearance.AppCompat.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/payment_details_list"
         android:layout_width="match_parent"
@@ -26,6 +68,7 @@
             android:textColor="@android:color/white" />
 
         <Button
+            android:id="@+id/ap_btn_remove"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

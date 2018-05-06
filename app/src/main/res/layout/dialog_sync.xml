@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:text="@string/client_visits"
         android:textAllCaps="true"
-        android:tag="4"
+        android:tag="7"
         style="@style/Base.TextAppearance.AppCompat.Medium" />
     <CheckBox
         android:layout_width="match_parent"

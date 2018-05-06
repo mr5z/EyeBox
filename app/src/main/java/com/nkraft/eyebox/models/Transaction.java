@@ -13,27 +13,29 @@ public class Transaction implements Parcelable {
 
     @PrimaryKey
     @NonNull
-    private String id;
+    private long id;
     private String productNumber;
     private String clientName;
     private String clientAddress;
     private double balance;
+    private double amount;
     private long checkDate;
     private String checkNumber;
     private String orderNumber;
     private int terms;
     private int bank;
 
-    public Transaction(@NonNull String id) {
+    public Transaction(long id) {
         this.id = id;
     }
 
     protected Transaction(Parcel in) {
-        id = in.readString();
+        id = in.readLong();
         productNumber = in.readString();
         clientName = in.readString();
         clientAddress = in.readString();
         balance = in.readDouble();
+        amount = in.readDouble();
         checkDate = in.readLong();
         checkNumber = in.readString();
         orderNumber = in.readString();
@@ -77,7 +79,7 @@ public class Transaction implements Parcelable {
         this.clientAddress = clientAddress;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -128,11 +130,12 @@ public class Transaction implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
+        parcel.writeLong(id);
         parcel.writeString(productNumber);
         parcel.writeString(clientName);
         parcel.writeString(clientAddress);
         parcel.writeDouble(balance);
+        parcel.writeDouble(amount);
         parcel.writeLong(checkDate);
         parcel.writeString(checkNumber);
         parcel.writeString(orderNumber);
@@ -146,5 +149,13 @@ public class Transaction implements Parcelable {
 
     public void setBank(int bank) {
         this.bank = bank;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

@@ -71,7 +71,7 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
     }
 
     @Override
-    String getSearchableField(Transaction transaction) {
+    String getSearchableFields(Transaction transaction) {
         return transaction.getClientName();
     }
 

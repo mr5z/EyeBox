@@ -32,7 +32,7 @@ public interface SalesDao {
     Sale findSaleById(long salesId);
 
     @Query("SELECT * FROM Sales WHERE customerId = :customerId")
-    List<Sale> getActiveSalesByCustomerId(String customerId);
+    List<Sale> getActiveSalesByCustomerId(long customerId);
 
     @Query("DELETE FROM Sales")
     int deleteAll();

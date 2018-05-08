@@ -444,4 +444,8 @@ public class Payment implements Parcelable {
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
     }
+
+    public boolean isSafeToDelete() {
+        return status != null && status.toLowerCase().equals("yes");
+    }
 }

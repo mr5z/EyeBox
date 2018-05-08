@@ -144,7 +144,7 @@ public class TransactionDetailsDialog implements
         txtProductNumber.setText(randomId());
         setCheckDate(transaction.getCheckDate());
         txtReceiver.setText(transaction.getClientName());
-        editAmount.setText(Formatter.currency(transaction.getBalance(), false));
+        editAmount.setText(Formatter.currency(transaction.getAmount(), false));
         editCheckNumber.setText(transaction.getCheckNumber());
         editOrderNumber.setText(transaction.getOrderNumber());
     }

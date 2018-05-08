@@ -26,6 +26,7 @@ public class ViewCartActivity extends ListActivity<Order> implements
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.view_cart);
     }
 
     @Override

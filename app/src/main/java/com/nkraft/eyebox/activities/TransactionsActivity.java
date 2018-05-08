@@ -29,6 +29,7 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.select_client_transaction);
         clientTask().execute();
     }
 
@@ -79,7 +80,7 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
         async(() -> {
             List<Bank> bankList = database().banks().getAllBanks();
             List<Terms> termsList = database().terms().getAllTerms();
-
+            transaction.setAmount(transaction.getBalance()); // haxx
             runOnUiThread(() -> {
                 TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
                 dialog.setDialogClickListener(this::goToConfirmSalesActivity);

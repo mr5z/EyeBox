@@ -24,6 +24,7 @@ public class OrdersActivity extends ListActivity<Order> {
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.orders);
         initOrders();
     }
 

@@ -39,4 +39,12 @@
     <string name="submit_orders">SUBMIT ORDERS</string>
     <string name="confirm_signout">Confirm Sign Out</string>
     <string name="submit_visits">SUBMIT VISITS</string>
+    <string name="select_client_transaction">Select Client Transaction</string>
+    <string name="select_client">Select Client</string>
+    <string name="orders">Orders</string>
+    <string name="select_product">Select Product</string>
+    <string name="view_cart">View Cart</string>
+    <string name="payment_breakdown">Payment Breakdown</string>
+    <string name="select_template">Select Template</string>
+    <string name="select_printer">Select Printer</string>
 </resources>

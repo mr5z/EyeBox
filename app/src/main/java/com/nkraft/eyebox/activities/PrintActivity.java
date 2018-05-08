@@ -42,6 +42,7 @@ public class PrintActivity extends BaseActivity {
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.select_printer);
         printerService = PrinterService.instance();
     }
 

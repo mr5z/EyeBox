@@ -9,15 +9,16 @@
     <RadioGroup
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/ap_radio_bluetooth">
 
         <RadioButton
+            android:id="@+id/ap_radio_bluetooth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@android:color/black"
-            android:text="BT"
-            android:checked="true" />
+            android:text="BT" />
 
         <RadioButton
             android:layout_width="0dp"

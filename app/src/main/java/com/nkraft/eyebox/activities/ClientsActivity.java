@@ -29,6 +29,7 @@ public class ClientsActivity extends ListActivity<Client>
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.select_client);
         customerTask().execute();
     }
 

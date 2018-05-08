@@ -3,6 +3,8 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
@@ -23,6 +25,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class PrintTemplateActivity extends ListActivity<PrintTemplate> implements BaseListAdapter.ItemClickListener<PrintTemplate> {
+
+    @Override
+    void initialize(@Nullable Bundle savedInstanceState) {
+        super.initialize(savedInstanceState);
+        setPageTitle(R.string.select_template);
+    }
 
     @Override
     BaseListAdapter initializeAdapter() {

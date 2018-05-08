@@ -81,6 +81,7 @@ public class ProductsActivity extends ListActivity<Product> implements
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.select_product);
         productTask().execute();
     }
 

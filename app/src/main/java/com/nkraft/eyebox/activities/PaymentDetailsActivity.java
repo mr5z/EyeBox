@@ -62,6 +62,10 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
     }
 
     void removePaymentAsync(Payment payment, Iterator<Payment> iterator) {
+        if (!payment.isSafeToDelete()) {
+            showAlertDialog("Get Rekt m8", "");
+            return;
+        }
         async(() -> {
             int affectedRows = database().payments().deletePayment(payment.getId());
             if (affectedRows > 0) {
@@ -98,6 +102,7 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.payment_breakdown);
         Payment payment = getPayment();
         txtClientName.setText(Formatter.string("Client: %s", payment.getCheckName()));
         txtAmount.setText(Formatter.string("Payment Amount: %s", payment.getFormattedAmount()));

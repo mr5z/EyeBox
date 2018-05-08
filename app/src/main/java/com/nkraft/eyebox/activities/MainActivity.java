@@ -118,6 +118,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
         if (hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
             processTypes |= ProcessType.BANKS.flag;
             processTypes |= ProcessType.TERMS.flag;
+            processTypes |= ProcessType.CLIENTS.flag;
         }
 
         if (hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {

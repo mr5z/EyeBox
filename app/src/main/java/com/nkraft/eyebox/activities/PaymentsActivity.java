@@ -21,6 +21,7 @@ public class PaymentsActivity extends ListActivity<Payment> implements
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
+        setPageTitle(R.string.payment_transactions);
         async(() -> {
             List<Payment> paymentList = database().payments().getAllPayments();
             setDataList(paymentList);
@@ -65,6 +66,10 @@ public class PaymentsActivity extends ListActivity<Payment> implements
     }
 
     void deleteItem(Payment payment) {
+        if (!payment.isSafeToDelete()) {
+            showAlertDialog("Get Rekt m8", "");
+            return;
+        }
         int position = getIndexOf(payment);
         async(() -> {
             int rows = database().payments().deletePayment(payment.getId());

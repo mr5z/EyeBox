@@ -49,24 +49,31 @@ public class ConfirmSalesActivity extends BaseActivity {
     @BindView(R.id.act_txt_total_payment)
     TextView txtTotalPayment;
 
-
-    ConfirmSalesAdapter adapter;
+    private ConfirmSalesAdapter adapter;
+    private Transaction transaction;
     private List<Sale> dataList = new ArrayList<>();
-    private List<Bank> bankList;
-    private List<Terms> termsList;
+
+    @Override
+    void initialize(@Nullable Bundle savedInstanceState) {
+        super.initialize(savedInstanceState);
+
+        initList();
+        transaction = getTransaction();
+        txtClientName.setText(String.format(Locale.getDefault(), "Client: %s", transaction.getClientName()));
+        txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getAmount())));
+        txtTotalBalance.setText(Formatter.currency(transaction.getBalance()));
+        txtTotalPayment.setText("0");
+    }
 
     @OnClick(R.id.act_img_edit)
     void onEditClick(View view) {
         async(() -> {
-            bankList = database().banks().getAllBanks();
-            termsList = database().terms().getAllTerms();
+            List<Bank> bankList = database().banks().getAllBanks();
+            List<Terms> termsList = database().terms().getAllTerms();
             runOnUiThread(() -> {
-                Transaction transaction = getTransaction();
-                TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
-                dialog.setDialogClickListener((t) ->{
-                    Intent intent = getIntent();
-                    intent.putExtra("transaction", t);
-                });
+                TransactionDetailsDialog dialog =
+                        new TransactionDetailsDialog(this, transaction, bankList, termsList);
+                dialog.setDialogClickListener(this::updateCurrentTransaction);
                 dialog.show();
             });
         });
@@ -82,21 +89,11 @@ public class ConfirmSalesActivity extends BaseActivity {
         }
     }
 
-    @Override
-    void initialize(@Nullable Bundle savedInstanceState) {
-        super.initialize(savedInstanceState);
-
-        initList();
-        Transaction transaction = getTransaction();
-        txtClientName.setText(String.format(Locale.getDefault(), "Client: %s", transaction.getClientName()));
+    void updateCurrentTransaction(Transaction transaction) {
+        this.transaction = transaction;
+        updateSalesInteractiveness();
+        adapter.notifyDataSetChanged();
         txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getAmount())));
-        txtTotalBalance.setText(Formatter.currency(transaction.getBalance()));
-        txtTotalPayment.setText("0");
-
-        async(() -> {
-            bankList = database().banks().getAllBanks();
-            termsList = database().terms().getAllTerms();
-        });
     }
 
     void showConfirmDialog() {
@@ -136,7 +133,7 @@ public class ConfirmSalesActivity extends BaseActivity {
         listSales.setLayoutManager(new LinearLayoutManager(this));
         listSales.setAdapter(adapter);
         async(() -> {
-            long customerId = getTransaction().getId();
+            long customerId = transaction.getId();
             List<Sale> sales = database().sales().getActiveSalesByCustomerId(customerId);
             dataList.clear();
             dataList.addAll(sales);
@@ -175,7 +172,6 @@ public class ConfirmSalesActivity extends BaseActivity {
 
     private Payment createPayment() {
         User user = AccountService.instance().currentUser;
-        Transaction transaction = getTransaction();
         Payment payment = new Payment();
         payment.setId((new Date()).getTime());
         payment.setCustomerId(transaction.getId());
@@ -196,7 +192,6 @@ public class ConfirmSalesActivity extends BaseActivity {
     }
 
     private Credit createCredit(long paymentId) {
-        Transaction transaction = getTransaction();
         Credit credit = new Credit();
         credit.setId(paymentId);
         credit.setPayAmount(getTotalPayment());
@@ -226,7 +221,6 @@ public class ConfirmSalesActivity extends BaseActivity {
     }
 
     private void updateSalesInteractiveness() {
-        Transaction transaction = getTransaction();
         double remainingPayment = transaction.getAmount();
         for(Sale sale : dataList) {
             remainingPayment = remainingPayment - (sale.isChecked() ? sale.getTotalAmount() : 0);

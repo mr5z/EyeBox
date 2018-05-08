@@ -9,12 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -87,21 +89,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         return _loader;
     }
 
-    private Dialog _confirmDialog;
     private Dialog confirmDialog(@NonNull final ConfirmDialogListener confirmDialogListener,
                                  final String title) {
-        if (_confirmDialog == null) {
-            _confirmDialog = new AlertDialog.Builder(this)
-                    .setTitle(title)
-                    .setPositiveButton(R.string.proceed, (dialogInterface, i) -> {
-                        confirmDialogListener.onConfirm();
-                        dialogInterface.dismiss();
-                    })
-                    .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                    .setCancelable(false)
-                    .create();
+        return new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setPositiveButton(R.string.proceed, (dialogInterface, i) -> {
+                    confirmDialogListener.onConfirm();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setCancelable(false)
+                .create();
+    }
+
+    private Dialog alertDialog(final String title, final String message, @DrawableRes final int icon) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss())
+                .create();
+        if (icon != 0) {
+            dialog.setIcon(icon);
         }
-        return _confirmDialog;
+        return dialog;
     }
 
     @Override
@@ -121,6 +131,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void setPageTitle(@StringRes int resId) {
+        setPageTitle(getString(resId));
+    }
+
+    void setPageTitle(CharSequence title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
     void showLoader(boolean show, String message) {
@@ -193,6 +214,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     void showConfirmDialog(ConfirmDialogListener confirmDialogListener, String title) {
         confirmDialog(confirmDialogListener, title)
                 .show();
+    }
+
+    void showAlertDialog(String title, String message) {
+        alertDialog(title, message, 0)
+                .show();
+    }
+
+    void showAlertDialog(String title, String message, @DrawableRes int icon) {
+        alertDialog(title, message, icon);
     }
 
     void startSession(long userId) {

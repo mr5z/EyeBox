@@ -30,7 +30,7 @@ public class BankService extends BaseService {
             for(int i = 0;i < jsonArray.length(); ++i) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 long id = jsonObject.getLong("id");
-                String company = jsonObject.getString("company");
+                long company = jsonObject.getLong("company");
                 String accountName = jsonObject.getString("accountname");
                 String accountno = jsonObject.getString("accountno");
                 String namex = jsonObject.getString("namex");

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "575865a323c5754c1333224e695dafc3",
+    "identityHash": "bcdb1b6a9a66c9eb6f0f095f68a63565",
     "entities": [
       {
         "tableName": "Users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `assignedBranch` INTEGER NOT NULL, `userName` TEXT, `name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `assignedBranch` INTEGER NOT NULL, `userName` TEXT, `name` TEXT, `nickName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -29,6 +29,12 @@
           {
             "fieldPath": "name",
             "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nickName",
+            "columnName": "nickName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -410,7 +416,7 @@
       },
       {
         "tableName": "Payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, `customerName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -583,6 +589,12 @@
           {
             "fieldPath": "receiverName",
             "columnName": "receiverName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerName",
+            "columnName": "customerName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -1086,7 +1098,7 @@
       },
       {
         "tableName": "Banks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `company` TEXT, `accountName` TEXT, `accountNumber` TEXT, `namex` TEXT, `userLogs` TEXT, `delall` INTEGER NOT NULL, `branchNo` INTEGER NOT NULL, `bankAddress` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `company` INTEGER NOT NULL, `accountName` TEXT, `accountNumber` TEXT, `namex` TEXT, `userLogs` TEXT, `delall` INTEGER NOT NULL, `branchNo` INTEGER NOT NULL, `bankAddress` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1097,8 +1109,8 @@
           {
             "fieldPath": "company",
             "columnName": "company",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "accountName",
@@ -1193,7 +1205,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"575865a323c5754c1333224e695dafc3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bcdb1b6a9a66c9eb6f0f095f68a63565\")"
     ]
   }
 }

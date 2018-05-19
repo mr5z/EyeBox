@@ -42,6 +42,7 @@ public class AccountService extends BaseService {
             user.setAssignedBranch(assignedBranch);
             user.setUserName(nick);
             user.setName(name);
+            user.setNickName(nick);
             currentUser = user;
             return new PagedResult<>(user, 1);
         } catch (Exception e) {

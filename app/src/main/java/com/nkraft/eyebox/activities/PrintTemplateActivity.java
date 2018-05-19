@@ -56,77 +56,83 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate> implement
 
     PrintTemplate template1() {
         User user = AccountService.instance().currentUser;
-        Payment payment = getPayment();
+        List<Payment> payments = getPayments();
         PrintTemplate template = new PrintTemplate("Sale Order (Manila)", R.drawable.ic_tgp);
-        template.addPrintData(toBitmap(R.drawable.ic_tgp));
-        template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
-        template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
-        template.addPrintData("09985100306", TextAlignment.CENTER);
-        template.addPrintData("\n");
-        template.addPrintData("Sale Order", TextAlignment.CENTER);
-        template.addPrintData("\n");
-        template.addPrintData("PR No:        " + payment.getId());
-        template.addPrintData("Date:         " + dateNow());
-        template.addPrintData("Client:       " + payment.getReceivedBy());
-        template.addPrintData("Amount:       " + payment.getFormattedAmount());
-        template.addPrintData("Total:        " + payment.getFormattedAmount());
-        template.addPrintData("Received By:");
-        template.addPrintData(user.getName());
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("Payor:");
-        template.addPrintData("________________________");
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("\n");
+        for(Payment payment : payments) {
+            template.addPrintData(toBitmap(R.drawable.ic_tgp));
+            template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
+            template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
+            template.addPrintData("09985100306", TextAlignment.CENTER);
+            template.addPrintData("\n");
+            template.addPrintData("Sale Order", TextAlignment.CENTER);
+            template.addPrintData("\n");
+            template.addPrintData("PR No:        " + payment.getId());
+            template.addPrintData("Date:         " + dateNow());
+            template.addPrintData("Client:       " + payment.getReceivedBy());
+            template.addPrintData("Amount:       " + payment.getFormattedAmount());
+            template.addPrintData("Total:        " + payment.getFormattedAmount());
+            template.addPrintData("Received By:");
+            template.addPrintData(user.getName());
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("Payor:");
+            template.addPrintData("________________________");
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("\n");
+        }
         return  template;
     }
 
     PrintTemplate template2() {
         User user = AccountService.instance().currentUser;
-        Payment payment = getPayment();
+        List<Payment> payments = getPayments();
         PrintTemplate template = new PrintTemplate("SI-Felbros2", R.drawable.ic_tgp);
-        template.addPrintData(toBitmap(R.drawable.ic_tgp));
-        template.addPrintData("Sale Order", TextAlignment.CENTER);
-        template.addPrintData("\n");
-        template.addPrintData("PR No:        " + payment.getId());
-        template.addPrintData("Date:         " + dateNow());
-        template.addPrintData("Client:       " + payment.getReceivedBy());
-        template.addPrintData("Amount:       " + payment.getFormattedAmount());
-        template.addPrintData("Total:        " + payment.getFormattedAmount());
-        template.addPrintData("Received By:");
-        template.addPrintData(user.getName());
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("Payor:");
-        template.addPrintData("________________________");
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("\n");
-        template.addPrintData("\n");
+        for(Payment payment : payments) {
+            template.addPrintData(toBitmap(R.drawable.ic_tgp));
+            template.addPrintData("Sale Order", TextAlignment.CENTER);
+            template.addPrintData("\n");
+            template.addPrintData("PR No:        " + payment.getId());
+            template.addPrintData("Date:         " + dateNow());
+            template.addPrintData("Client:       " + payment.getReceivedBy());
+            template.addPrintData("Amount:       " + payment.getFormattedAmount());
+            template.addPrintData("Total:        " + payment.getFormattedAmount());
+            template.addPrintData("Received By:");
+            template.addPrintData(user.getName());
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("Payor:");
+            template.addPrintData("________________________");
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("\n");
+            template.addPrintData("\n");
+        }
         return  template;
     }
 
     PrintTemplate template3() {
         User user = AccountService.instance().currentUser;
-        Payment payment = getPayment();
+        List<Payment> payments = getPayments();
         PrintTemplate template = new PrintTemplate("Provinsional Receipt (Manila)", R.drawable.ic_tgp);
-        template.addPrintData(toBitmap(R.drawable.ic_tgp));
-        template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
-        template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
-        template.addPrintData("09985100306", TextAlignment.CENTER);
-        template.addPrintData("\n");
-        template.addPrintData("Sale Order", TextAlignment.CENTER);
-        template.addPrintData("\n");
-        template.addPrintData("PR No:        " + payment.getId());
-        template.addPrintData("Date:         " + dateNow());
-        template.addPrintData("Client:       " + payment.getReceivedBy());
-        template.addPrintData("Amount:       " + payment.getFormattedAmount());
-        template.addPrintData("Total:        " + payment.getFormattedAmount());
-        template.addPrintData("Received By:");
-        template.addPrintData(user.getName());
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("Payor:");
-        template.addPrintData("________________________");
-        template.addPrintData("(Signature over print name)");
-        template.addPrintData("\n");
+        for(Payment payment : payments) {
+            template.addPrintData(toBitmap(R.drawable.ic_tgp));
+            template.addPrintData("#12 Kabiling Street", TextAlignment.CENTER);
+            template.addPrintData("Village, Camarin, Caloocan City", TextAlignment.CENTER);
+            template.addPrintData("09985100306", TextAlignment.CENTER);
+            template.addPrintData("\n");
+            template.addPrintData("Sale Order", TextAlignment.CENTER);
+            template.addPrintData("\n");
+            template.addPrintData("PR No:        " + payment.getId());
+            template.addPrintData("Date:         " + dateNow());
+            template.addPrintData("Client:       " + payment.getReceivedBy());
+            template.addPrintData("Amount:       " + payment.getFormattedAmount());
+            template.addPrintData("Total:        " + payment.getFormattedAmount());
+            template.addPrintData("Received By:");
+            template.addPrintData(user.getName());
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("Payor:");
+            template.addPrintData("________________________");
+            template.addPrintData("(Signature over print name)");
+            template.addPrintData("\n");
+        }
         return  template;
     }
 
@@ -138,9 +144,9 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate> implement
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
-    private Payment getPayment() {
+    private ArrayList<Payment> getPayments() {
         Intent intent = getIntent();
-        return intent.getParcelableExtra("payment");
+        return intent.getParcelableArrayListExtra("payments");
     }
 
     String dateNow() {

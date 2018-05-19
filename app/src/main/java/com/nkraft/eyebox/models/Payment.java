@@ -83,6 +83,8 @@ public class Payment implements Parcelable {
 
     private String receiverName;
 
+    private String customerName;
+
     public Payment() {
 
     }
@@ -443,6 +445,14 @@ public class Payment implements Parcelable {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public boolean isSafeToDelete() {

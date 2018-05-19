@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
@@ -19,10 +21,13 @@ import com.nkraft.eyebox.services.TextAlignment;
 import com.nkraft.eyebox.utils.Debug;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class PrintActivity extends BaseActivity {
@@ -31,13 +36,41 @@ public class PrintActivity extends BaseActivity {
         void onConnect(boolean success);
     }
 
+    enum PrintMedium {
+        BLUETOOTH,
+        USB,
+        WIFI
+    }
+
     static final int REQUEST_ENABLE_BT = 1;
 
     PrinterService printerService;
     BluetoothDevice selectedDevice;
+    PrintMedium printMedium = PrintMedium.BLUETOOTH;
 
     @BindView(R.id.btn_show_device_list)
     Button btnShowDeviceList;
+
+    @OnCheckedChanged({R.id.ap_radio_bluetooth, R.id.ap_radio_usb, R.id.ap_radio_wifi})
+    void onSwitchPrintMedia(CompoundButton compoundButton, boolean checked) {
+        if (!checked)
+            return;
+
+        switch (compoundButton.getId()) {
+            case R.id.ap_radio_bluetooth:
+                printMedium = PrintMedium.BLUETOOTH;
+                btnShowDeviceList.setText("Opt BT Device");
+                break;
+            case R.id.ap_radio_usb:
+                printMedium = PrintMedium.USB;
+                btnShowDeviceList.setText("Opt USB Device");
+                break;
+            case R.id.ap_radio_wifi:
+                printMedium = PrintMedium.WIFI;
+                btnShowDeviceList.setText("Opt WiFi Device");
+                break;
+        }
+    }
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
@@ -48,6 +81,11 @@ public class PrintActivity extends BaseActivity {
 
     @OnClick(R.id.btn_print)
     void onPrintClick(View view) {
+        if (printMedium != PrintMedium.BLUETOOTH) {
+            showAlertDialog("Unsupported Operation", "Print medium not yet supported");
+            return;
+        }
+
         async(() -> {
             PrintTemplate printTemplate = getSelectedTemplate();
             if (printTemplate == null) {
@@ -89,6 +127,11 @@ public class PrintActivity extends BaseActivity {
 
     @OnClick(R.id.btn_bluetooth_connect)
     void onConnectClick(View view) {
+        if (printMedium != PrintMedium.BLUETOOTH) {
+            showAlertDialog("Unsupported Operation", "Print medium not yet supported");
+            return;
+        }
+
         asyncConnect(success -> runOnUiThread(() -> {
             if (success) {
                 showSnackbar("Connected to: %s", selectedDevice.getName());
@@ -101,6 +144,10 @@ public class PrintActivity extends BaseActivity {
 
     @OnClick(R.id.btn_show_device_list)
     void onShowDeviceListClick() {
+        if (printMedium != PrintMedium.BLUETOOTH) {
+            showAlertDialog("Unsupported Operation", "Print medium not yet supported");
+            return;
+        }
 
         if (!isBluetoothEnabled()) {
             requestBluetoothEnabled();
@@ -140,7 +187,10 @@ public class PrintActivity extends BaseActivity {
                     printerService.connect(selectedDevice);
                     connectionListener.onConnect(true);
                 }
-                catch (Exception e) {
+                catch (NoSuchMethodException |
+                        InvocationTargetException |
+                        IllegalAccessException |
+                        IOException e) {
                     connectionListener.onConnect(false);
                 }
             }

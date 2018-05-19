@@ -3,18 +3,29 @@ package com.nkraft.eyebox.models.shit;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "Banks")
 public class Bank {
 
     @PrimaryKey
+    @SerializedName("id")
     private long id;
-    private String company;
+    @SerializedName("company")
+    private long company;
+    @SerializedName("accountname")
     private String accountName;
+    @SerializedName("accountnumber")
     private String accountNumber;
+    @SerializedName("namex")
     private String namex;
+    @SerializedName("userlogs")
     private String userLogs;
+    @SerializedName("delall")
     private int delall;
+    @SerializedName("branchno")
     private int branchNo;
+    @SerializedName("bankaddress")
     private String bankAddress;
 
     public long getId() {
@@ -25,11 +36,11 @@ public class Bank {
         this.id = id;
     }
 
-    public String getCompany() {
+    public long getCompany() {
         return company;
     }
 
-    public void setCompany(String company) {
+    public void setCompany(long company) {
         this.company = company;
     }
 

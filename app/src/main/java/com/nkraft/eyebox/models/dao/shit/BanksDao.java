@@ -27,6 +27,9 @@ public interface BanksDao {
     @Query("SELECT * FROM Banks")
     List<Bank> getAllBanks();
 
+    @Query("SELECT * FROM Banks WHERE company = :clientId")
+    List<Bank> getBanksByClientId(long clientId);
+
     @Query("SELECT * FROM Banks WHERE id = :bankId")
     Bank findBankById(long bankId);
 

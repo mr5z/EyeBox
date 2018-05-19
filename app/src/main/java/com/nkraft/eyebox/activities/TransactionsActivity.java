@@ -78,7 +78,7 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
 
     void showDialogDetail(Transaction transaction) {
         async(() -> {
-            List<Bank> bankList = database().banks().getAllBanks();
+            List<Bank> bankList = database().banks().getBanksByClientId(transaction.getId());
             List<Terms> termsList = database().terms().getAllTerms();
             transaction.setAmount(transaction.getBalance()); // haxx
             runOnUiThread(() -> {

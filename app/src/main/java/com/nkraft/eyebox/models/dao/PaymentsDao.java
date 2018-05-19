@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.nkraft.eyebox.models.Payment;
+import com.nkraft.eyebox.models.PaymentGroup;
 
 import java.util.List;
 
@@ -39,6 +40,21 @@ public interface PaymentsDao {
 
     @Query("SELECT * FROM Payments WHERE customerId = :customerId")
     List<Payment> getPaymentsByClientId(long customerId);
+
+    @Query("SELECT " +
+            "   customerId," +
+            "   status," +
+            "   customerName AS clientName, " +
+            "   prNo AS productNumber, " +
+            "   checkDate AS payDate, " +
+            "   SUM(amount) AS totalPayment " +
+            "FROM " +
+            "   Payments " +
+            "GROUP BY prNo")
+    List<PaymentGroup> getGroupedPayments();
+
+    @Query("SELECT * FROM Payments WHERE prNo = :productNumber")
+    List<Payment> getPaymentsByProductNumber(String productNumber);
 
     @Query("DELETE FROM Payments WHERE id = :paymentId")
     int deletePayment(long paymentId);

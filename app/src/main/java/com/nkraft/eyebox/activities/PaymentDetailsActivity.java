@@ -91,11 +91,12 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
 
     @OnClick(R.id.btn_show_print_ativity)
     void onPrintSelectedClick(View view) {
-        if (!hasCheckedAnyPayments())
+        ArrayList<Payment> checkedPayments = getCheckedPayments();
+        if (checkedPayments.isEmpty())
             return;
 
         Intent intent = new Intent(this, PrintTemplateActivity.class);
-        intent.putExtra("payment", getPayment());
+        intent.putParcelableArrayListExtra("payments", checkedPayments);
         startActivity(intent);
     }
 
@@ -128,9 +129,9 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
     public PagedResult<List<Payment>> onTaskExecute() {
         PaymentService paymentService = PaymentService.instance();
         Payment payment = getPayment();
-        long customerId = payment.getCustomerId();
-        List<Payment> dataList = database().payments().getPaymentsByClientId(customerId);
-        PagedResult<List<Payment>> statusResult = paymentService.checkPaymentsStatus(customerId);
+        String productNumber = payment.getPrNo();
+        List<Payment> dataList = database().payments().getPaymentsByProductNumber(productNumber);
+        PagedResult<List<Payment>> statusResult = paymentService.checkPaymentsStatus(payment.getCustomerId());
         updateExtraDetails(dataList, payment);
         if (statusResult.isSuccess()) {
             for(Payment p : statusResult.data) {
@@ -154,15 +155,16 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
         paymentDetailList.setAdapter(adapter);
     }
 
-    boolean hasCheckedAnyPayments() {
+    private ArrayList<Payment> getCheckedPayments() {
+        ArrayList<Payment> checkedPayments = new ArrayList<>();
         for(Payment payment : payments) {
             if (payment.isChecked())
-                return true;
+                checkedPayments.add(payment);
         }
-        return false;
+        return checkedPayments;
     }
 
-    void updateStatus(Payment paymentStatus, List<Payment> oldPayments) {
+    private void updateStatus(Payment paymentStatus, List<Payment> oldPayments) {
         for(Payment p : oldPayments) {
             if (paymentStatus.equals(p)) {
                 paymentStatus.setStatus(p.getStatus());
@@ -170,8 +172,9 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
             }
         }
     }
-    void updateExtraDetails(List<Payment> payments, Payment payment) {
-        List<Bank> bankList = database().banks().getAllBanks();
+
+    private void updateExtraDetails(List<Payment> payments, Payment payment) {
+        List<Bank> bankList = database().banks().getBanksByClientId(payment.getCustomerId());
         List<Terms> termsList = database().terms().getAllTerms();
         for(Payment p : payments) {
             for(Bank bank : bankList) {

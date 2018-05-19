@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp">
 
     <RadioGroup
+        android:id="@+id/ap_radio_group"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:checkedButton="@+id/ap_radio_bluetooth">
 
         <RadioButton
@@ -21,6 +24,7 @@
             android:text="BT" />
 
         <RadioButton
+            android:id="@+id/ap_radio_usb"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,6 +32,7 @@
             android:text="USB" />
 
         <RadioButton
+            android:id="@+id/ap_radio_wifi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,19 +46,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btn_show_device_list"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="Opt BT Device" />
+            android:layout_margin="4dp"
+            android:background="@android:color/holo_orange_dark">
 
-        <Button
-            android:id="@+id/btn_bluetooth_connect"
+            <Button
+                android:id="@+id/btn_show_device_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="Opt BT Device" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="Connect" />
+            android:layout_margin="4dp"
+            android:background="@android:color/holo_orange_dark">
+
+            <Button
+                android:id="@+id/btn_bluetooth_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="Connect" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 
@@ -62,18 +88,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btn_print"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Print" />
+            android:layout_margin="4dp"
+            android:background="@android:color/holo_orange_dark">
 
-        <Button
+            <Button
+                android:id="@+id/btn_print"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="Print" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Export" />
+            android:layout_margin="4dp"
+            android:background="@android:color/holo_orange_dark">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@android:color/white"
+                android:text="Export" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

@@ -10,8 +10,10 @@ import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PaymentsAdapter;
 import com.nkraft.eyebox.controls.dialogs.DeletePaymentDialog;
 import com.nkraft.eyebox.models.Payment;
+import com.nkraft.eyebox.models.PaymentGroup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,8 +25,13 @@ public class PaymentsActivity extends ListActivity<Payment> implements
         super.initialize(savedInstanceState);
         setPageTitle(R.string.payment_transactions);
         async(() -> {
-            List<Payment> paymentList = database().payments().getAllPayments();
-            setDataList(paymentList);
+            List<PaymentGroup> paymentList = database().payments().getGroupedPayments();
+            List<Payment> payments = new ArrayList<>();
+            for(PaymentGroup paymentGroup : paymentList) {
+                Payment payment = toPayment(paymentGroup);
+                payments.add(payment);
+            }
+            setDataList(payments);
             runOnUiThread(this::notifyDataSetChanged);
         });
     }
@@ -67,7 +74,7 @@ public class PaymentsActivity extends ListActivity<Payment> implements
 
     void deleteItem(Payment payment) {
         if (!payment.isSafeToDelete()) {
-            showAlertDialog("Get Rekt m8", "");
+            showAlertDialog("Error", "Action not allowed");
             return;
         }
         int position = getIndexOf(payment);
@@ -84,5 +91,17 @@ public class PaymentsActivity extends ListActivity<Payment> implements
                 );
             }
         });
+    }
+
+    Payment toPayment(PaymentGroup paymentGroup) {
+        Payment payment = new Payment();
+        payment.setId(new Date().getTime());
+        payment.setCustomerId(paymentGroup.getCustomerId());
+        payment.setCustomerName(paymentGroup.getClientName());
+        payment.setPrNo(paymentGroup.getProductNumber());
+        payment.setCheckDate(paymentGroup.getPayDate());
+        payment.setStatus(paymentGroup.getStatus());
+        payment.setAmount(paymentGroup.getTotalPayment());
+        return  payment;
     }
 }

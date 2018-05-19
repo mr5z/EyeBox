@@ -11,6 +11,7 @@ public class User {
     private int assignedBranch;
     private String userName;
     private String name;
+    private String nickName;
 
     public User(long id) {
         this.id = id;
@@ -46,5 +47,13 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

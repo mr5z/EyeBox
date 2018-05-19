@@ -4,6 +4,7 @@ import com.nkraft.eyebox.utils.HttpUtil;
 
 import java.io.IOException;
 
+@Deprecated
 public class BaseService {
 
     static final String API_KEY = "DFHSQWEPOKK3249SDFKJNDS97234KJNSDF0924NKJ";

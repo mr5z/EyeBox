@@ -25,6 +25,7 @@ import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +69,7 @@ public class ConfirmSalesActivity extends BaseActivity {
     @OnClick(R.id.act_img_edit)
     void onEditClick(View view) {
         async(() -> {
-            List<Bank> bankList = database().banks().getAllBanks();
+            List<Bank> bankList = database().banks().getBanksByClientId(transaction.getId());
             List<Terms> termsList = database().terms().getAllTerms();
             runOnUiThread(() -> {
                 TransactionDetailsDialog dialog =
@@ -99,9 +100,9 @@ public class ConfirmSalesActivity extends BaseActivity {
     void showConfirmDialog() {
         ConfirmPaymentDialog dialog = new ConfirmPaymentDialog(this);
         dialog.setClickListener(() -> async(() -> {
-            Payment payment = createPayment();
-            Credit credit = createCredit(payment.getId());
-            database().payments().insertPayment(payment);
+            List<Payment> payment = createPayments();
+            Credit credit = createCredit(transaction.getId());
+            database().payments().insertPayments(payment);
             database().credits().insertCredit(credit);
             runOnUiThread(this::showSuccessDialog);
         }));
@@ -170,25 +171,37 @@ public class ConfirmSalesActivity extends BaseActivity {
         return totalPayable;
     }
 
-    private Payment createPayment() {
-        User user = AccountService.instance().currentUser;
-        Payment payment = new Payment();
-        payment.setId((new Date()).getTime());
-        payment.setCustomerId(transaction.getId());
-        payment.setStatus("unsubmitted");
-        payment.setCheckName(transaction.getClientName());
-        payment.setCheckDate((new Date()).getTime());
-        payment.setSalesDate((new Date()).getTime());
-        payment.setAmount(getTotalPayment());
-        payment.setBranchNo(user.getAssignedBranch());
-        payment.setTerms(transaction.getTerms());
-        payment.setBankName(transaction.getBank());
-        payment.setValidatedBy(user.getId());
-        payment.setReceivedBy(user.getId());
-        payment.setReceiverName(user.getName());
-        payment.setSalesId(generateId(2018));
-        payment.setPrNo(String.valueOf(generateId(50320)));
-        return payment;
+    private List<Payment> createPayments() {
+        List<Payment> checkedPayments = new ArrayList<>();
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String productNumber = String.valueOf(generateId(2018));
+        User currentUser = AccountService.instance().currentUser;
+        int idPrefixer = -1;
+        for(Sale sale : dataList) {
+            if (!sale.isChecked())
+                continue;
+
+            long id = generateId(Long.parseLong((month + "" + day)) + (++idPrefixer));
+            Payment payment = new Payment();
+            payment.setId(id);
+            payment.setPrNo(productNumber);
+            payment.setSalesId(generateId((long) (Math.random() * 1000)));
+            payment.setReceivedBy(currentUser.getId());
+            payment.setReceiverName(currentUser.getName());
+            payment.setBranchNo(currentUser.getAssignedBranch());
+            payment.setReceivedBy(currentUser.getId());
+            payment.setCustomerId(transaction.getId());
+            payment.setTerms(transaction.getTerms());
+            payment.setBankName(transaction.getBank());
+            payment.setOrNo(transaction.getOrderNumber());
+            payment.setCustomerName(transaction.getClientName());
+            payment.setAmount(sale.getTotalAmount());
+            payment.setStatus("unsubmitted");
+            checkedPayments.add(payment);
+        }
+        return checkedPayments;
     }
 
     private Credit createCredit(long paymentId) {

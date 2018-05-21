@@ -45,7 +45,7 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
         return new ViewHolder(rowView);
     }
 
-    int toStatusColor(String status) {
+    private int toStatusColor(String status) {
         if (status != null) {
             return status.equals("OK") ? Color.GREEN : Color.RED;
         }

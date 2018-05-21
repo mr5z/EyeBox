@@ -102,6 +102,9 @@ public class Sale {
     @Ignore
     private boolean isDisabled;
 
+    @Ignore
+    private double tempAmount;
+
     public Sale(@NonNull String id) {
         this.id = id;
     }
@@ -465,5 +468,13 @@ public class Sale {
         String id1 = getId();
         String id2 = other.getId();
         return id1 != null && id1.equals(id2);
+    }
+
+    public double getTempAmount() {
+        return tempAmount;
+    }
+
+    public void setTempAmount(double tempAmount) {
+        this.tempAmount = tempAmount;
     }
 }

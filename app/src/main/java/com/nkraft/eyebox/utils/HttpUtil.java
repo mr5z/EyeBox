@@ -1,23 +1,37 @@
 package com.nkraft.eyebox.utils;
 
+import android.support.annotation.NonNull;
 import android.util.Pair;
+import android.webkit.MimeTypeMap;
 
 import com.google.gson.GsonBuilder;
 import com.nkraft.eyebox.exceptions.NetworkException;
 import com.nkraft.eyebox.serializers.KeyValueSerializer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.TimeZone;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class HttpUtil {
+
+    interface UploadFileCallback {
+        void onFileUpload(String response, Exception exception);
+    }
+
+    private static OkHttpClient httpClient = new OkHttpClient();
 
     public static class KeyValue extends Pair<String, String> {
         public KeyValue(String first, String second) {
@@ -65,8 +79,7 @@ public class HttpUtil {
     }
 
     private static String executeResponse(Request request) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        Response response = client.newCall(request).execute();
+        Response response = httpClient.newCall(request).execute();
         if (!response.isSuccessful()) {
             throw new NetworkException("request unsuccessful: " + response.message());
         }
@@ -102,5 +115,47 @@ public class HttpUtil {
             queryString.append(URLEncoder.encode(param.second, "UTF-8"));
         }
         return queryString.toString();
+    }
+
+    public static void uploadFile(@NonNull String serverUrl, @NonNull File file, UploadFileCallback uploadFileCallback) {
+        try {
+            String mimeType = getMimeType(file);
+            RequestBody content = RequestBody.create(MediaType.parse(mimeType), file);
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", file.getName(), content)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(serverUrl)
+                    .post(requestBody)
+                    .build();
+
+            httpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    uploadFileCallback.onFileUpload(null, e);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) {
+                    try {
+                        uploadFileCallback.onFileUpload(response.body().string(), null);
+                    }
+                    catch (IOException | NullPointerException e) {
+                        uploadFileCallback.onFileUpload(null, e);
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            uploadFileCallback.onFileUpload(null, e);
+        }
+    }
+
+    private static String getMimeType(@NonNull File file) {
+        String fileName = file.getName();
+        String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length());
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
     }
 }

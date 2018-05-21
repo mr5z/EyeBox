@@ -86,10 +86,19 @@ public class PrintActivity extends BaseActivity {
             return;
         }
 
+        if (selectedDevice == null) {
+            showAlertDialog("Error", "No selected device!");
+            return;
+        }
+
+        performPrintAsync();
+    }
+
+    private void performPrintAsync() {
         async(() -> {
             PrintTemplate printTemplate = getSelectedTemplate();
             if (printTemplate == null) {
-                showSnackbar("No template selected");
+                runOnUiThread(() -> showSnackbar("No template selected"));
                 Debug.log("No template selected");
                 return;
             }
@@ -113,7 +122,7 @@ public class PrintActivity extends BaseActivity {
         });
     }
 
-    PrintTemplate getSelectedTemplate() {
+    private PrintTemplate getSelectedTemplate() {
         Intent data = getIntent();
        return (PrintTemplate) data.getParcelableExtra("selectedTemplate");
     }
@@ -129,6 +138,11 @@ public class PrintActivity extends BaseActivity {
     void onConnectClick(View view) {
         if (printMedium != PrintMedium.BLUETOOTH) {
             showAlertDialog("Unsupported Operation", "Print medium not yet supported");
+            return;
+        }
+
+        if (selectedDevice == null) {
+            showAlertDialog("Error", "No selected device!");
             return;
         }
 
@@ -176,25 +190,17 @@ public class PrintActivity extends BaseActivity {
     }
 
     void asyncConnect(ConnectionListener connectionListener) {
-        if (selectedDevice == null) {
-            showSnackbar("No selected device");
-        }
 
         async(() -> {
             try {
-                try {
-                    printerService.disconnect();
-                    printerService.connect(selectedDevice);
-                    connectionListener.onConnect(true);
-                }
-                catch (NoSuchMethodException |
-                        InvocationTargetException |
-                        IllegalAccessException |
-                        IOException e) {
-                    connectionListener.onConnect(false);
-                }
+                printerService.disconnect();
+                printerService.connect(selectedDevice);
+                connectionListener.onConnect(true);
             }
-            catch (Exception ex) {
+            catch (NoSuchMethodException |
+                   InvocationTargetException |
+                   IllegalAccessException |
+                   IOException e) {
                 connectionListener.onConnect(false);
             }
         });

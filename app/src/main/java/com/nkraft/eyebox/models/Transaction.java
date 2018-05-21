@@ -12,7 +12,6 @@ import java.util.Locale;
 public class Transaction implements Parcelable {
 
     @PrimaryKey
-    @NonNull
     private long id;
     private String productNumber;
     private String clientName;

@@ -91,6 +91,7 @@ public class TransactionDetailsDialog implements
     }
 
     private Transaction getModifiedTransaction() {
+        TextView txtProductNumber = view.findViewById(R.id.dtd_txt_product_number);
         EditText editAmount = view.findViewById(R.id.dtd_edit_product_amount);
         Spinner spinnerBank = view.findViewById(R.id.dtd_spnr_bank_list);
         EditText editCheckDate = view.findViewById(R.id.dtd_edit_check_date);
@@ -98,6 +99,7 @@ public class TransactionDetailsDialog implements
         EditText editOrderNumber = view.findViewById(R.id.dtd_edit_order_number);
         Spinner spinnerTerms = view.findViewById(R.id.dtd_spnr_terms);
 
+        String productNumber = txtProductNumber.getText().toString();
         double amount = Double.parseDouble("0" + editAmount.getText().toString());
         int selectedBank = spinnerBank.getSelectedItemPosition();
         int selectedTerms = spinnerTerms.getSelectedItemPosition();
@@ -105,6 +107,7 @@ public class TransactionDetailsDialog implements
         String checkNumber = editCheckNumber.getText().toString();
         String orderNumber = editOrderNumber.getText().toString();
 
+        transaction.setProductNumber(productNumber);
         transaction.setAmount(amount);
         transaction.setBank(selectedBank);
         transaction.setCheckDate(checkDate);
@@ -150,7 +153,7 @@ public class TransactionDetailsDialog implements
     }
 
     private static String randomId() {
-        return UUID.randomUUID().toString().substring(0, 10).toUpperCase();
+        return UUID.randomUUID().toString().substring(0, 13).toUpperCase();
     }
 
     private void setCheckDate(int year, int month, int day) {

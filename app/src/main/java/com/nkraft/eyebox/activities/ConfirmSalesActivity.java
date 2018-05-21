@@ -57,13 +57,12 @@ public class ConfirmSalesActivity extends BaseActivity {
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
-
-        initList();
         transaction = getTransaction();
         txtClientName.setText(String.format(Locale.getDefault(), "Client: %s", transaction.getClientName()));
         txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getAmount())));
         txtTotalBalance.setText(Formatter.currency(transaction.getBalance()));
         txtTotalPayment.setText("0");
+        initList();
     }
 
     @OnClick(R.id.act_img_edit)
@@ -138,7 +137,6 @@ public class ConfirmSalesActivity extends BaseActivity {
             List<Sale> sales = database().sales().getActiveSalesByCustomerId(customerId);
             dataList.clear();
             dataList.addAll(sales);
-            updateSalesInteractiveness();
             runOnUiThread(adapter::notifyDataSetChanged);
         });
     }
@@ -173,30 +171,28 @@ public class ConfirmSalesActivity extends BaseActivity {
 
     private List<Payment> createPayments() {
         List<Payment> checkedPayments = new ArrayList<>();
-        Calendar c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        String productNumber = String.valueOf(generateId(2018));
         User currentUser = AccountService.instance().currentUser;
         int idPrefixer = -1;
         for(Sale sale : dataList) {
             if (!sale.isChecked())
                 continue;
 
-            long id = generateId(Long.parseLong((month + "" + day)) + (++idPrefixer));
+            long id = generateId(++idPrefixer);
             Payment payment = new Payment();
             payment.setId(id);
-            payment.setPrNo(productNumber);
             payment.setSalesId(generateId((long) (Math.random() * 1000)));
             payment.setReceivedBy(currentUser.getId());
             payment.setReceiverName(currentUser.getName());
             payment.setBranchNo(currentUser.getAssignedBranch());
             payment.setReceivedBy(currentUser.getId());
+            payment.setPrNo(transaction.getProductNumber());
+            payment.setOrNo(transaction.getOrderNumber());
+            payment.setCheckNo(transaction.getCheckNumber());
             payment.setCustomerId(transaction.getId());
             payment.setTerms(transaction.getTerms());
             payment.setBankName(transaction.getBank());
-            payment.setOrNo(transaction.getOrderNumber());
             payment.setCustomerName(transaction.getClientName());
+            payment.setCheckDate(transaction.getCheckDate());
             payment.setAmount(sale.getTotalAmount());
             payment.setStatus("unsubmitted");
             checkedPayments.add(payment);
@@ -223,17 +219,30 @@ public class ConfirmSalesActivity extends BaseActivity {
 
     private void updateTotalPayment(boolean checked, Sale data) {
         double totalPayment = 0;
+        double remainingAmount = transaction.getAmount();
         for (Sale sale : dataList) {
             if (sale.isChecked()) {
-                totalPayment += sale.getTotalAmount();
+                double payment = sale.getTotalAmount();
+                double difference = remainingAmount - payment;
+                double subTotalPayment = Math.min(payment, remainingAmount);
+                remainingAmount = Math.max(0, difference);
+                totalPayment += subTotalPayment;
+                sale.setTempAmount(subTotalPayment);
             }
         }
+//        data.setAmount(checked ? Math.min(remainingAmount, data.getTotalAmount()) : 0);
         txtTotalPayment.setText(Formatter.currency(totalPayment));
         updateSalesInteractiveness();
         adapter.notifyDataSetChanged();
     }
 
     private void updateSalesInteractiveness() {
+        if (!hasPaymentSelection()) {
+            for(Sale sale : dataList) {
+                sale.setDisabled(false);
+            }
+            return;
+        }
         double remainingPayment = transaction.getAmount();
         for(Sale sale : dataList) {
             remainingPayment = remainingPayment - (sale.isChecked() ? sale.getTotalAmount() : 0);

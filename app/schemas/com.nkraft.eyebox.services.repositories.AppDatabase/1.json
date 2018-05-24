@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bcdb1b6a9a66c9eb6f0f095f68a63565",
+    "identityHash": "aa88fc50e3b760ab4f87058894388468",
     "entities": [
       {
         "tableName": "Users",
@@ -932,7 +932,7 @@
       },
       {
         "tableName": "Visits",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `agent` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `code` TEXT, `status` TEXT, `latitude` REAL NOT NULL, `longtitude` REAL NOT NULL, `signature` TEXT, `fileSize` INTEGER NOT NULL, `fileType` TEXT, `fileWidth` INTEGER NOT NULL, `fileHeight` INTEGER NOT NULL, `fileName` TEXT, `time` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `date` INTEGER NOT NULL, `agent` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `code` TEXT, `status` TEXT, `latitude` REAL NOT NULL, `longtitude` REAL NOT NULL, `signature` TEXT, `fileSize` INTEGER NOT NULL, `fileType` TEXT, `fileWidth` INTEGER NOT NULL, `fileHeight` INTEGER NOT NULL, `fileName` TEXT, `time` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1029,14 +1029,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "Credits",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `salesId` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `prNo` INTEGER NOT NULL, `payId` INTEGER NOT NULL, `payAmount` REAL NOT NULL, `totalPayable` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `salesId` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `prNo` INTEGER NOT NULL, `payId` INTEGER NOT NULL, `payAmount` REAL NOT NULL, `totalPayable` REAL NOT NULL, `excess` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1083,6 +1083,12 @@
           {
             "fieldPath": "totalPayable",
             "columnName": "totalPayable",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "excess",
+            "columnName": "excess",
             "affinity": "REAL",
             "notNull": true
           }
@@ -1205,7 +1211,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bcdb1b6a9a66c9eb6f0f095f68a63565\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"aa88fc50e3b760ab4f87058894388468\")"
     ]
   }
 }

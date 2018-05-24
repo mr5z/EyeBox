@@ -27,7 +27,7 @@ import okhttp3.ResponseBody;
 
 public class HttpUtil {
 
-    interface UploadFileCallback {
+    public interface UploadFileCallback {
         void onFileUpload(String response, Exception exception);
     }
 
@@ -104,7 +104,16 @@ public class HttpUtil {
         return requestBuilder.build();
     }
 
-    private static String queryBuilder(KeyValue... queries) throws UnsupportedEncodingException {
+    private static String encode(String value) {
+        try {
+            return URLEncoder.encode(value, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            return value;
+        }
+    }
+
+    private static String queryBuilder(KeyValue... queries) {
         StringBuilder queryString = new StringBuilder();
         for(KeyValue param : queries) {
             if (queryString.length() > 0) {
@@ -112,41 +121,47 @@ public class HttpUtil {
             }
             queryString.append(param.first);
             queryString.append('=');
-            queryString.append(URLEncoder.encode(param.second, "UTF-8"));
+            queryString.append(encode(param.second));
         }
         return queryString.toString();
     }
 
-    public static void uploadFile(@NonNull String serverUrl, @NonNull File file, UploadFileCallback uploadFileCallback) {
+    public static void uploadFile(@NonNull String serverUrl,
+                                  @NonNull String key,
+                                  @NonNull File file,
+                                  UploadFileCallback uploadFileCallback,
+                                  KeyValue... keyValues) {
         try {
             String mimeType = getMimeType(file);
             RequestBody content = RequestBody.create(MediaType.parse(mimeType), file);
-            RequestBody requestBody = new MultipartBody.Builder()
+            MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", file.getName(), content)
-                    .build();
+                    .addFormDataPart(key, file.getName(), content);
+
+            for(KeyValue kv : keyValues) {
+                builder.addFormDataPart(kv.first, encode(kv.second));
+            }
 
             Request request = new Request.Builder()
                     .url(serverUrl)
-                    .post(requestBody)
+                    .post(builder.build())
                     .build();
 
-            httpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    uploadFileCallback.onFileUpload(null, e);
-                }
+            Response response = httpClient.newCall(request).execute();
 
-                @Override
-                public void onResponse(Call call, Response response) {
-                    try {
-                        uploadFileCallback.onFileUpload(response.body().string(), null);
-                    }
-                    catch (IOException | NullPointerException e) {
-                        uploadFileCallback.onFileUpload(null, e);
-                    }
+            try {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    uploadFileCallback.onFileUpload(response.body().string(), null);
                 }
-            });
+                else {
+                    uploadFileCallback.onFileUpload(null,
+                            new Exception("Request unsuccessful. Returned HTTP " + response.code()));
+                }
+            }
+            catch (NullPointerException | IOException e) {
+                uploadFileCallback.onFileUpload(null, e);
+            }
 
         } catch (Exception e) {
             uploadFileCallback.onFileUpload(null, e);

@@ -98,11 +98,13 @@ public class ConfirmSalesActivity extends BaseActivity {
 
     void showConfirmDialog() {
         ConfirmPaymentDialog dialog = new ConfirmPaymentDialog(this);
-        dialog.setClickListener(() -> async(() -> {
+        dialog.setClickListener((includeExcess) -> async(() -> {
             List<Payment> payment = createPayments();
-            Credit credit = createCredit(transaction.getId());
+//            double excessCredits = transaction.getAmount() - getTotalPayment();
+////            if (includeExcess && excessCredits > 0) {
+////                database().credits().insertCredit(createCredit());
+////            }
             database().payments().insertPayments(payment);
-            database().credits().insertCredit(credit);
             runOnUiThread(this::showSuccessDialog);
         }));
         dialog.show();
@@ -193,21 +195,23 @@ public class ConfirmSalesActivity extends BaseActivity {
             payment.setBankName(transaction.getBank());
             payment.setCustomerName(transaction.getClientName());
             payment.setCheckDate(transaction.getCheckDate());
-            payment.setAmount(sale.getTotalAmount());
+            payment.setAmount(sale.getAmount());
             payment.setStatus("unsubmitted");
             checkedPayments.add(payment);
         }
         return checkedPayments;
     }
 
-    private Credit createCredit(long paymentId) {
+    private Credit createCredit() {
+        double excessCredits = transaction.getAmount() - getTotalPayment();
         Credit credit = new Credit();
-        credit.setId(paymentId);
+        credit.setId(new Date().getTime());
+        credit.setExcess(excessCredits);
         credit.setPayAmount(getTotalPayment());
         credit.setCustomerId(transaction.getId());
         credit.setDateX(new Date().getTime());
         credit.setPayId(new Date().getTime());
-        credit.setPrNo(new Date().getTime());
+//        credit.setPrNo(transaction.getProductNumber());
         credit.setSalesId(new Date().getTime());
         credit.setTotalPayable(getTotalPayable());
         return credit;
@@ -227,10 +231,9 @@ public class ConfirmSalesActivity extends BaseActivity {
                 double subTotalPayment = Math.min(payment, remainingAmount);
                 remainingAmount = Math.max(0, difference);
                 totalPayment += subTotalPayment;
-                sale.setTempAmount(subTotalPayment);
+                sale.setAmount(subTotalPayment);
             }
         }
-//        data.setAmount(checked ? Math.min(remainingAmount, data.getTotalAmount()) : 0);
         txtTotalPayment.setText(Formatter.currency(totalPayment));
         updateSalesInteractiveness();
         adapter.notifyDataSetChanged();

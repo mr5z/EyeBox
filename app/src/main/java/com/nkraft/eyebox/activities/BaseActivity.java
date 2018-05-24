@@ -1,5 +1,6 @@
 package com.nkraft.eyebox.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,6 +23,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.dao.ClientsDao;
@@ -38,6 +40,9 @@ import com.nkraft.eyebox.services.repositories.AppDatabase;
 import com.nkraft.eyebox.utils.Settings;
 import com.nkraft.eyebox.utils.ViewUtils;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import butterknife.ButterKnife;
 
 
@@ -46,6 +51,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public interface ConfirmDialogListener {
         void onConfirm();
     }
+
+    static ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)Executors.newFixedThreadPool(3);
 
     public AppDatabase database() {
         return AppDatabase.instance(this);
@@ -87,6 +94,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             });
         }
         return _loader;
+    }
+
+    private Toast _toast;
+    @SuppressLint("ShowToast")
+    private Toast toast(String message, int duration) {
+        if (_toast != null) {
+            _toast.cancel();
+        }
+        _toast = Toast.makeText(this, message, duration);
+        return _toast;
+    }
+
+    protected void showToast(String message) {
+        toast(message, Toast.LENGTH_LONG).show();
     }
 
     private Dialog confirmDialog(@NonNull final ConfirmDialogListener confirmDialogListener,
@@ -174,7 +195,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     void async(Runnable task) {
-        new Thread(task).start();
+        threadPoolExecutor.execute(task);
     }
 
     void showSnackbar(String message) {

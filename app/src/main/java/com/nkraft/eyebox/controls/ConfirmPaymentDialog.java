@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.nkraft.eyebox.R;
 
@@ -14,7 +15,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 public class ConfirmPaymentDialog implements DialogInterface.OnClickListener {
 
     public interface ClickListener {
-        void onConfirmTransaction();
+        void onConfirmTransaction(boolean includeExcess);
     }
 
     private View view;
@@ -35,10 +36,11 @@ public class ConfirmPaymentDialog implements DialogInterface.OnClickListener {
 
     @Override
     public void onClick(DialogInterface dialogInterface, int which) {
+//        CheckBox checkBox = view.findViewById(R.id.dcp_chk_excess);
         switch (which) {
             case BUTTON_POSITIVE:
                 if (clickListener != null) {
-                    clickListener.onConfirmTransaction();
+                    clickListener.onConfirmTransaction(true/*checkBox.isChecked()*/);
                 }
                 break;
         }

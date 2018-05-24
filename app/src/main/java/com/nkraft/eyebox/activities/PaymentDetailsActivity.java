@@ -105,7 +105,7 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
         super.initialize(savedInstanceState);
         setPageTitle(R.string.payment_breakdown);
         Payment payment = getPayment();
-        txtClientName.setText(Formatter.string("Client: %s", payment.getCheckName()));
+        txtClientName.setText(Formatter.string("Client: %s", payment.getCustomerName()));
         txtAmount.setText(Formatter.string("Payment Amount: %s", payment.getFormattedAmount()));
         paymentsTask().execute();
     }
@@ -190,7 +190,6 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
                 }
             }
             p.setReceivedBy(payment.getReceivedBy());
-            p.setBranchNo(payment.getBranchNo());
         }
     }
 }

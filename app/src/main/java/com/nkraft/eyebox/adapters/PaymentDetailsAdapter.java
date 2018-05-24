@@ -16,7 +16,7 @@ import java.util.List;
 public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter.ViewHolder, Payment> implements CompoundButton.OnCheckedChangeListener {
 
     public PaymentDetailsAdapter(List<Payment> dataList) {
-        super(dataList, R.layout.payment_details_row);
+        super(dataList, R.layout.row_payment_details);
     }
 
     @Override

@@ -146,6 +146,8 @@ public class PrintActivity extends BaseActivity {
             return;
         }
 
+        showToast("Connecting...");
+
         asyncConnect(success -> runOnUiThread(() -> {
             if (success) {
                 showSnackbar("Connected to: %s", selectedDevice.getName());

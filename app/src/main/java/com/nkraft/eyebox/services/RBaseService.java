@@ -81,4 +81,8 @@ abstract class RBaseService<T> {
             return new PagedResult<>(result.message());
         }
     }
+
+    public String getServicePath() {
+        return servicePath;
+    }
 }

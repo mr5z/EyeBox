@@ -24,6 +24,8 @@ public class Credit {
     private double payAmount;
     @SerializedName("totalpayable")
     private double totalPayable;
+    @SerializedName("excess")
+    private double excess;
 
     public long getId() {
         return id;
@@ -87,5 +89,13 @@ public class Credit {
 
     public void setTotalPayable(double totalPayable) {
         this.totalPayable = totalPayable;
+    }
+
+    public double getExcess() {
+        return excess;
+    }
+
+    public void setExcess(double excess) {
+        this.excess = excess;
     }
 }

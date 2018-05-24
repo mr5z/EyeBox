@@ -52,6 +52,7 @@ public class SignatureActivity extends BaseActivity {
             Client client = getClient();
             String path = saveSignature(bitmap);
             Visit visit = new Visit();
+            visit.setId((new Date().getTime() / 1000));
             visit.setDate((new Date()).getTime());
             visit.setSignature(path);
             visit.setCustomerId(client.getId());

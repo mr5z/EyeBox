@@ -90,6 +90,10 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
     }
 
     void goToConfirmSalesActivity(Transaction transaction) {
+        if (transaction.getAmount() <= 0) {
+            showSnackbar("Invalid amount");
+            return;
+        }
         Intent intent = new Intent(this, ConfirmSalesActivity.class);
         intent.putExtra("transaction", transaction);
         startActivity(intent);

@@ -38,7 +38,7 @@ public class ConfirmSalesAdapter extends BaseListAdapter<ConfirmSalesAdapter.Vie
         holder.txtSoNumber.setText(data.getFormattedTransaction());
         holder.txtTotalNet.setText(Formatter.currency(data.getPayAmount()));
         holder.txtBalance.setText(Formatter.currency(data.getTotalAmount()));
-        double payment = data.isChecked() ? data.getTempAmount() : 0;
+        double payment = data.isChecked() ? data.getAmount() : 0;
         holder.txtPayment.setText(Formatter.currency(payment));
     }
 

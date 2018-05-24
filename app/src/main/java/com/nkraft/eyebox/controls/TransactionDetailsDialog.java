@@ -43,10 +43,14 @@ public class TransactionDetailsDialog implements
     private EditText editCheckDate;
     private Context context;
     private Transaction transaction;
+    private List<Bank> bankList;
+    private List<Terms> termsList;
 
     public TransactionDetailsDialog(Context context, Transaction transaction, List<Bank> bankList, List<Terms> termsList) {
         this.context = context;
         this.transaction = transaction;
+        this.bankList = bankList;
+        this.termsList = termsList;
         view = LayoutInflater.from(context)
                 .inflate(R.layout.dialog_transaction_details, null);
         dialog = new AlertDialog.Builder(context)
@@ -59,7 +63,7 @@ public class TransactionDetailsDialog implements
         bankList.add(0, new Bank() {{
             setId(-1);
         }});
-        configure(bankList, termsList);
+        configure();
     }
 
     @Override
@@ -107,18 +111,21 @@ public class TransactionDetailsDialog implements
         String checkNumber = editCheckNumber.getText().toString();
         String orderNumber = editOrderNumber.getText().toString();
 
+        Bank bank = bankList.get(selectedBank);
+        Terms terms = termsList.get(selectedTerms);
+
         transaction.setProductNumber(productNumber);
         transaction.setAmount(amount);
-        transaction.setBank(selectedBank);
+        transaction.setBank(bank.getId());
         transaction.setCheckDate(checkDate);
         transaction.setCheckNumber(checkNumber);
         transaction.setOrderNumber(orderNumber);
-        transaction.setTerms(selectedTerms);
+        transaction.setTerms(terms.getId());
 
         return transaction;
     }
 
-    private void configure(List<Bank> bankList, List<Terms> termsList) {
+    private void configure() {
         TextView txtProductNumber = view.findViewById(R.id.dtd_txt_product_number);
         TextView txtReceiver = view.findViewById(R.id.dtd_txt_receiver);
         EditText editAmount = view.findViewById(R.id.dtd_edit_product_amount);

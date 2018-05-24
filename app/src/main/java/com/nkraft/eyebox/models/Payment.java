@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "Payments")
 public class Payment implements Parcelable {
@@ -119,6 +120,11 @@ public class Payment implements Parcelable {
         debit = in.readDouble();
         validatedBy = in.readLong();
         receiptLayout = in.readInt();
+        bankNameStr = in.readString();
+        termsName = in.readString();
+        isChecked = in.readInt() != 0;
+        receiverName = in.readString();
+        customerName = in.readString();
     }
 
     public static final Creator<Payment> CREATOR = new Creator<Payment>() {
@@ -397,6 +403,11 @@ public class Payment implements Parcelable {
         parcel.writeDouble(debit);
         parcel.writeLong(validatedBy);
         parcel.writeInt(receiptLayout);
+        parcel.writeString(bankNameStr);
+        parcel.writeString(termsName);
+        parcel.writeInt(isChecked ? 1 : 0);
+        parcel.writeString(receiverName);
+        parcel.writeString(customerName);
     }
 
     public List<Sale> getSales() {
@@ -405,14 +416,6 @@ public class Payment implements Parcelable {
 
     public void setSales(List<Sale> sales) {
         this.sales = sales;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Payment payment = (Payment) obj;
-        if (payment == null)
-            return false;
-        return getId() == payment.getId();
     }
 
     public String getBankNameStr() {
@@ -456,6 +459,19 @@ public class Payment implements Parcelable {
     }
 
     public boolean isSafeToDelete() {
-        return status != null && status.toLowerCase().equals("yes");
+        return status != null && (status.toLowerCase().equals("yes") || status.toLowerCase().equals("unsubmitted"));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Payment)) return false;
+        Payment payment = (Payment) o;
+        return id == payment.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

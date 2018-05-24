@@ -62,7 +62,7 @@ public class GeneralService extends BaseService {
     private void fillTerms(Table table, JSONArray jsonArray) throws JSONException {
         for (int i = 0;i < jsonArray.length(); ++i) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            long id = jsonObject.getLong("id");
+            int id = jsonObject.getInt("id");
             int days = jsonObject.getInt("days");
             String namex = jsonObject.getString("namex");
             int dateDelay = jsonObject.getInt("datedelay");
@@ -139,7 +139,7 @@ public class GeneralService extends BaseService {
     private void fillBanknames(Table table, JSONArray jsonArray) throws JSONException {
         for (int i = 0;i < jsonArray.length(); ++i) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            long id = jsonObject.getLong("id");
+            int id = jsonObject.getInt("id");
             long company = jsonObject.getLong("company");
             String accountname = jsonObject.getString("accountname");
             String accountno = jsonObject.getString("accountno");

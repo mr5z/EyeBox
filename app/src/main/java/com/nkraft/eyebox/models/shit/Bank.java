@@ -10,7 +10,7 @@ public class Bank {
 
     @PrimaryKey
     @SerializedName("id")
-    private long id;
+    private int id;
     @SerializedName("company")
     private long company;
     @SerializedName("accountname")
@@ -28,11 +28,11 @@ public class Bank {
     @SerializedName("bankaddress")
     private String bankAddress;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

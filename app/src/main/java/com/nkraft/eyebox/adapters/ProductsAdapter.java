@@ -6,14 +6,13 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Product;
-import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 
 public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder, Product> {
 
     public ProductsAdapter(List<Product> dataList) {
-        super(dataList, R.layout.product_row);
+        super(dataList, R.layout.row_product);
     }
 
     @Override

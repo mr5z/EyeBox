@@ -58,7 +58,8 @@
             android:parentActivityName=".activities.ClientsActivity" />
         <activity android:name=".activities.VisitsActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.ConfirmSalesActivity" />
+        <activity android:name=".activities.ConfirmSalesActivity"
+            android:parentActivityName=".activities.TransactionsActivity" />
         <activity android:name=".activities.ViewCartActivity"
             android:parentActivityName=".activities.ProductsActivity" />
 

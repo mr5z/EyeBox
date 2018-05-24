@@ -5,10 +5,16 @@
     android:layout_height="wrap_content"
     android:padding="10dp">
 
-    <CheckBox
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="This will be saved to local database" />
+
+    <!--CheckBox
+        android:id="@+id/dcp_chk_excess"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Check to add excess to Credits"
-        style="@style/Base.TextAppearance.AppCompat.Medium" />
+        style="@style/Base.TextAppearance.AppCompat.Medium" /-->
 
 </LinearLayout>

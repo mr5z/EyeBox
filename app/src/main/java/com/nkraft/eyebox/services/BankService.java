@@ -29,7 +29,7 @@ public class BankService extends BaseService {
             List<Bank> bankList = new ArrayList<>();
             for(int i = 0;i < jsonArray.length(); ++i) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                long id = jsonObject.getLong("id");
+                int id = jsonObject.getInt("id");
                 long company = jsonObject.getLong("company");
                 String accountName = jsonObject.getString("accountname");
                 String accountno = jsonObject.getString("accountno");

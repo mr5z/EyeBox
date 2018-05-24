@@ -12,7 +12,7 @@ import java.util.List;
 public class PaymentsAdapter extends BaseListAdapter<PaymentsAdapter.ViewHolder, Payment> {
 
     public PaymentsAdapter(List<Payment> dataList) {
-        super(dataList, R.layout.payment_row);
+        super(dataList, R.layout.row_payment);
     }
 
     @Override

@@ -9,7 +9,8 @@ import com.nkraft.eyebox.utils.Formatter;
 @Entity(tableName = "Visits")
 public class Visit {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
+    @SerializedName("id")
     private long id;
     @SerializedName("date")
     private long date;

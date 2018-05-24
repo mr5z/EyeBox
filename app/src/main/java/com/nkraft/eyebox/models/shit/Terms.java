@@ -7,16 +7,16 @@ import android.arch.persistence.room.PrimaryKey;
 public class Terms {
 
     @PrimaryKey
-    private long id;
+    private int id;
     private int days;
     private String namex;
     private int dateDelay;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

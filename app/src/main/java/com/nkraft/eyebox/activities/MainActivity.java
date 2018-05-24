@@ -36,7 +36,9 @@ import com.nkraft.eyebox.services.TransactionService;
 import com.nkraft.eyebox.services.VisitService;
 import com.nkraft.eyebox.utils.Debug;
 import com.nkraft.eyebox.utils.Formatter;
+import com.nkraft.eyebox.utils.HttpUtil;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -225,7 +227,6 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             boolean success = true;
             int progress = 0;
 
-
             if (hasFlag(processTypes, ProcessType.BANKS)) {
                 PagedResult<List<Bank>> result = bankService.getBanks(user.getAssignedBranch());
                 if (result.isSuccess()) {
@@ -348,7 +349,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 if (!visits.isEmpty()) {
                     PagedResult<Visit> result = visitService.submitVisits(visits);
                     if (result.isSuccess()) {
-                        database().credits().deleteAll();
+                        uploadVisits(visits);
                         updateProgress(++progress, processTypes);
                     } else {
                         success = false;
@@ -364,6 +365,21 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             onPostSync(success);
+        });
+    }
+
+    private void uploadVisits(List<Visit> visits) {
+        async(() -> {
+            VisitService visitService = VisitService.instance();
+            for(Visit visit : visits) {
+                File file = new File(visit.getSignature());
+                if (!file.exists())
+                    continue;
+                String path = visitService.getServicePath() + "?action=upload";
+                HttpUtil.uploadFile(path, "signature", file, (response, exception) -> {
+                    Debug.log("response: %s, exception: %s", response, exception);
+                }, HttpUtil.KeyValue.make("visitId", visit.getId()));
+            }
         });
     }
 

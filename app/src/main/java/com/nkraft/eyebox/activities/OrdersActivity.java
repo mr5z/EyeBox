@@ -41,7 +41,7 @@ public class OrdersActivity extends ListActivity<Order> {
     }
 
     @Override
-    String getSearchableFields(Order order) {
-        return order.getClientName();
+    String[] getSearchableFields(Order order) {
+        return new String[] { order.getClientName(), order.getProduct().getName() };
     }
 }

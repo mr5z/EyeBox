@@ -3,7 +3,6 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -14,7 +13,6 @@ import com.nkraft.eyebox.models.PaymentGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class PaymentsActivity extends ListActivity<Payment> implements
@@ -68,8 +66,8 @@ public class PaymentsActivity extends ListActivity<Payment> implements
     }
 
     @Override
-    String getSearchableFields(Payment payment) {
-        return payment.getCheckName();
+    String[] getSearchableFields(Payment payment) {
+        return new String[] { payment.getCheckName() };
     }
 
     void deleteItem(Payment payment) {
@@ -98,7 +96,7 @@ public class PaymentsActivity extends ListActivity<Payment> implements
         payment.setId(new Date().getTime());
         payment.setCustomerId(paymentGroup.getCustomerId());
         payment.setCustomerName(paymentGroup.getClientName());
-        payment.setPrNo(paymentGroup.getProductNumber());
+        payment.setProductNumber(paymentGroup.getProductNumber());
         payment.setCheckDate(paymentGroup.getPayDate());
         payment.setStatus(paymentGroup.getStatus());
         payment.setAmount(paymentGroup.getTotalPayment());

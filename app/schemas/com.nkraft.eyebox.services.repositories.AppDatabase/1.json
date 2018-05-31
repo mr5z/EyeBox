@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "aa88fc50e3b760ab4f87058894388468",
+    "identityHash": "5703fff6143b8acb715d7f2f97376868",
     "entities": [
       {
         "tableName": "Users",
@@ -416,7 +416,7 @@
       },
       {
         "tableName": "Payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `prNo` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, `customerName` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `productNumber` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, `customerName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -527,8 +527,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "prNo",
-            "columnName": "prNo",
+            "fieldPath": "productNumber",
+            "columnName": "productNumber",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -672,12 +672,12 @@
       },
       {
         "tableName": "Sales",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `customerId` INTEGER NOT NULL, `companyName` TEXT, `agent` INTEGER NOT NULL, `checkedBy` TEXT, `deliveredBy` INTEGER NOT NULL, `adjustments` TEXT, `adjustmentAmount` TEXT, `userLogs` TEXT, `delAll` TEXT, `drNo` TEXT, `siNo` TEXT, `prNo` TEXT, `orNo` TEXT, `amount` REAL NOT NULL, `salesDate` INTEGER NOT NULL, `totalAmount` REAL NOT NULL, `salesType` TEXT, `salesAccount` INTEGER NOT NULL, `remarks` TEXT, `origTotal` REAL NOT NULL, `branchNo` INTEGER NOT NULL, `debit` REAL NOT NULL, `payAmount` REAL NOT NULL, `balance` REAL NOT NULL, `syncX` TEXT, `modified` TEXT, `dateModified` INTEGER NOT NULL, `deliveryDate` INTEGER NOT NULL, `transaction` REAL NOT NULL, `blocked` TEXT, `dueDate` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `printX` TEXT, `printlayout` INTEGER NOT NULL, `audit` TEXT, `paymentMethod` TEXT, `dateDeposit` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `notification` TEXT, `itemCount` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `companyName` TEXT, `agent` INTEGER NOT NULL, `checkedBy` TEXT, `deliveredBy` INTEGER NOT NULL, `adjustments` TEXT, `adjustmentAmount` TEXT, `userLogs` TEXT, `delAll` TEXT, `drNo` TEXT, `siNo` TEXT, `prNo` TEXT, `orNo` TEXT, `amount` REAL NOT NULL, `salesDate` INTEGER NOT NULL, `totalAmount` REAL NOT NULL, `salesType` TEXT, `salesAccount` INTEGER NOT NULL, `remarks` TEXT, `origTotal` REAL NOT NULL, `branchNo` INTEGER NOT NULL, `debit` REAL NOT NULL, `payAmount` REAL NOT NULL, `balance` REAL NOT NULL, `syncX` TEXT, `modified` TEXT, `dateModified` INTEGER NOT NULL, `deliveryDate` INTEGER NOT NULL, `transaction` REAL NOT NULL, `blocked` TEXT, `dueDate` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `printX` TEXT, `printlayout` INTEGER NOT NULL, `audit` TEXT, `paymentMethod` TEXT, `dateDeposit` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `notification` TEXT, `itemCount` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -1103,6 +1103,530 @@
         "foreignKeys": []
       },
       {
+        "tableName": "SalesReport",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `delall` TEXT, `userlogs` TEXT, `sourcex` TEXT, `salestype` TEXT, `directoryx` TEXT, `title` TEXT, `dispdis` TEXT, `dispvat` TEXT, `incvat` TEXT, `quantityx` TEXT, `quantityy` TEXT, `unitsx` TEXT, `unitsy` TEXT, `productsx` TEXT, `productsy` TEXT, `genericsx` TEXT, `genericsy` TEXT, `byx` TEXT, `byy` TEXT, `lotnox` TEXT, `lotnoy` TEXT, `expiryx` TEXT, `expiryy` TEXT, `pricex` TEXT, `pricey` TEXT, `amountx` TEXT, `amounty` TEXT, `divider` TEXT, `netx` TEXT, `nety` TEXT, `netlabx` TEXT, `netlaby` TEXT, `vaty` TEXT, `vatlabx` TEXT, `vatlaby` TEXT, `adjx` TEXT, `adjy` TEXT, `adjlabx` TEXT, `adjlaby` TEXT, `totalamountx` TEXT, `totalamounty` TEXT, `totalamountlabx` TEXT, `totalamountlaby` TEXT, `vatx` TEXT, `maxitems` TEXT, `clientx` TEXT, `clienty` TEXT, `clientaddx` TEXT, `clientaddy` TEXT, `clienttermsx` TEXT, `clienttermsy` TEXT, `salesdatex` TEXT, `salesdatey` TEXT, `checkedbyx` TEXT, `checkedbyy` TEXT, `deliveredbyx` TEXT, `deliveredbyy` TEXT, `decimalx` TEXT, `totalbeforevatx` TEXT, `totalbeforevaty` TEXT, `totalbeforevatlabx` TEXT, `totalbeforevatlaby` TEXT, `tinx` TEXT, `tiny` TEXT, `branchnamex` TEXT, `branchnamey` TEXT, `branchaddressx` TEXT, `branchaddressy` TEXT, `branchcontactnox` TEXT, `branchcontactnoy` TEXT, `salesidx` TEXT, `salesidy` TEXT, `seqx` TEXT, `seqy` TEXT, `deliverydatex` TEXT, `deliverydatey` TEXT, `htmlHeader` TEXT, `htmlFooter` TEXT, `logo` TEXT, `filesizex` INTEGER NOT NULL, `filetypex` TEXT, `filewidth` INTEGER NOT NULL, `fileheight` INTEGER NOT NULL, `filenamex` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "delall",
+            "columnName": "delall",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userlogs",
+            "columnName": "userlogs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sourcex",
+            "columnName": "sourcex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salestype",
+            "columnName": "salestype",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "directoryx",
+            "columnName": "directoryx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dispdis",
+            "columnName": "dispdis",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dispvat",
+            "columnName": "dispvat",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "incvat",
+            "columnName": "incvat",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantityx",
+            "columnName": "quantityx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantityy",
+            "columnName": "quantityy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "unitsx",
+            "columnName": "unitsx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "unitsy",
+            "columnName": "unitsy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "productsx",
+            "columnName": "productsx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "productsy",
+            "columnName": "productsy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "genericsx",
+            "columnName": "genericsx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "genericsy",
+            "columnName": "genericsy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "byx",
+            "columnName": "byx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "byy",
+            "columnName": "byy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lotnox",
+            "columnName": "lotnox",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lotnoy",
+            "columnName": "lotnoy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expiryx",
+            "columnName": "expiryx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expiryy",
+            "columnName": "expiryy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pricex",
+            "columnName": "pricex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pricey",
+            "columnName": "pricey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amountx",
+            "columnName": "amountx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amounty",
+            "columnName": "amounty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "divider",
+            "columnName": "divider",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "netx",
+            "columnName": "netx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nety",
+            "columnName": "nety",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "netlabx",
+            "columnName": "netlabx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "netlaby",
+            "columnName": "netlaby",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vaty",
+            "columnName": "vaty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vatlabx",
+            "columnName": "vatlabx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vatlaby",
+            "columnName": "vatlaby",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjx",
+            "columnName": "adjx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjy",
+            "columnName": "adjy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjlabx",
+            "columnName": "adjlabx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "adjlaby",
+            "columnName": "adjlaby",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalamountx",
+            "columnName": "totalamountx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalamounty",
+            "columnName": "totalamounty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalamountlabx",
+            "columnName": "totalamountlabx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalamountlaby",
+            "columnName": "totalamountlaby",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vatx",
+            "columnName": "vatx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "maxitems",
+            "columnName": "maxitems",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientx",
+            "columnName": "clientx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clienty",
+            "columnName": "clienty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientaddx",
+            "columnName": "clientaddx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientaddy",
+            "columnName": "clientaddy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clienttermsx",
+            "columnName": "clienttermsx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clienttermsy",
+            "columnName": "clienttermsy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesdatex",
+            "columnName": "salesdatex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesdatey",
+            "columnName": "salesdatey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "checkedbyx",
+            "columnName": "checkedbyx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "checkedbyy",
+            "columnName": "checkedbyy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveredbyx",
+            "columnName": "deliveredbyx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveredbyy",
+            "columnName": "deliveredbyy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "decimalx",
+            "columnName": "decimalx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalbeforevatx",
+            "columnName": "totalbeforevatx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalbeforevaty",
+            "columnName": "totalbeforevaty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalbeforevatlabx",
+            "columnName": "totalbeforevatlabx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalbeforevatlaby",
+            "columnName": "totalbeforevatlaby",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tinx",
+            "columnName": "tinx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tiny",
+            "columnName": "tiny",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchnamex",
+            "columnName": "branchnamex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchnamey",
+            "columnName": "branchnamey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchaddressx",
+            "columnName": "branchaddressx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchaddressy",
+            "columnName": "branchaddressy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchcontactnox",
+            "columnName": "branchcontactnox",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "branchcontactnoy",
+            "columnName": "branchcontactnoy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesidx",
+            "columnName": "salesidx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "salesidy",
+            "columnName": "salesidy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "seqx",
+            "columnName": "seqx",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "seqy",
+            "columnName": "seqy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliverydatex",
+            "columnName": "deliverydatex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliverydatey",
+            "columnName": "deliverydatey",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "htmlHeader",
+            "columnName": "htmlHeader",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "htmlFooter",
+            "columnName": "htmlFooter",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "logo",
+            "columnName": "logo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "filesizex",
+            "columnName": "filesizex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "filetypex",
+            "columnName": "filetypex",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "filewidth",
+            "columnName": "filewidth",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileheight",
+            "columnName": "fileheight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "filenamex",
+            "columnName": "filenamex",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "Banks",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `company` INTEGER NOT NULL, `accountName` TEXT, `accountNumber` TEXT, `namex` TEXT, `userLogs` TEXT, `delall` INTEGER NOT NULL, `branchNo` INTEGER NOT NULL, `bankAddress` TEXT, PRIMARY KEY(`id`))",
         "fields": [
@@ -1211,7 +1735,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"aa88fc50e3b760ab4f87058894388468\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5703fff6143b8acb715d7f2f97376868\")"
     ]
   }
 }

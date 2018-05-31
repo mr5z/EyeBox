@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import java.util.Locale;
 
 @Entity(tableName = "Transactions")
-public class Transaction implements Parcelable {
+public class Transaction implements Parcelable, IModel {
 
     @PrimaryKey
     private long id;
@@ -78,8 +78,14 @@ public class Transaction implements Parcelable {
         this.clientAddress = clientAddress;
     }
 
+    @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProductNumber() {

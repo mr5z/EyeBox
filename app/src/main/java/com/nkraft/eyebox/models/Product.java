@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = "Products")
-public class Product implements Parcelable {
+public class Product implements Parcelable, IModel {
 
     @PrimaryKey
     private long id;

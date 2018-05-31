@@ -157,7 +157,7 @@ public class ProductsActivity extends ListActivity<Product> implements
     }
 
     @Override
-    String getSearchableFields(Product product) {
-        return product.getName();
+    String[] getSearchableFields(Product product) {
+        return new String[] { product.getName(), product.getGenericName() };
     }
 }

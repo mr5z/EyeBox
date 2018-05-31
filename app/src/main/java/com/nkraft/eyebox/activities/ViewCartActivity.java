@@ -50,8 +50,8 @@ public class ViewCartActivity extends ListActivity<Order> implements
     }
 
     @Override
-    String getSearchableFields(Order order) {
-        return order.getClientName();
+    String[] getSearchableFields(Order order) {
+        return new String[] { order.getClientName() };
     }
 
     void sendOrders() {

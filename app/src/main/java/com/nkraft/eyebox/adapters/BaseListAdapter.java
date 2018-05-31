@@ -7,12 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nkraft.eyebox.models.Client;
+import com.nkraft.eyebox.models.IModel;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 import java.util.Locale;
 
-public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolder, TModel> extends RecyclerView.Adapter<TViewHolder> {
+public abstract class BaseListAdapter<
+        TViewHolder extends RecyclerView.ViewHolder,
+        TModel extends IModel>
+        extends RecyclerView.Adapter<TViewHolder> {
 
     public interface ItemClickListener<T> {
         void onItemClick(T data);
@@ -31,6 +35,8 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
     public BaseListAdapter(List<TModel> dataList, int rowLayoutId) {
         this.dataList = dataList;
         this.rowLayoutId = rowLayoutId;
+        // for animations and optimization
+        setHasStableIds(true);
     }
 
     @Override
@@ -53,6 +59,16 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         return onCreateRow(rowView);
     }
 
+    @Override
+    public final long getItemId(int position) {
+        return dataList.get(position).getId();
+    }
+
+    @Override
+    public final int getItemCount() {
+        return dataList.size();
+    }
+
     public void setOnItemClickListener(ItemClickListener<TModel> itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
@@ -73,10 +89,6 @@ public abstract class BaseListAdapter<TViewHolder extends RecyclerView.ViewHolde
         return Formatter.currency(amount);
     }
 
-    @Override
-    public final int getItemCount() {
-        return dataList.size();
-    }
 
     abstract void onDataBind(TViewHolder holder, TModel data);
 

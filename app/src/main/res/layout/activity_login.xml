@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@string/footer"
+            android:contentDescription="@string/htmlFooter"
             android:text="@string/all_rights_reserve"
             android:textAlignment="center" />
     </LinearLayout>

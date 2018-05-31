@@ -52,7 +52,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         void onConfirm();
     }
 
-    static ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)Executors.newFixedThreadPool(3);
+    static ThreadPoolExecutor threadPoolExecutor =
+            (ThreadPoolExecutor)Executors.newFixedThreadPool(3);
 
     public AppDatabase database() {
         return AppDatabase.instance(this);
@@ -253,16 +254,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     void endSession() {
         async(() -> {
             settings().clear();
-            database().users().deleteAll();
-            database().products().deleteAll();
-            database().clients().deleteAll();
-            database().transactions().deleteAll();
-            database().payments().deleteAll();
-            database().orders().deleteAll();
-            database().sales().deleteAll();
-            database().visits().deleteAll();
-            database().banks().deleteAll();
-            database().terms().deleteAll();
+            database().clearAllTables();
         });
     }
 

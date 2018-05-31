@@ -35,7 +35,7 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
         holder.txtSalesId.setText(String.valueOf(data.getSalesId()));
         holder.txtTerms.setText(data.getTermsName());
         holder.txtBranch.setText(String.valueOf(data.getBranchNo()));
-        holder.txtProductNumber.setText(data.getPrNo());
+        holder.txtProductNumber.setText(data.getProductNumber());
         holder.txtOrderNumber.setText(data.getOrNo());
         holder.statusView.setBackgroundColor(toStatusColor(data.getStatus()));
     }

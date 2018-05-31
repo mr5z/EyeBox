@@ -4,23 +4,31 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.nkraft.eyebox.services.FontStyle;
 import com.nkraft.eyebox.services.TextAlignment;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintTemplate implements Parcelable {
+public class PrintTemplate implements Parcelable, IModel {
 
+    private static long idGenerator;
+
+    private long id;
     private String title;
-
-    private int background;
-
+    private byte[] background;
     private List<Data> printData = new ArrayList<>();
+    private String htmlHeader;
+    private String htmlFooter;
 
     protected PrintTemplate(Parcel in) {
         title = in.readString();
-        background = in.readInt();
+        background = in.createByteArray();
         printData = in.createTypedArrayList(Data.CREATOR);
+        htmlHeader = in.readString();
+        htmlFooter = in.readString();
     }
 
     public static final Creator<PrintTemplate> CREATOR = new Creator<PrintTemplate>() {
@@ -43,17 +51,20 @@ public class PrintTemplate implements Parcelable {
         this.title = title;
     }
 
-    public int getBackground() {
+    public byte[] getBackground() {
         return background;
     }
 
-    public void setBackground(int background) {
+    public void setBackground(byte[] background) {
         this.background = background;
     }
 
-    public PrintTemplate() {}
+    public PrintTemplate() {
+        id = ++idGenerator;
+    }
 
-    public PrintTemplate(String title, int background) {
+    public PrintTemplate(String title, byte[] background) {
+        id = ++idGenerator;
         this.title = title;
         this.background = background;
     }
@@ -76,10 +87,35 @@ public class PrintTemplate implements Parcelable {
         printData.add(data);
     }
 
+    public void addPrintData(String line, FontStyle fontStyle) {
+        Data data = new Data();
+        data.setLine(line);
+        data.setFontStyle(fontStyle);
+        printData.add(data);
+    }
+
+    public void addPrintData(String line, FontStyle fontStyle, TextAlignment alignment) {
+        Data data = new Data();
+        data.setLine(line);
+        data.setFontStyle(fontStyle);
+        data.setAlignment(alignment);
+        printData.add(data);
+    }
+
     public void addPrintData(Bitmap bitmap) {
         Data data = new Data();
         data.setImage(bitmap);
         printData.add(data);
+    }
+
+    public List<String> getDataLines() {
+        List<String> lines = new ArrayList<>();
+        for (Data data : printData) {
+            String line = data.getLine();
+            if (line != null)
+                lines.add(line);
+        }
+        return lines;
     }
 
     @Override
@@ -90,21 +126,53 @@ public class PrintTemplate implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
-        parcel.writeInt(background);
+        parcel.writeByteArray(background);
         parcel.writeTypedList(printData);
+        parcel.writeString(htmlHeader);
+        parcel.writeString(htmlFooter);
+    }
+
+    public String getHtmlHeader() {
+        return htmlHeader;
+    }
+
+    public void setHtmlHeader(String htmlHeader) {
+        this.htmlHeader = htmlHeader;
+    }
+
+    public String getHtmlFooter() {
+        return htmlFooter;
+    }
+
+    public void setHtmlFooter(String htmlFooter) {
+        this.htmlFooter = htmlFooter;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 
     public static class Data implements Parcelable {
         private String line;
         private Bitmap image;
-        private TextAlignment alignment;
+        private TextAlignment alignment = TextAlignment.LEFT;
+        private FontStyle fontStyle = FontStyle.BOLD;
 
         public Data() {}
 
         protected Data(Parcel in) {
             line = in.readString();
             image = in.readParcelable(Bitmap.class.getClassLoader());
-            alignment = TextAlignment.values()[in.readInt()];
+            int alignmentIndex = in.readInt();
+            int fontStyleIndex = in.readInt();
+            alignment = TextAlignment.values()[alignmentIndex];
+            fontStyle = FontStyle.values()[fontStyleIndex];
         }
 
         public static final Creator<Data> CREATOR = new Creator<Data>() {
@@ -143,6 +211,14 @@ public class PrintTemplate implements Parcelable {
             this.alignment = alignment;
         }
 
+        public FontStyle getFontStyle() {
+            return fontStyle;
+        }
+
+        public void setFontStyle(FontStyle fontStyle) {
+            this.fontStyle = fontStyle;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -152,7 +228,8 @@ public class PrintTemplate implements Parcelable {
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(line);
             parcel.writeParcelable(image, i);
-            parcel.writeInt(alignment != null ? alignment.ordinal() : 0);
+            parcel.writeInt(alignment.ordinal());
+            parcel.writeInt(fontStyle.ordinal());
         }
     }
 }

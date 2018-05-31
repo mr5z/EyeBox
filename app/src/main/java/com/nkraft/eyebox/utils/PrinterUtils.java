@@ -56,9 +56,11 @@ public class PrinterUtils {
 
         List<String> bmpHexList = binaryListToHexStringList(list);
         String commandHexString = "1D763000";
+
         String widthHexString = Integer
                 .toHexString(bmpWidth % 8 == 0 ? bmpWidth / 8
                         : (bmpWidth / 8 + 1));
+
         if (widthHexString.length() > 2) {
             Debug.log("decodeBitmap error. width is too large");
             return null;
@@ -68,6 +70,7 @@ public class PrinterUtils {
         widthHexString = widthHexString + "00";
 
         String heightHexString = Integer.toHexString(bmpHeight);
+
         if (heightHexString.length() > 2) {
             Debug.log("decodeBitmap error. height is too large");
             return null;
@@ -75,6 +78,8 @@ public class PrinterUtils {
             heightHexString = "0" + heightHexString;
         }
         heightHexString = heightHexString + "00";
+//        String widthHexString = String.format("%04x", bmpWidth);
+//        String heightHexString = String.format("%04x", bmpHeight);
 
         List<String> commandList = new ArrayList<String>();
         commandList.add(commandHexString+widthHexString+heightHexString);

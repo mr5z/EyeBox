@@ -212,7 +212,6 @@ public abstract class ListActivity<TModel>
         return true;
     }
 
-
     @Override
     public boolean onQueryTextChange(String newText) {
         if (adapter == null)
@@ -226,12 +225,21 @@ public abstract class ListActivity<TModel>
             Iterator<TModel> iterator = dataList.iterator();
             while (iterator.hasNext()) {
                 TModel model = iterator.next();
-                String searchField = getSearchableFields(model);
-                if (TextUtils.isEmpty(searchField))
+                String[] searchField = getSearchableFields(model);
+                if (searchField == null)
                     continue;
 
-                boolean matches = searchField.toLowerCase().contains(newText);
-                if (!matches) {
+                boolean hasMatch = false;
+                for (String field : searchField) {
+                    if (TextUtils.isEmpty(field))
+                        continue;
+
+                    if (field.toLowerCase().contains(newText)) {
+                        hasMatch = true;
+                        break;
+                    }
+                }
+                if (!hasMatch) {
                     iterator.remove();
                 }
             }
@@ -247,8 +255,7 @@ public abstract class ListActivity<TModel>
         return true;
     }
 
-    //TODO return an array of String
-    String getSearchableFields(TModel model) {
+    String[] getSearchableFields(TModel model) {
         return null;
     }
 

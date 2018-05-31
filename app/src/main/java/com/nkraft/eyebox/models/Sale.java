@@ -9,12 +9,11 @@ import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
 @Entity(tableName = "Sales")
-public class Sale {
+public class Sale implements IModel {
 
-    @NonNull
     @PrimaryKey
     @SerializedName("salesidx")
-    final private String id;
+    private long id;
     @SerializedName("customerid")
     private long customerId;
     @SerializedName("companyname")
@@ -105,12 +104,14 @@ public class Sale {
     @Ignore
     private double tempAmount;
 
-    public Sale(@NonNull String id) {
-        this.id = id;
+    public Sale()  { }
+
+    public long getId() {
+        return id;
     }
 
-    public String getId() {
-        return id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getCustomerId() {
@@ -465,9 +466,9 @@ public class Sale {
     public boolean equals(Object obj) {
         Sale other = (Sale) obj;
         if (other == null) return false;
-        String id1 = getId();
-        String id2 = other.getId();
-        return id1 != null && id1.equals(id2);
+        long id1 = getId();
+        long id2 = other.getId();
+        return id1 == id2;
     }
 
     public double getTempAmount() {

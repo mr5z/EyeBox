@@ -72,8 +72,8 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
     }
 
     @Override
-    String getSearchableFields(Transaction transaction) {
-        return transaction.getClientName();
+    String[] getSearchableFields(Transaction transaction) {
+        return new String[] { transaction.getClientName() };
     }
 
     void showDialogDetail(Transaction transaction) {

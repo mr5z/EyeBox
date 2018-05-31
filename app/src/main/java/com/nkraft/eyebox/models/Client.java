@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = "Clients")
-public class Client implements Serializable {
+public class Client implements Serializable, IModel {
 
     @PrimaryKey
     private long id;

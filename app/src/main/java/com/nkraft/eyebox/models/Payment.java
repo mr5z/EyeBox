@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity(tableName = "Payments")
-public class Payment implements Parcelable {
+public class Payment implements Parcelable, IModel {
 
     @PrimaryKey
     @SerializedName("idcode")
@@ -53,7 +53,7 @@ public class Payment implements Parcelable {
     @SerializedName("drno")
     private String drNo;
     @SerializedName("prno")
-    private String prNo;
+    private String productNumber;
     @SerializedName("salesdate")
     private long salesDate;
     @SerializedName("orno")
@@ -109,7 +109,7 @@ public class Payment implements Parcelable {
         status = in.readString();
         customerId = in.readLong();
         drNo = in.readString();
-        prNo = in.readString();
+        productNumber = in.readString();
         salesDate = in.readLong();
         orNo = in.readString();
         dueDate = in.readLong();
@@ -275,12 +275,12 @@ public class Payment implements Parcelable {
         this.drNo = drNo;
     }
 
-    public String getPrNo() {
-        return prNo;
+    public String getProductNumber() {
+        return productNumber;
     }
 
-    public void setPrNo(String prNo) {
-        this.prNo = prNo;
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
     }
 
     public long getSalesDate() {
@@ -392,7 +392,7 @@ public class Payment implements Parcelable {
         parcel.writeString(status);
         parcel.writeLong(customerId);
         parcel.writeString(drNo);
-        parcel.writeString(prNo);
+        parcel.writeString(productNumber);
         parcel.writeLong(salesDate);
         parcel.writeString(orNo);
         parcel.writeLong(dueDate);

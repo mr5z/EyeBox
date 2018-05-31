@@ -11,9 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
-import com.nkraft.eyebox.adapters.BaseListAdapter;
 import com.nkraft.eyebox.adapters.PaymentDetailsAdapter;
-import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.shit.Bank;
 import com.nkraft.eyebox.models.shit.Terms;
@@ -129,7 +127,7 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
     public PagedResult<List<Payment>> onTaskExecute() {
         PaymentService paymentService = PaymentService.instance();
         Payment payment = getPayment();
-        String productNumber = payment.getPrNo();
+        String productNumber = payment.getProductNumber();
         List<Payment> dataList = database().payments().getPaymentsByProductNumber(productNumber);
         PagedResult<List<Payment>> statusResult = paymentService.checkPaymentsStatus(payment.getCustomerId());
         updateExtraDetails(dataList, payment);

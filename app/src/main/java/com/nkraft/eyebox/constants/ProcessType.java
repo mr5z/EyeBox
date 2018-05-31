@@ -12,7 +12,8 @@ public enum ProcessType {
     TERMS,
     BANKS,
     SUBMIT_ORDERS,
-    CREDITS;
+    CREDITS,
+    SALES_REPORT;
 
     public final int flag;
 

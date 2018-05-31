@@ -5,19 +5,25 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.services.FontStyle;
 import com.nkraft.eyebox.services.PrinterService;
-import com.nkraft.eyebox.services.TextAlignment;
 import com.nkraft.eyebox.utils.Debug;
 
 import java.io.ByteArrayOutputStream;
@@ -44,12 +50,30 @@ public class PrintActivity extends BaseActivity {
 
     static final int REQUEST_ENABLE_BT = 1;
 
-    PrinterService printerService;
-    BluetoothDevice selectedDevice;
-    PrintMedium printMedium = PrintMedium.BLUETOOTH;
+    static final int DEFAULT_PREVIEW_FONT_SIZE = 24;
+
+    private PrinterService printerService;
+    private BluetoothDevice selectedDevice;
+    private PrintMedium printMedium = PrintMedium.BLUETOOTH;
+    private Bitmap cachedBitmapHeader;
+    private Bitmap cachedBitmapFooter;
 
     @BindView(R.id.btn_show_device_list)
     Button btnShowDeviceList;
+
+    @BindView(R.id.ap_webview_header)
+    WebView webViewHeader;
+
+    @BindView(R.id.ap_webview_footer)
+    WebView webViewFooter;
+
+    @BindView(R.id.ap_linearlayout_body)
+    LinearLayout linearLayoutBody;
+
+    @Override
+    int contentLayout() {
+        return R.layout.activity_print;
+    }
 
     @OnCheckedChanged({R.id.ap_radio_bluetooth, R.id.ap_radio_usb, R.id.ap_radio_wifi})
     void onSwitchPrintMedia(CompoundButton compoundButton, boolean checked) {
@@ -75,8 +99,13 @@ public class PrintActivity extends BaseActivity {
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
-        setPageTitle(R.string.select_printer);
         printerService = PrinterService.instance();
+        setPageTitle(R.string.select_printer);
+        PrintTemplate printTemplate = getSelectedTemplate();
+        configureWebViews();
+        setPreviewHeader(printTemplate.getHtmlHeader());
+        setPreviewBody(printTemplate.getDataLines());
+        setPreviewFooter(printTemplate.getHtmlFooter());
     }
 
     @OnClick(R.id.btn_print)
@@ -94,6 +123,62 @@ public class PrintActivity extends BaseActivity {
         performPrintAsync();
     }
 
+    private void configureWebViews() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            WebView.enableSlowWholeDocumentDraw();
+        }
+        webViewHeader.getSettings().setDefaultFontSize(DEFAULT_PREVIEW_FONT_SIZE);
+        webViewFooter.getSettings().setDefaultFontSize(DEFAULT_PREVIEW_FONT_SIZE);
+
+        webViewHeader.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        webViewHeader.setDrawingCacheEnabled(true);
+        webViewHeader.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        webViewHeader.buildDrawingCache();
+
+        webViewFooter.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        webViewFooter.setDrawingCacheEnabled(true);
+        webViewFooter.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        webViewFooter.buildDrawingCache();
+    }
+
+    private void setPreviewHeader(String htmlString) {
+        webViewHeader.loadData(htmlString, "text/html; charset=utf-8", "utf-8");
+    }
+
+    private void setPreviewFooter(String htmlString) {
+        webViewFooter.loadData(htmlString, "text/html; charset=utf-8", "utf-8");
+    }
+
+    private void setPreviewBody(List<String> lines) {
+        for (String line : lines) {
+            TextView textView = new TextView(this);
+            textView.setTextColor(Color.BLACK);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, DEFAULT_PREVIEW_FONT_SIZE);
+            textView.setText(line);
+            linearLayoutBody.addView(textView, new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
+    private Bitmap getHeaderBitmap() {
+        return convertToBitmap(webViewHeader);
+    }
+
+    private Bitmap getFooterBitmap() {
+        return convertToBitmap(webViewFooter);
+    }
+
+    private Bitmap convertToBitmap(WebView webView) {
+        int width = webView.getWidth();
+        int height = webView.getHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        webView.draw(canvas);
+        Bitmap cacheBitmap = webView.getDrawingCache();
+        return isEmptyBitmap(bitmap) ? cacheBitmap : bitmap;
+    }
+
     private void performPrintAsync() {
         async(() -> {
             PrintTemplate printTemplate = getSelectedTemplate();
@@ -104,22 +189,39 @@ public class PrintActivity extends BaseActivity {
             }
 
             List<PrintTemplate.Data> printData = printTemplate.getPrintData();
+            Bitmap header = resizeBitmap(getHeaderBitmap());
+            Bitmap footer = resizeBitmap(getFooterBitmap());
+            if (header != null && !isEmptyBitmap(header)) {
+                printerService.printImage(header);
+            }
             for(int i = 0;i < printData.size(); ++i) {
                 PrintTemplate.Data data = printData.get(i);
                 String line = data.getLine();
                 Bitmap image = data.getImage();
                 if (line != null) {
-                    printerService.printText(line, FontStyle.BOLD, data.getAlignment());
+                    printerService.printText(line, data.getFontStyle(), data.getAlignment());
                 }
                 if (image != null) {
                     printerService.printImage(image);
                 }
             }
+            if (footer != null && !isEmptyBitmap(footer)) {
+                printerService.printImage(footer);
+            }
             printerService.printNewLine();
             printerService.printNewLine();
             printerService.printNewLine();
             printerService.flush();
+            if (header != null)
+                header.recycle();
+            if (footer != null)
+                footer.recycle();
         });
+    }
+
+    boolean isEmptyBitmap(Bitmap bitmap) {
+        Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+        return emptyBitmap.sameAs(bitmap);
     }
 
     private PrintTemplate getSelectedTemplate() {
@@ -127,12 +229,47 @@ public class PrintActivity extends BaseActivity {
        return (PrintTemplate) data.getParcelableExtra("selectedTemplate");
     }
 
-    byte[] drawableToBytes(int resourceId) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        return stream.toByteArray();
+    private Bitmap toBitmap(byte[] pixels) {
+        if (pixels == null)
+            return null;
+        return BitmapFactory.decodeByteArray(pixels, 0, pixels.length);
     }
+
+    private Bitmap resizeBitmap(Bitmap bitmap) {
+        if (bitmap == null)
+            return null;
+//        float aspectRatio = bitmap.getWidth() /
+//                (float) bitmap.getHeight();
+        int width = 352;
+        int height = 255; //Math.round(width / aspectRatio);
+
+        return Bitmap.createScaledBitmap(
+                bitmap, width, height, false);
+    }
+
+    private byte[] toByteArray(String htmlString) {
+        int width = 128;
+        WebView webView = new WebView(this);
+        webView.loadData(htmlString, "text/html", "UTF-8");
+        // set the correct height of the webview and do measure and layout using it before taking the screenshot
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(webView.getContentHeight(), View.MeasureSpec.EXACTLY);
+        webView.measure(widthMeasureSpec, heightMeasureSpec);
+        webView.layout(0, 0, webView.getMeasuredWidth(), webView.getMeasuredHeight());
+        Bitmap bitmap = Bitmap.createBitmap(width, 64, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        webView.draw(canvas);
+        return toByteArray(bitmap);
+    }
+
+    private byte[] toByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bitmap.recycle();
+        return byteArray;
+    }
+
 
     @OnClick(R.id.btn_bluetooth_connect)
     void onConnectClick(View view) {
@@ -243,11 +380,6 @@ public class PrintActivity extends BaseActivity {
             case REQUEST_ENABLE_BT:
                 break;
         }
-    }
-
-    @Override
-    int contentLayout() {
-        return R.layout.activity_print;
     }
 
 }

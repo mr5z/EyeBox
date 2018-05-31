@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Entity(tableName = "Orders")
-public class Order implements Parcelable {
+public class Order implements Parcelable, IModel {
 
     @Ignore
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());

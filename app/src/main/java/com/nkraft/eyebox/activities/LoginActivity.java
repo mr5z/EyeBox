@@ -68,6 +68,7 @@ public class LoginActivity extends BaseActivity implements TaskWrapper.Task<Page
     }
 
     void updateUserDb(User user) {
+        AccountService.instance().currentUser = user;
         async(() -> database().users().insertUser(user));
     }
 

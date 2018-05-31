@@ -25,7 +25,6 @@ import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,11 +80,11 @@ public class ConfirmSalesActivity extends BaseActivity {
 
     @OnClick(R.id.act_btn_pay_selected)
     void onPaySelectedClick(View view) {
-        if (!hasPaymentSelection()) {
-            showAlertDialog();
+        if (hasPaymentSelection()) {
+            showConfirmDialog();
         }
         else {
-            showConfirmDialog();
+            showAlertDialog();
         }
     }
 
@@ -187,7 +186,7 @@ public class ConfirmSalesActivity extends BaseActivity {
             payment.setReceiverName(currentUser.getName());
             payment.setBranchNo(currentUser.getAssignedBranch());
             payment.setReceivedBy(currentUser.getId());
-            payment.setPrNo(transaction.getProductNumber());
+            payment.setProductNumber(transaction.getProductNumber());
             payment.setOrNo(transaction.getOrderNumber());
             payment.setCheckNo(transaction.getCheckNumber());
             payment.setCustomerId(transaction.getId());
@@ -211,7 +210,7 @@ public class ConfirmSalesActivity extends BaseActivity {
         credit.setCustomerId(transaction.getId());
         credit.setDateX(new Date().getTime());
         credit.setPayId(new Date().getTime());
-//        credit.setPrNo(transaction.getProductNumber());
+//        credit.setProductNumber(transaction.getProductNumber());
         credit.setSalesId(new Date().getTime());
         credit.setTotalPayable(getTotalPayable());
         return credit;
@@ -240,6 +239,13 @@ public class ConfirmSalesActivity extends BaseActivity {
     }
 
     private void updateSalesInteractiveness() {
+        if (transaction.getAmount() <= 0) {
+            for(Sale sale : dataList) {
+                sale.setDisabled(true);
+            }
+            return;
+        }
+
         if (!hasPaymentSelection()) {
             for(Sale sale : dataList) {
                 sale.setDisabled(false);

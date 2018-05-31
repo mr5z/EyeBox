@@ -31,7 +31,7 @@ public class SalesService extends BaseService {
             List<Sale> sales = new ArrayList<>();
             for (int i = 0;i < jsonArray.length(); ++i) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String id = jsonObject.getString("salesidx");
+                long id = jsonObject.getLong("salesidx");
                 long customerid = jsonObject.getLong("customerid");
                 String companyname = jsonObject.getString("companyname");
                 long agent = jsonObject.getLong("agent");
@@ -72,7 +72,8 @@ public class SalesService extends BaseService {
                 long datedeposit = jsonObject.getLong("datedeposit");
                 long checkdate = jsonObject.getLong("checkdate");
                 int itemcount = jsonObject.getInt("itemcount");
-                Sale sale = new Sale(id);
+                Sale sale = new Sale();
+                sale.setId(id);
                 sale.setCustomerId(customerid);
                 sale.setCompanyName(companyname);
                 sale.setAgent(agent);

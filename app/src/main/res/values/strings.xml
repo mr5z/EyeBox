@@ -12,7 +12,7 @@
     <string name="all_rights_reserve">eyeBOX | All Rights Reserved (2016)</string>
     <string name="sign_in">Sign In</string>
     <string name="signing_in">Signing in…</string>
-    <string name="footer">Footer</string>
+    <string name="htmlFooter">Footer</string>
     <string name="enter_password">Enter Password</string>
     <string name="enter_username">Enter Username</string>
     <string name="total_payment">Total Payment</string>

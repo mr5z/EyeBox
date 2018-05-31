@@ -74,8 +74,8 @@ public class ClientsActivity extends ListActivity<Client>
     }
 
     @Override
-    String getSearchableFields(Client client) {
-        return client.getName();
+    String[] getSearchableFields(Client client) {
+        return new String[] { client.getName() };
     }
 
     boolean isMakingSignature() {

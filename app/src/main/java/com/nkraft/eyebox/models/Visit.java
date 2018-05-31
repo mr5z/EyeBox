@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
 @Entity(tableName = "Visits")
-public class Visit {
+public class Visit implements IModel {
 
     @PrimaryKey
     @SerializedName("id")

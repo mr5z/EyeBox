@@ -24,8 +24,10 @@ import com.nkraft.eyebox.models.dao.TransactionsDao;
 import com.nkraft.eyebox.models.dao.UserDao;
 import com.nkraft.eyebox.models.dao.VisitsDao;
 import com.nkraft.eyebox.models.dao.shit.BanksDao;
+import com.nkraft.eyebox.models.dao.shit.SalesReportDao;
 import com.nkraft.eyebox.models.dao.shit.TermsDao;
 import com.nkraft.eyebox.models.shit.Bank;
+import com.nkraft.eyebox.models.shit.SalesReport;
 import com.nkraft.eyebox.models.shit.Terms;
 
 @Database(
@@ -40,6 +42,7 @@ import com.nkraft.eyebox.models.shit.Terms;
         Sale.class,
         Visit.class,
         Credit.class,
+        SalesReport.class,
         Bank.class,
         Terms.class
     }
@@ -55,6 +58,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SalesDao sales();
     public abstract VisitsDao visits();
     public abstract CreditsDao credits();
+    public abstract SalesReportDao salesReportDao();
     public abstract BanksDao banks();
     public abstract TermsDao terms();
 

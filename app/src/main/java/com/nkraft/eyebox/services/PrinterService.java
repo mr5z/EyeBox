@@ -36,6 +36,7 @@ public class PrinterService {
     public void disconnect() {
         if (deviceSocket != null && deviceSocket.isConnected()) {
             try {
+                closeOutputStream();
                 deviceSocket.close();
             }
             catch (IOException e) {
@@ -58,6 +59,10 @@ public class PrinterService {
         } catch (IOException e) {
             Debug.log("Error flushing stream: %s", e.getMessage());
         }
+    }
+
+    private void closeOutputStream() throws IOException {
+        deviceSocket.getOutputStream().close();
     }
 
     public void printText(String message, FontStyle fontStyle, TextAlignment textAlignment) {

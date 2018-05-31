@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface CreditsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCreditIds(List<Credit> credits);
+    void insertCredit(List<Credit> credits);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCredit(Credit credit);

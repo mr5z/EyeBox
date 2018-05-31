@@ -45,15 +45,15 @@ public interface PaymentsDao {
             "   customerId," +
             "   status," +
             "   customerName AS clientName, " +
-            "   prNo AS productNumber, " +
+            "   productNumber, " +
             "   checkDate AS payDate, " +
             "   SUM(amount) AS totalPayment " +
             "FROM " +
             "   Payments " +
-            "GROUP BY prNo")
+            "GROUP BY productNumber")
     List<PaymentGroup> getGroupedPayments();
 
-    @Query("SELECT * FROM Payments WHERE prNo = :productNumber")
+    @Query("SELECT * FROM Payments WHERE productNumber = :productNumber")
     List<Payment> getPaymentsByProductNumber(String productNumber);
 
     @Query("DELETE FROM Payments WHERE id = :paymentId")

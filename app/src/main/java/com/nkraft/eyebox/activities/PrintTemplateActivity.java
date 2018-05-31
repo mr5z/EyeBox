@@ -109,10 +109,11 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         template.addPrintData("PR No:       " + firstItem.getProductNumber());
         template.addPrintData("Date:        " + dateNow);
         template.addPrintData("Client:      " + firstItem.getCustomerName());
+        template.addPrintData("Check #:     " + firstItem.getCheckNo());
+        template.addPrintData("----------------------", TextAlignment.CENTER);
         for(Payment payment : payments) {
             template.addPrintData("Amount:      " + payment.getFormattedAmount());
             template.addPrintData("Sales ID:    " + payment.getSalesId());
-            template.addPrintData("Check #:     " + payment.getCheckNo());
             template.addPrintData("\n");
             totalAmount += payment.getAmount();
         }

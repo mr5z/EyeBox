@@ -11,12 +11,9 @@ import java.util.List;
 
 public class BankService extends BaseService {
 
-    private static BankService _instance;
+    private static BankService _instance = new BankService();
 
     public static BankService instance() {
-        if (_instance == null) {
-            _instance = new BankService();
-        }
         return _instance;
     }
 

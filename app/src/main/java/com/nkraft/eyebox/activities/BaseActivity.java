@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nkraft.eyebox.R;
+import com.nkraft.eyebox.models.User;
 import com.nkraft.eyebox.models.dao.ClientsDao;
 import com.nkraft.eyebox.models.dao.OrdersDao;
 import com.nkraft.eyebox.models.dao.PaymentsDao;
@@ -36,6 +37,8 @@ import com.nkraft.eyebox.models.dao.UserDao;
 import com.nkraft.eyebox.models.dao.VisitsDao;
 import com.nkraft.eyebox.models.dao.shit.BanksDao;
 import com.nkraft.eyebox.models.dao.shit.TermsDao;
+import com.nkraft.eyebox.services.AccountService;
+import com.nkraft.eyebox.services.LogService;
 import com.nkraft.eyebox.services.repositories.AppDatabase;
 import com.nkraft.eyebox.utils.Settings;
 import com.nkraft.eyebox.utils.ViewUtils;
@@ -255,6 +258,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         async(() -> {
             settings().clear();
             database().clearAllTables();
+        });
+    }
+
+    void uploadLog(String message, Object ...args) {
+        async(() -> {
+            User currentUser = AccountService.instance().currentUser;
+            LogService.instance().uploadLog(currentUser.getId(), String.format(message, args));
         });
     }
 

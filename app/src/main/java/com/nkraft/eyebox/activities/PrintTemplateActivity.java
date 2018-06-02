@@ -14,6 +14,7 @@ import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.models.shit.SalesReport;
 import com.nkraft.eyebox.services.FontStyle;
+import com.nkraft.eyebox.services.LogService;
 import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.services.TextAlignment;
 import com.nkraft.eyebox.utils.Formatter;
@@ -66,6 +67,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
     @Override
     public PagedResult<List<SalesReport>> onTaskExecute() {
         List<SalesReport> salesReports = database().salesReportDao().getAllSalesReports();
+
         return new PagedResult<>(salesReports, salesReports.size());
     }
 
@@ -78,6 +80,16 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
                 printTemplates.add(toPrintTemplate(salesReport));
             }
             setDataList(printTemplates);
+            notifyDataSetChanged();
+            if (result.data != null) {
+                uploadLog("PrintTemplateActivity data count: %d", result.data.size());
+            }
+            else {
+                uploadLog("PrintTemplateActivity data is null");
+            }
+        }
+        else {
+            showAlertDialog("Error", "Either no data or not yet synced");
         }
     }
 

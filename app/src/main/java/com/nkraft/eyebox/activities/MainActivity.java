@@ -354,6 +354,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             if (hasFlag(processTypes, ProcessType.SALES_REPORT)) {
                 PagedResult<List<SalesReport>> result = salesReportService.getAllSalesReport();
                 if (result.isSuccess()) {
+                    uploadLog("successfully synced SALES_REPORT. data size: %d", result.data.size());
                     database().salesReportDao().deleteAll();
                     database().salesReportDao().insertSalesReport(result.data);
                     updateProgress(++progress, processTypes);

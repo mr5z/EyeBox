@@ -34,6 +34,18 @@ abstract class RBaseService<T> {
         return KeyValue.make("action", value);
     }
 
+    KeyValue makeValue(String key, int value) {
+        return HttpUtil.KeyValue.make(key, value);
+    }
+
+    KeyValue makeValue(String key, long value) {
+        return HttpUtil.KeyValue.make(key, value);
+    }
+
+    KeyValue makeValue(String key, String value) {
+        return HttpUtil.KeyValue.make(key, value);
+    }
+
     PagedResult<T> getObject(KeyValue ...params) {
         try {
             String rawResponse = HttpUtil.get(servicePath, params);

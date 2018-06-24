@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
 
+import java.util.Objects;
+
 @Entity(tableName = "Sales")
 public class Sale implements IModel {
 
@@ -462,20 +464,24 @@ public class Sale implements IModel {
         isDisabled = disabled;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Sale other = (Sale) obj;
-        if (other == null) return false;
-        long id1 = getId();
-        long id2 = other.getId();
-        return id1 == id2;
-    }
-
     public double getTempAmount() {
         return tempAmount;
     }
 
     public void setTempAmount(double tempAmount) {
         this.tempAmount = tempAmount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sale sale = (Sale) o;
+        return id == sale.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

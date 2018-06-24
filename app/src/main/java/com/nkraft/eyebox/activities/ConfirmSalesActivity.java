@@ -24,6 +24,8 @@ import com.nkraft.eyebox.models.shit.Terms;
 import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.utils.Formatter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -258,7 +260,9 @@ public class ConfirmSalesActivity extends BaseActivity {
         }
         for(Sale sale : dataList) {
             if (!sale.isChecked()) {
-                sale.setDisabled(remainingPayment < sale.getTotalAmount());
+                Number n1 = new BigDecimal(remainingPayment).setScale(2, RoundingMode.HALF_UP);
+                Number n2 = new BigDecimal(sale.getTotalAmount()).setScale(2, RoundingMode.HALF_UP);
+                sale.setDisabled(n1.doubleValue() < n2.doubleValue());
             }
         }
     }

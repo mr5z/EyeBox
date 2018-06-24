@@ -148,15 +148,35 @@ public class TransactionDetailsDialog implements
 
 //        GregorianCalendar gc = new GregorianCalendar();
 //        gc.setTimeInMillis(transaction.getCheckDate());
+        int selectedBankIndex = getBankIndex(transaction.getBank());
+        int selectedTermsIndex = getTermsIndex(transaction.getTerms());
         editCheckDate.setOnClickListener(this);
-        spinnerBank.setSelection(transaction.getBank());
-        spinnerTerms.setSelection(transaction.getTerms());
+        if (selectedBankIndex >= 0)
+            spinnerBank.setSelection(selectedBankIndex);
+        if (selectedTermsIndex >= 0)
+            spinnerTerms.setSelection(selectedTermsIndex);
         txtProductNumber.setText(randomId());
         setCheckDate(transaction.getCheckDate());
         txtReceiver.setText(transaction.getClientName());
         editAmount.setText(Formatter.currency(transaction.getAmount(), false));
         editCheckNumber.setText(transaction.getCheckNumber());
         editOrderNumber.setText(transaction.getOrderNumber());
+    }
+
+    private int getBankIndex(int bankId) {
+        for (int i = 0;i < bankList.size(); ++i) {
+            if (bankId == bankList.get(i).getId())
+                return i;
+        }
+        return -1;
+    }
+
+    private int getTermsIndex(int termsId) {
+        for (int i = 0;i < termsList.size(); ++i) {
+            if (termsId == termsList.get(i).getId())
+                return i;
+        }
+        return -1;
     }
 
     private static String randomId() {

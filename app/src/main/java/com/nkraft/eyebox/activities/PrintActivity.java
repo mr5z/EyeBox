@@ -24,6 +24,7 @@ import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.services.FontStyle;
 import com.nkraft.eyebox.services.PrinterService;
+import com.nkraft.eyebox.utils.BitmapUtils;
 import com.nkraft.eyebox.utils.Debug;
 
 import java.io.ByteArrayOutputStream;
@@ -188,9 +189,13 @@ public class PrintActivity extends BaseActivity {
                 return;
             }
 
+            // NOTE setting this to 45 and above makes the printer memory corrupted
+            // on the succeeding prints
+            final int widthInMillimeter = 44 * 8;
+            final int heightInPixel = 255;
             List<PrintTemplate.Data> printData = printTemplate.getPrintData();
-            Bitmap header = resizeBitmap(getHeaderBitmap());
-            Bitmap footer = resizeBitmap(getFooterBitmap());
+            Bitmap header = BitmapUtils.resizeBitmapByHeight(getHeaderBitmap(), heightInPixel);
+            Bitmap footer = BitmapUtils.resizeBitmapByHeight(getFooterBitmap(), heightInPixel);
             if (header != null && !isEmptyBitmap(header)) {
                 printerService.printImage(header);
             }
@@ -238,10 +243,10 @@ public class PrintActivity extends BaseActivity {
     private Bitmap resizeBitmap(Bitmap bitmap) {
         if (bitmap == null)
             return null;
-//        float aspectRatio = bitmap.getWidth() /
-//                (float) bitmap.getHeight();
-        int width = 352;
-        int height = 255; //Math.round(width / aspectRatio);
+        float aspectRatio = bitmap.getWidth() /
+                (float) bitmap.getHeight();
+        int width = 255;
+        int height = Math.round(width / aspectRatio);
 
         return Bitmap.createScaledBitmap(
                 bitmap, width, height, false);

@@ -74,6 +74,9 @@ public class SalesService extends BaseService {
                 int itemcount = jsonObject.getInt("itemcount");
                 Sale sale = new Sale();
                 sale.setId(id);
+                if (customerid == 10220071031071L) {
+                    Debug.log("SALES { id: %d, customerId: %d, totalAmount: %f }", id, customerid, totalamount);
+                }
                 sale.setCustomerId(customerid);
                 sale.setCompanyName(companyname);
                 sale.setAgent(agent);
@@ -95,7 +98,7 @@ public class SalesService extends BaseService {
                 sale.setBranchNo(branchno);
                 sale.setDebit(debit);
                 sale.setPayAmount(payamount);
-                sale.setBalance(amount); // TODO this was previously 'balance'
+                sale.setBalance(balance); // TODO this was previously 'balance'
                 sale.setSyncX(syncx);
                 sale.setModified(modified);
                 sale.setDateModified(datemodified);

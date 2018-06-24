@@ -109,8 +109,12 @@ public class PrinterService {
 
     //print photo
     public void printImage(Bitmap bitmap) {
-        if(bitmap != null){
+        if(bitmap != null) {
             byte[] command = PrinterUtils.decodeBitmap(bitmap);
+            if (command == null) {
+                Debug.log("Error printing. Invalid image dimension");
+                return;
+            }
             try {
                 write(PrinterCommands.ESC_ALIGN_CENTER);
                 printBytes(command);

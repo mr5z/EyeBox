@@ -78,11 +78,12 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
 
     void showDialogDetail(Transaction transaction) {
         async(() -> {
-            List<Bank> bankList = database().banks().getBanksByClientId(transaction.getId());
+            Transaction clone = cloneTransaction(transaction);
+            List<Bank> bankList = database().banks().getBanksByClientId(clone.getId());
             List<Terms> termsList = database().terms().getAllTerms();
-            transaction.setAmount(transaction.getBalance()); // haxx
+            clone.setAmount(clone.getBalance()); // haxx
             runOnUiThread(() -> {
-                TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, transaction, bankList, termsList);
+                TransactionDetailsDialog dialog = new TransactionDetailsDialog(this, clone, bankList, termsList);
                 dialog.setDialogClickListener(this::goToConfirmSalesActivity);
                 dialog.show();
             });
@@ -97,5 +98,21 @@ public class TransactionsActivity extends ListActivity<Transaction> implements
         Intent intent = new Intent(this, ConfirmSalesActivity.class);
         intent.putExtra("transaction", transaction);
         startActivity(intent);
+    }
+
+    Transaction cloneTransaction(Transaction transaction) {
+        Transaction clone = new Transaction(transaction.getId());
+        clone.setProductNumber(transaction.getProductNumber());
+        clone.setCheckNumber(transaction.getCheckNumber());
+        clone.setOrderNumber(transaction.getOrderNumber());
+        clone.setClientAddress(transaction.getClientAddress());
+        clone.setClientName(transaction.getClientName());
+        clone.setProductNumber(transaction.getClientName());
+        clone.setAmount(transaction.getAmount());
+        clone.setBalance(transaction.getBalance());
+        clone.setBank(transaction.getBank());
+        clone.setTerms(transaction.getTerms());
+        clone.setCheckDate(transaction.getCheckDate());
+        return clone;
     }
 }

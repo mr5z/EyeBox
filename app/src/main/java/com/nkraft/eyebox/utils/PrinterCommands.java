@@ -13,6 +13,7 @@ public class PrinterCommands {
     public static final byte CAN = 0x18;
     public static final byte CLR = 0x0C;
     public static final byte EOT = 0x04;
+    public static final byte[] CLEAR_RECOVER = { 0x10, 0x05, 0x02 };
 
     public static final byte[] INIT = {27, 64};
     public static byte[] FEED_LINE = {10};

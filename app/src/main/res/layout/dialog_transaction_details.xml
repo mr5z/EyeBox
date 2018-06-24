@@ -12,10 +12,12 @@
         android:text="PR No. :" />
 
     <TextView
+        android:text="12321321-12312"
         android:id="@+id/dtd_txt_product_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,10 +25,18 @@
         android:text="Received From:" />
 
     <TextView
+        android:text="ANDRES BONIFACIO"
         android:id="@+id/dtd_txt_receiver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#ccc" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -103,7 +113,9 @@
             android:id="@+id/dtd_edit_check_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:inputType="text"
+            android:maxLines="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -121,7 +133,9 @@
             android:id="@+id/dtd_edit_order_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:inputType="text"
+            android:maxLines="1"  />
 
     </LinearLayout>
 

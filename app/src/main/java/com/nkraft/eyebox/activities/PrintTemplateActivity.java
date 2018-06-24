@@ -13,8 +13,6 @@ import com.nkraft.eyebox.adapters.PrintTemplateAdapter;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.models.shit.SalesReport;
-import com.nkraft.eyebox.services.FontStyle;
-import com.nkraft.eyebox.services.LogService;
 import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.services.TextAlignment;
 import com.nkraft.eyebox.utils.Formatter;
@@ -99,17 +97,17 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         if (pixels == null || pixels.length() <= 0)
             return;
         Bitmap bitmap = fromByteArrayToBitmap(pixels.getBytes());
-        bitmap = resizeBitmap(bitmap);
+        bitmap = resizeBitmapByHeight(bitmap, 64);
         template.addPrintData(bitmap);
     }
 
     //TODO
-    private void addFooterContent(PrintTemplate template) {
+    private void resizeBitmapByHeight(PrintTemplate template) {
         String pixels = template.getHtmlFooter();
         if (pixels == null || pixels.length() <= 0)
             return;
         Bitmap bitmap = fromByteArrayToBitmap(pixels.getBytes());
-        bitmap = resizeBitmap(bitmap);
+        bitmap = resizeBitmapByHeight(bitmap, 64);
         template.addPrintData(bitmap);
     }
 
@@ -122,14 +120,15 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         template.addPrintData("Date:        " + dateNow);
         template.addPrintData("Client:      " + firstItem.getCustomerName());
         template.addPrintData("Check #:     " + firstItem.getCheckNo());
-        template.addPrintData("----------------------", TextAlignment.CENTER);
+        template.addPrintData("________________________________", TextAlignment.CENTER);
+        template.addPrintData("\n");
         for(Payment payment : payments) {
             template.addPrintData("Amount:      " + payment.getFormattedAmount());
             template.addPrintData("Sales ID:    " + payment.getSalesId());
             template.addPrintData("\n");
             totalAmount += payment.getAmount();
         }
-        template.addPrintData("Total: " + Formatter.currency(totalAmount), FontStyle.BOLD_MEDIUM);
+        template.addPrintData("Total: " + Formatter.currency(totalAmount));
     }
 
     private PrintTemplate toPrintTemplate(SalesReport salesReport) {
@@ -152,7 +151,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         return BitmapFactory.decodeByteArray(pixels, 0, pixels.length);
     }
 
-    private byte[] fromBitmapToByArray(Bitmap bitmap) {
+    private byte[] fromBitmapToByArray(Bitmap bitmap) {;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
@@ -160,10 +159,15 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         return byteArray;
     }
 
-    private Bitmap resizeBitmap(Bitmap bitmap) {
+    private Bitmap resizeBitmapByHeight(Bitmap bitmap, int height) {
         float aspectRatio = bitmap.getWidth() / (float) bitmap.getHeight();
-        int height = 64;
         int width = Math.round(height * aspectRatio);
+        return Bitmap.createScaledBitmap(bitmap, width, height, false);
+    }
+
+    private Bitmap resizeBitmapByWidth(Bitmap bitmap, int width) {
+        float aspectRatio = bitmap.getWidth() / (float) bitmap.getHeight();
+        int height = Math.round(width / aspectRatio);
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 

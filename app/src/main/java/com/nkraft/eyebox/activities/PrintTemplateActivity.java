@@ -79,6 +79,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
             }
             setDataList(printTemplates);
             notifyDataSetChanged();
+            //noinspection ConstantConditions
             if (result.data != null) {
                 uploadLog("PrintTemplateActivity data count: %d", result.data.size());
             }
@@ -151,7 +152,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         return BitmapFactory.decodeByteArray(pixels, 0, pixels.length);
     }
 
-    private byte[] fromBitmapToByArray(Bitmap bitmap) {;
+    private byte[] fromBitmapToByArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();

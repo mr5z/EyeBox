@@ -5,9 +5,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = "Products")

@@ -13,7 +13,6 @@ import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Visit;
 import com.nkraft.eyebox.utils.Debug;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 

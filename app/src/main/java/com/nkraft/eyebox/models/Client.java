@@ -1,15 +1,9 @@
 package com.nkraft.eyebox.models;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.nkraft.eyebox.utils.Formatter;
-
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = "Clients")

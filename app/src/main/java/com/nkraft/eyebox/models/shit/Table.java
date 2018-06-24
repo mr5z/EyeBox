@@ -1,7 +1,5 @@
 package com.nkraft.eyebox.models.shit;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 

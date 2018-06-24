@@ -13,9 +13,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SketchView extends View {
 
     PointF touchDownPoint;

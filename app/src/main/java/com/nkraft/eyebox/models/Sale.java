@@ -3,7 +3,6 @@ package com.nkraft.eyebox.models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;

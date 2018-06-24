@@ -7,8 +7,6 @@ import android.os.Parcelable;
 import com.nkraft.eyebox.services.FontStyle;
 import com.nkraft.eyebox.services.TextAlignment;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 

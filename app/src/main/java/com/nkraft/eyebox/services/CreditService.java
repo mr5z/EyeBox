@@ -1,7 +1,6 @@
 package com.nkraft.eyebox.services;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nkraft.eyebox.models.Credit;
 import com.nkraft.eyebox.utils.HttpUtil;
 

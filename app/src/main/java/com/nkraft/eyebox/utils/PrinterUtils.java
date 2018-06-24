@@ -114,8 +114,7 @@ public class PrinterUtils {
         for (String hexStr : list) {
             commandList.add(hexStringToBytes(hexStr));
         }
-        byte[] bytes = sysCopy(commandList);
-        return bytes;
+        return sysCopy(commandList);
     }
 
     private static byte[] hexStringToBytes(String hexString) {

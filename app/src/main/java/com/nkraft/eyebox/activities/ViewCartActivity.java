@@ -3,9 +3,7 @@ package com.nkraft.eyebox.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;

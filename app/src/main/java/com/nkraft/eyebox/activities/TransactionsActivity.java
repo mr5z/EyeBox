@@ -3,7 +3,6 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -16,7 +15,6 @@ import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TransactionsActivity extends ListActivity<Transaction> implements

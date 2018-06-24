@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
-import com.nkraft.eyebox.services.FontStyle;
 import com.nkraft.eyebox.services.PrinterService;
 import com.nkraft.eyebox.utils.BitmapUtils;
 import com.nkraft.eyebox.utils.Debug;
@@ -324,9 +323,7 @@ public class PrintActivity extends BaseActivity {
             deviceNames[i] = device.getName();
         }
 
-        builder.setItems(deviceNames, (dialog, which) -> {
-            onDeviceSelect(deviceList.get(which));
-        });
+        builder.setItems(deviceNames, (dialog, which) -> onDeviceSelect(deviceList.get(which)));
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();

@@ -6,24 +6,16 @@ import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.User;
 import com.nkraft.eyebox.utils.HttpUtil;
 
-import org.json.JSONObject;
-
 import java.util.List;
-
-import static com.nkraft.eyebox.utils.HttpUtil.get;
 
 public class PaymentService extends RBaseService<Payment> {
 
-    private static PaymentService _instance;
-
-    private PaymentService(String servicePath) {
-        super(servicePath);
+    private PaymentService() {
+        super("payments.php");
     }
 
+    private static PaymentService _instance = new PaymentService();
     public static PaymentService instance() {
-        if (_instance == null) {
-            _instance = new PaymentService("payments.php");
-        }
         return _instance;
     }
 

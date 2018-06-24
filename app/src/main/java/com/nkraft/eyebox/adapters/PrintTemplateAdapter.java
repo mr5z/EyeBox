@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class PrintTemplateAdapter extends BaseListAdapter<PrintTemplateAdapter.ViewHolder, PrintTemplate> {

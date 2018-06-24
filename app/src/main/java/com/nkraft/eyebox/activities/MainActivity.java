@@ -396,9 +396,12 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 if (!file.exists())
                     continue;
                 String path = visitService.getServicePath() + "?action=upload";
-                HttpUtil.uploadFile(path, "signature", file, (response, exception) -> {
-                    Debug.log("response: %s, exception: %s", response, exception);
-                }, HttpUtil.KeyValue.make("visitId", visit.getId()));
+                HttpUtil.uploadFile(path,
+                    "signature",
+                    file,
+                    (response, exception) -> Debug.log("response: %s, exception: %s", response, exception),
+                    HttpUtil.KeyValue.make("visitId", visit.getId())
+                );
             }
         });
     }

@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.IModel;
 import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
-import java.util.Locale;
 
 public abstract class BaseListAdapter<
         TViewHolder extends RecyclerView.ViewHolder,

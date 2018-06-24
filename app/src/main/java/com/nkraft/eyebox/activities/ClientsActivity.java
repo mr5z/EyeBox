@@ -3,7 +3,6 @@ package com.nkraft.eyebox.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
@@ -12,10 +11,7 @@ import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.utils.TaskWrapper;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class ClientsActivity extends ListActivity<Client>
         implements

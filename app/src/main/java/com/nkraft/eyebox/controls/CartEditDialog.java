@@ -64,7 +64,7 @@ public class CartEditDialog implements DialogInterface.OnClickListener, View.OnC
                 int newQuantity = Integer.parseInt(strQuantity);
                 clickListener.onConfirmEdit(orderId, false, newQuantity, anyBrand);
             }
-            catch (NumberFormatException e) {
+            catch (NumberFormatException ignored) {
 
             }
         }

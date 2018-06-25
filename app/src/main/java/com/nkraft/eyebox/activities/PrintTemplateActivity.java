@@ -79,12 +79,7 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
             }
             setDataList(printTemplates);
             notifyDataSetChanged();
-            if (result.data != null) {
-                uploadLog("PrintTemplateActivity data count: %d", result.data.size());
-            }
-            else {
-                uploadLog("PrintTemplateActivity data is null");
-            }
+            uploadLog("PrintTemplateActivity data count: %d", result.data.size());
         }
         else {
             showAlertDialog("Error", "Either no data or not yet synced");

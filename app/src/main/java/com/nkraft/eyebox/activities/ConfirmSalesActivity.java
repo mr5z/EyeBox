@@ -183,7 +183,8 @@ public class ConfirmSalesActivity extends BaseActivity {
             long id = generateId(++idPrefixer);
             Payment payment = new Payment();
             payment.setId(id);
-            payment.setSalesId(generateId((long) (Math.random() * 1000)));
+            payment.setSalesId(sale.getId());
+            payment.setAmount(sale.getAmount());
             payment.setReceivedBy(currentUser.getId());
             payment.setReceiverName(currentUser.getName());
             payment.setBranchNo(currentUser.getAssignedBranch());
@@ -196,7 +197,6 @@ public class ConfirmSalesActivity extends BaseActivity {
             payment.setBankName(transaction.getBank());
             payment.setCustomerName(transaction.getClientName());
             payment.setCheckDate(transaction.getCheckDate());
-            payment.setAmount(sale.getAmount());
             payment.setStatus("unsubmitted");
             checkedPayments.add(payment);
         }

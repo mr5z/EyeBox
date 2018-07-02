@@ -73,15 +73,25 @@ public class PrinterUtils {
             heightHexString = "0" + heightHexString;
         }
         heightHexString = heightHexString + "00";
-//        String widthHexString = String.format("%02x00", bmpWidth);
-//        String heightHexString = String.format("%04x00", bmpHeight);
-
-        String commandHexString = "1D763000";
+//        String widthHexString = String.format("%04x", bmpWidth);
+//        String heightHexString = String.format("%04x", bmpHeight);
+//        widthHexString = toLittleEndian(widthHexString);
+//        heightHexString = toLittleEndian(heightHexString);
+        String normalMode = "00";
+        String commandHexString = "1D7630" + normalMode;
         List<String> commandList = new ArrayList<>();
         commandList.add(commandHexString+widthHexString+heightHexString);
         commandList.addAll(bmpHexList);
 
         return hexList2Byte(commandList);
+    }
+
+    static String toLittleEndian(String bigEndian) {
+        String littleEndian = "";
+        for (int i = bigEndian.length() - 2; i >= 0; i -= 2) {
+            littleEndian += bigEndian.substring(i, i + 2);
+        }
+        return littleEndian;
     }
 
     private static List<String> binaryListToHexStringList(List<String> list) {

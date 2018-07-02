@@ -77,23 +77,26 @@ public class PaymentsActivity extends ListActivity<Payment> implements
         }
         int position = getIndexOf(payment);
         async(() -> {
-            int rows = database().payments().deletePayment(payment.getId());
+            int rows = database().payments().deleteByProductNumber(payment.getProductNumber());
             if (rows > 0) {
                 removeDataAt(position);
                 runOnUiThread(() -> notifyItemRemoved(position));
             }
             else {
-                showSnackbar(
-                    "There's a problem deleting entry",
-                    "Retry", (v) -> deleteItem(payment)
+                runOnUiThread(() ->
+                    showSnackbar(
+                        "There's a problem deleting entry",
+                        "Retry", (v) -> deleteItem(payment)
+                    )
                 );
             }
         });
     }
 
+    int counter;
     Payment toPayment(PaymentGroup paymentGroup) {
         Payment payment = new Payment();
-        payment.setId(new Date().getTime());
+        payment.setId(new Date().getTime() + (++counter));
         payment.setCustomerId(paymentGroup.getCustomerId());
         payment.setCustomerName(paymentGroup.getClientName());
         payment.setProductNumber(paymentGroup.getProductNumber());

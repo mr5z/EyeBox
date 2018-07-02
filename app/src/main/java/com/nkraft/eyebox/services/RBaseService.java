@@ -27,11 +27,11 @@ abstract class RBaseService<T> {
     }
 
     KeyValue identity(long userId) {
-        return KeyValue.make("userId", String.valueOf(userId));
+        return makeValue("userId", String.valueOf(userId));
     }
 
     KeyValue action(String value) {
-        return KeyValue.make("action", value);
+        return makeValue("action", value);
     }
 
     KeyValue makeValue(String key, int value) {

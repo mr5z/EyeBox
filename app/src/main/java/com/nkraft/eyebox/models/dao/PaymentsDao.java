@@ -59,6 +59,9 @@ public interface PaymentsDao {
     @Query("DELETE FROM Payments WHERE id = :paymentId")
     int deletePayment(long paymentId);
 
+    @Query("DELETE FROM Payments WHERE productNumber = :productNumber")
+    int deleteByProductNumber(String productNumber);
+
     @Query("DELETE FROM Payments")
     int deleteAll();
 

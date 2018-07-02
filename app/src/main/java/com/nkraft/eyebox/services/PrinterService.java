@@ -45,7 +45,7 @@ public class PrinterService {
         }
     }
 
-    private void write(byte[] data) throws IOException {
+    public void write(byte[] data) throws IOException {
         deviceSocket.getOutputStream().write(data);
     }
 

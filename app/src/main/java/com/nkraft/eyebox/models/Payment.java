@@ -459,7 +459,11 @@ public class Payment implements Parcelable, IModel {
     }
 
     public boolean isSafeToDelete() {
-        return status != null && (status.toLowerCase().equals("yes") || status.toLowerCase().equals("unsubmitted"));
+        return status != null && (status.toLowerCase().equals("ok") || status.toLowerCase().equals("unsubmitted"));
+    }
+
+    public boolean isStatusOk() {
+        return status != null && status.toLowerCase().equals("ok");
     }
 
     @Override

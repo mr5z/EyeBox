@@ -35,7 +35,7 @@ public class PaymentService extends RBaseService<Payment> {
     }
 
     public PagedResult<List<Payment>> checkPaymentsStatus(long clientId) {
-        return getList(action("status"), HttpUtil.KeyValue.make("clientId", clientId));
+        return getList(action("status"), makeValue("clientId", clientId));
     }
 
 }

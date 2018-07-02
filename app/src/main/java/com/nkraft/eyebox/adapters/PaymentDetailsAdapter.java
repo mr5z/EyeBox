@@ -37,7 +37,7 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
         holder.txtBranch.setText(String.valueOf(data.getBranchNo()));
         holder.txtProductNumber.setText(data.getProductNumber());
         holder.txtOrderNumber.setText(data.getOrNo());
-        holder.statusView.setBackgroundColor(toStatusColor(data.getStatus()));
+        holder.statusView.setBackgroundColor(toStatusColor(data));
     }
 
     @Override
@@ -45,11 +45,8 @@ public class PaymentDetailsAdapter extends BaseListAdapter<PaymentDetailsAdapter
         return new ViewHolder(rowView);
     }
 
-    private int toStatusColor(String status) {
-        if (status != null) {
-            return status.equals("OK") ? Color.GREEN : Color.RED;
-        }
-        return Color.RED;
+    private int toStatusColor(Payment payment) {
+        return payment.isStatusOk() ? Color.GREEN : Color.RED;
     }
 
     @Override

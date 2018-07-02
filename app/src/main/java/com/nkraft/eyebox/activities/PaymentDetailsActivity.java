@@ -61,7 +61,7 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
 
     void removePaymentAsync(Payment payment, Iterator<Payment> iterator) {
         if (!payment.isSafeToDelete()) {
-            showAlertDialog("Get Rekt m8", "");
+            showAlertDialog("Not allowed", "Unable to delete");
             return;
         }
         async(() -> {

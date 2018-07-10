@@ -20,10 +20,11 @@ public class PaymentService extends RBaseService<Payment> {
     }
 
     public PagedResult<List<Payment>> getPaymentsByUser(User user) {
-        return getList(key(),
+        return getList(
+                key(),
                 identity(user.getId()),
                 action("get"),
-                HttpUtil.KeyValue.make("branch", user.getAssignedBranch()));
+                makeValue("branch", user.getAssignedBranch()));
     }
 
     public PagedResult<Payment> submitPayments(List<Payment> payments) {
@@ -31,11 +32,13 @@ public class PaymentService extends RBaseService<Payment> {
         String paymentItemValues = gson.toJson(payments);
         return postObject(
                 action("submit"),
-                HttpUtil.KeyValue.make("payments", paymentItemValues));
+                makeValue("payments", paymentItemValues));
     }
 
     public PagedResult<List<Payment>> checkPaymentsStatus(long clientId) {
-        return getList(action("status"), makeValue("clientId", clientId));
+        return getList(
+                action("status"),
+                makeValue("clientId", clientId));
     }
 
 }

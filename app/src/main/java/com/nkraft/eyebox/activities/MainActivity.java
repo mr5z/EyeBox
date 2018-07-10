@@ -321,18 +321,20 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.ORDERS)) {
-                List<Payment> payments = database().payments().getAllPayments();
-                if (!payments.isEmpty()) {
-                    PagedResult<Payment> result = paymentService.submitPayments(payments);
-                    if (result.isSuccess()) {
-                        updateProgress(++progress, processTypes);
-                    } else {
-                        success = false;
-                    }
-                }
-                else {
-                    updateProgress(++progress, processTypes);
-                }
+                // TODO submit orders
+//                List<Payment> payments = database().payments().getAllPayments();
+//                if (!payments.isEmpty()) {
+//                    PagedResult<Payment> result = paymentService.submitPayments(payments);
+//                    if (result.isSuccess()) {
+//                        updateProgress(++progress, processTypes);
+//                    } else {
+//                        success = false;
+//                    }
+//                }
+//                else {
+//                    updateProgress(++progress, processTypes);
+//                }
+                updateProgress(++progress, processTypes);
             }
 
             if (hasFlag(processTypes, ProcessType.CREDITS)) {

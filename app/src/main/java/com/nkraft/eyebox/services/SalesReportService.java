@@ -9,12 +9,9 @@ public class SalesReportService extends RBaseService<SalesReport> {
         super("sales_report.php");
     }
 
-    private static SalesReportService _instance;
+    private static SalesReportService _instance = new SalesReportService();
 
     public static SalesReportService instance() {
-        if (_instance == null) {
-            _instance = new SalesReportService();
-        }
         return _instance;
     }
 

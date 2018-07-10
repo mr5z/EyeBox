@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Eyebox</string>
+    <string name="app_name" translatable="false">eyeBOX</string>
     <string name="action_settings">Settings</string>
     <string name="proceed">proceed</string>
     <string name="search">Search</string>

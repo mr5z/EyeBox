@@ -52,31 +52,30 @@ public class PrinterUtils {
 
         List<String> bmpHexList = binaryListToHexStringList(list);
 
-        String widthHexString = Integer
-                .toHexString(bmpWidth % 8 == 0 ? bmpWidth / 8
-                        : (bmpWidth / 8 + 1));
-
-        if (widthHexString.length() > 2) {
-            Debug.log("decodeBitmap error. width is too large");
-            return null;
-        } else if (widthHexString.length() == 1) {
-            widthHexString = "0" + widthHexString;
-        }
-        widthHexString = widthHexString + "00";
-
-        String heightHexString = Integer.toHexString(bmpHeight);
-
-        if (heightHexString.length() > 2) {
-            Debug.log("decodeBitmap error. height is too large");
-            return null;
-        } else if (heightHexString.length() == 1) {
-            heightHexString = "0" + heightHexString;
-        }
-        heightHexString = heightHexString + "00";
-//        String widthHexString = String.format("%04x", bmpWidth);
-//        String heightHexString = String.format("%04x", bmpHeight);
-//        widthHexString = toLittleEndian(widthHexString);
-//        heightHexString = toLittleEndian(heightHexString);
+//        String widthHexString = Integer
+//                .toHexString(bmpWidth % 8 == 0 ? bmpWidth / 8
+//                        : (bmpWidth / 8 + 1));
+//
+//        if (widthHexString.length() > 2) {
+//            Debug.log("decodeBitmap error. width is too large");
+//            return null;
+//        } else if (widthHexString.length() == 1) {
+//            widthHexString = "0" + widthHexString;
+//        }
+//        widthHexString = widthHexString + "00";
+//
+//        String heightHexString = Integer.toHexString(bmpHeight);
+//
+//        if (heightHexString.length() > 2) {
+//            Debug.log("decodeBitmap error. height is too large");
+//            return null;
+//        } else if (heightHexString.length() == 1) {
+//            heightHexString = "0" + heightHexString;
+//        }
+//        heightHexString = heightHexString + "00";
+        String widthHexString = String.format("%02x00", bmpWidth % 8 == 0 ? bmpWidth / 8 : (bmpWidth / 8 + 1));
+        String heightHexString = String.format("%04x", bmpHeight);
+        heightHexString = toLittleEndian(heightHexString);
         String normalMode = "00";
         String commandHexString = "1D7630" + normalMode;
         List<String> commandList = new ArrayList<>();

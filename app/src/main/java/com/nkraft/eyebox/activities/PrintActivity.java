@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.services.PrinterService;
-import com.nkraft.eyebox.services.PrinterService2;
 import com.nkraft.eyebox.utils.BitmapUtils;
 import com.nkraft.eyebox.utils.Debug;
 
@@ -189,20 +188,11 @@ public class PrintActivity extends BaseActivity {
                 return;
             }
 
-            // NOTE setting this to 45 and above makes the printer memory corrupted
-            // on the succeeding prints
-            final int widthInMillimeter = 44 * 8;
-            final int heightInPixel = 232;
+            final int fixedSize = 376;
             List<PrintTemplate.Data> printData = printTemplate.getPrintData();
-            Bitmap header = BitmapUtils.resizeBitmapByWidth(getHeaderBitmap(), heightInPixel);
-            Bitmap footer = BitmapUtils.resizeBitmapByWidth(getFooterBitmap(), heightInPixel);
+            Bitmap header = BitmapUtils.resizeBitmapByWidth(getHeaderBitmap(), fixedSize);
+            Bitmap footer = BitmapUtils.resizeBitmapByWidth(getFooterBitmap(), fixedSize);
             if (header != null && !isEmptyBitmap(header)) {
-//                PrinterService2 printerService2 = new PrinterService2();
-//                try {
-//                    printerService2.print_image(header);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
                 printerService.printImage(header);
             }
             for(int i = 0;i < printData.size(); ++i) {
@@ -217,7 +207,7 @@ public class PrintActivity extends BaseActivity {
                 }
             }
             if (footer != null && !isEmptyBitmap(footer)) {
-//                printerService.printImage(footer);
+                printerService.printImage(footer);
             }
             printerService.printNewLine();
             printerService.printNewLine();

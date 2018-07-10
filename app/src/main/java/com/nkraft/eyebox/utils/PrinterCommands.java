@@ -29,7 +29,6 @@ public class PrinterCommands {
 
     public static byte[] SELECT_CYRILLIC_CHARACTER_CODE_TABLE = {0x1B, 0x74, 0x11};
 
-    public static byte[] SELECT_BIT_IMAGE_MODE = {0x1B, 0x2A, 33, -128, 0};
     public static byte[] SET_LINE_SPACING_24 = {0x1B, 0x33, 24};
     public static byte[] SET_LINE_SPACING_30 = {0x1B, 0x33, 30};
 
@@ -38,9 +37,13 @@ public class PrinterCommands {
     public static byte[] TRANSMIT_DLE_ERROR_STATUS = {0x10, 0x04, 0x03};
     public static byte[] TRANSMIT_DLE_ROLL_PAPER_SENSOR_STATUS = {0x10, 0x04, 0x04};
 
+    public static final byte[] PRINT_AND_FEED_PAPER = new byte[] { 0x0A };
+    public static final byte[] INITIALIZE_PRINTER = new byte[] { 0x1B,0x40 };
+    public static final byte[] SELECT_BIT_IMAGE_MODE = new byte[] { 0x1B, 0x2A };
+    public static final byte[] SET_LINE_SPACING = new byte[] { 0x1B, 0x33 };
+
     public static final byte[] ESC_FONT_COLOR_DEFAULT = new byte[] { 0x1B, 'r',0x00 };
-    public static final byte[] FS_FONT_ALIGN = new byte[] { 0x1C, 0x21, 1, 0x1B,
-            0x21, 1 };
+    public static final byte[] FS_FONT_ALIGN = new byte[] { 0x1C, 0x21, 1, 0x1B, 0x21, 0x01 };
     public static final byte[] ESC_ALIGN_LEFT = new byte[] { 0x1b, 'a', 0x00 };
     public static final byte[] ESC_ALIGN_RIGHT = new byte[] { 0x1b, 'a', 0x02 };
     public static final byte[] ESC_ALIGN_CENTER = new byte[] { 0x1b, 'a', 0x01 };

@@ -1,5 +1,6 @@
 package com.nkraft.eyebox.services;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.BitSet;
+import java.util.UUID;
 
 public class PrinterService {
 
@@ -28,12 +30,33 @@ public class PrinterService {
         return _instance;
     }
 
-    public void connect(BluetoothDevice device) throws
-            NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException, IOException {
-        Method m = device.getClass().getMethod("createRfcommSocket", Integer.TYPE);
-        deviceSocket = (BluetoothSocket)m.invoke(device, 1);
+    public boolean connect(BluetoothDevice device) throws IOException {
+        try {
+            deviceSocket = getBluetoothSocket1(device);
+        }
+        catch (IOException e) {
+            // fallback
+            try {
+                deviceSocket = getBluetoothSocket2(device);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e1) {
+                Debug.log(e1.getMessage());
+            }
+        }
+        BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
         deviceSocket.connect();
+        return deviceSocket.isConnected();
+    }
+
+    private BluetoothSocket getBluetoothSocket1(BluetoothDevice device) throws IOException {
+        UUID uuid = device.getUuids()[0].getUuid();
+        return device.createRfcommSocketToServiceRecord(uuid);
+    }
+
+    private BluetoothSocket getBluetoothSocket2(BluetoothDevice device) throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        //noinspection JavaReflectionMemberAccess
+        Method m = device.getClass().getMethod("createRfcommSocket", Integer.TYPE);
+        return (BluetoothSocket)m.invoke(device, 1);
     }
 
     public void disconnect() {
@@ -45,15 +68,6 @@ public class PrinterService {
             catch (IOException e) {
                 Debug.log("Error closing socket connection: %s", e.getMessage());
             }
-        }
-    }
-
-    public OutputStream getOutputStream() {
-        try {
-            return deviceSocket.getOutputStream();
-        } catch (IOException e) {
-            Debug.log("IOException: %s", e.getMessage());
-            return null;
         }
     }
 
@@ -112,7 +126,7 @@ public class PrinterService {
                     break;
             }
             write(message.getBytes());
-            write(PrinterCommands.LF);
+            write(PrinterCommands.FEED_LINE);
         }
         catch (IOException e) {
             Debug.log("Error: %s", e.getMessage());
@@ -233,6 +247,15 @@ public class PrinterService {
             write(PrinterCommands.LF);
         } catch (IOException e) {
             Debug.log("Error printing new line: %s", e.getMessage());
+        }
+    }
+
+    public void printNewLine(byte lineCount) {
+        try {
+            write(new byte[] { 0x1b, 0x64, lineCount });
+        }
+        catch (IOException e) {
+            Debug.log("Error printing new line(%d): %s", lineCount, e.getMessage());
         }
     }
 

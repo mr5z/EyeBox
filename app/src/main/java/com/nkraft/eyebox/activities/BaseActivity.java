@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     static ThreadPoolExecutor threadPoolExecutor =
-            (ThreadPoolExecutor)Executors.newFixedThreadPool(3);
+            (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
 
     public AppDatabase database() {
         return AppDatabase.instance(this);

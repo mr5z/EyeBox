@@ -16,7 +16,7 @@ public class PrinterCommands {
     public static final byte[] CLEAR_RECOVER = { 0x10, 0x05, 0x02 };
 
     public static final byte[] INIT = {27, 64};
-    public static byte[] FEED_LINE = {10};
+    public static byte[] FEED_LINE = { 0x0A };
 
     public static byte[] SELECT_FONT_A = {20, 33, 0};
 

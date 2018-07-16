@@ -8,15 +8,14 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.nkraft.eyebox.utils.Formatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 @Entity(tableName = "Orders")
 public class Order implements Parcelable, IModel {
-
-    @Ignore
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyy", Locale.getDefault());
 
     @Ignore
     private static long idCounter;
@@ -112,7 +111,7 @@ public class Order implements Parcelable, IModel {
     }
 
     public String getFormattedDateOrdered() {
-        return simpleDateFormat.format(new Date(dateOrdered));
+        return Formatter.date(dateOrdered);
     }
 
     public String getClientName() {

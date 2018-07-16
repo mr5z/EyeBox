@@ -15,6 +15,8 @@ import com.nkraft.eyebox.controls.SyncDialog;
 import com.nkraft.eyebox.controls.dialogs.ConfirmLogoutDialog;
 import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Credit;
+import com.nkraft.eyebox.models.Order;
+import com.nkraft.eyebox.models.Order2;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.Product;
 import com.nkraft.eyebox.models.Sale;
@@ -28,6 +30,7 @@ import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.services.BankService;
 import com.nkraft.eyebox.services.ClientService;
 import com.nkraft.eyebox.services.CreditService;
+import com.nkraft.eyebox.services.OrderService;
 import com.nkraft.eyebox.services.PagedResult;
 import com.nkraft.eyebox.services.PaymentService;
 import com.nkraft.eyebox.services.ProductService;
@@ -217,16 +220,6 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     //TODO fix this
     void performSync(int processTypes) {
         async(() -> {
-            ProductService productService = ProductService.instance();
-            ClientService clientService = ClientService.instance();
-            TransactionService transactionService = TransactionService.instance();
-            BankService bankService = BankService.instance();
-            TermsService termsService = TermsService.instance();
-            SalesService salesService = SalesService.instance();
-            PaymentService paymentService = PaymentService.instance();
-            CreditService creditService = CreditService.instance();
-            VisitService visitService = VisitService.instance();
-            SalesReportService salesReportService = SalesReportService.instance();
 
             User user = accountService.currentUser;
             int assignedBranch = user.getAssignedBranch();
@@ -235,6 +228,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             int progress = 0;
 
             if (hasFlag(processTypes, ProcessType.BANKS)) {
+                BankService bankService = BankService.instance();
                 PagedResult<List<Bank>> result = bankService.getBanks(user.getAssignedBranch());
                 if (result.isSuccess()) {
                     database().banks().deleteAll();
@@ -246,6 +240,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.TERMS)) {
+                TermsService termsService = TermsService.instance();
                 PagedResult<List<Terms>> result = termsService.getTerms();
                 if (result.isSuccess()) {
                     database().terms().deleteAll();
@@ -257,6 +252,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.PRODUCTS)) {
+                ProductService productService = ProductService.instance();
                 PagedResult<List<Product>> result = productService
                         .getProductsByBranch(assignedBranch);
                 if (result.isSuccess()) {
@@ -270,6 +266,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.CLIENTS)) {
+                ClientService clientService = ClientService.instance();
                 PagedResult<List<Client>> result = clientService
                         .getClientListByUser(user);
                 if (result.isSuccess()) {
@@ -283,6 +280,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.SUBMIT_PAYMENTS)) {
+                PaymentService paymentService = PaymentService.instance();
                 List<Payment> payments = database().payments().getAllUnsubmittedPayments();
                 if (!payments.isEmpty()) {
                     PagedResult<Payment> result = paymentService.submitPayments(payments);
@@ -299,6 +297,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.TRANSACTIONS)) {
+                TransactionService transactionService = TransactionService.instance();
                 PagedResult<List<Transaction>> result = transactionService
                         .getAllTransactionsByUser(user);
                 if (result.isSuccess()) {
@@ -309,6 +308,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.SALES)) {
+                SalesService salesService = SalesService.instance();
                 PagedResult<List<Sale>> result = salesService.getSalesByBranch(user.getAssignedBranch());
                 if (result.isSuccess()) {
                     database().sales().deleteAll();
@@ -321,23 +321,25 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.ORDERS)) {
-                // TODO submit orders
-//                List<Payment> payments = database().payments().getAllPayments();
-//                if (!payments.isEmpty()) {
-//                    PagedResult<Payment> result = paymentService.submitPayments(payments);
-//                    if (result.isSuccess()) {
-//                        updateProgress(++progress, processTypes);
-//                    } else {
-//                        success = false;
-//                    }
-//                }
-//                else {
-//                    updateProgress(++progress, processTypes);
-//                }
-                updateProgress(++progress, processTypes);
+                OrderService orderService = OrderService.instance();
+                List<Order2> orders = database().orders2().getAllOrders();
+                if (!orders.isEmpty()) {
+                    PagedResult<Order2> result = orderService.submitOrders(orders);
+                    if (result.isSuccess()) {
+                        database().orders2().deleteAll();
+                        updateProgress(++progress, processTypes);
+                    }
+                    else {
+                        success = false;
+                    }
+                }
+                else {
+                    updateProgress(++progress, processTypes);
+                }
             }
 
             if (hasFlag(processTypes, ProcessType.CREDITS)) {
+                CreditService creditService = CreditService.instance();
                 List<Credit> credits = database().credits().getAllCredits();
                 if (!credits.isEmpty()) {
                     PagedResult<Credit> result = creditService.submitCredits(credits);
@@ -354,6 +356,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.SALES_REPORT)) {
+                SalesReportService salesReportService = SalesReportService.instance();
                 PagedResult<List<SalesReport>> result = salesReportService.getAllSalesReport();
                 if (result.isSuccess()) {
                     uploadLog("successfully synced SALES_REPORT. data size: %d", result.data.size());
@@ -367,6 +370,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
             }
 
             if (hasFlag(processTypes, ProcessType.VISITS)) {
+                VisitService visitService = VisitService.instance();
                 List<Visit> visits = database().visits().getAllVisits();
                 if (!visits.isEmpty()) {
                     PagedResult<Visit> result = visitService.submitVisits(visits);

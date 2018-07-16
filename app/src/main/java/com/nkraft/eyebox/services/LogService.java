@@ -18,15 +18,15 @@ public class LogService extends RBaseService<Log> {
 
     public PagedResult<Log> uploadLog(long userId, String message) {
         return getObject(action("upload"),
-                HttpUtil.KeyValue.make("userId", userId),
-                HttpUtil.KeyValue.make("message", message));
+                makeValue("userId", userId),
+                makeValue("message", message));
     }
 
     public PagedResult<List<Log>> downloadLogs(long userId, int page, int pageSize) {
         return getList(action("download"),
-                HttpUtil.KeyValue.make("userId", userId),
-                HttpUtil.KeyValue.make("page", page),
-                HttpUtil.KeyValue.make("pageSize", pageSize));
+                makeValue("userId", userId),
+                makeValue("page", page),
+                makeValue("pageSize", pageSize));
     }
 
 }

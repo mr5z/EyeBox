@@ -9,12 +9,9 @@ import java.util.List;
 
 public class VisitService extends RBaseService<Visit> {
 
-    private static VisitService _instance;
+    private static VisitService _instance = new VisitService();
 
     public static VisitService instance() {
-        if (_instance == null) {
-            _instance = new VisitService();
-        }
         return _instance;
     }
 

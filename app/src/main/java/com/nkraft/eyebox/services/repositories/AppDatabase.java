@@ -17,6 +17,7 @@ import com.nkraft.eyebox.models.Visit;
 import com.nkraft.eyebox.models.dao.ClientsDao;
 import com.nkraft.eyebox.models.dao.CreditsDao;
 import com.nkraft.eyebox.models.dao.OrdersDao;
+import com.nkraft.eyebox.models.dao.OrdersDao2;
 import com.nkraft.eyebox.models.dao.PaymentsDao;
 import com.nkraft.eyebox.models.dao.ProductsDao;
 import com.nkraft.eyebox.models.dao.SalesDao;
@@ -55,6 +56,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TransactionsDao transactions();
     public abstract PaymentsDao payments();
     public abstract OrdersDao orders();
+    public abstract OrdersDao2 orders2();
     public abstract SalesDao sales();
     public abstract VisitsDao visits();
     public abstract CreditsDao credits();

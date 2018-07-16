@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
@@ -25,6 +26,7 @@ import com.nkraft.eyebox.models.PrintTemplate;
 import com.nkraft.eyebox.services.PrinterService;
 import com.nkraft.eyebox.utils.BitmapUtils;
 import com.nkraft.eyebox.utils.Debug;
+import com.nkraft.eyebox.utils.PrinterCommands;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -195,6 +197,7 @@ public class PrintActivity extends BaseActivity {
             if (header != null && !isEmptyBitmap(header)) {
                 printerService.printImage(header);
             }
+            printerService.printNewLine();
             for(int i = 0;i < printData.size(); ++i) {
                 PrintTemplate.Data data = printData.get(i);
                 String line = data.getLine();
@@ -206,6 +209,8 @@ public class PrintActivity extends BaseActivity {
                     printerService.printImage(image);
                 }
             }
+            SystemClock.sleep(2000);
+            printerService.printNewLine();
             if (footer != null && !isEmptyBitmap(footer)) {
                 printerService.printImage(footer);
             }
@@ -332,13 +337,11 @@ public class PrintActivity extends BaseActivity {
         async(() -> {
             try {
                 printerService.disconnect();
-                printerService.connect(selectedDevice);
-                connectionListener.onConnect(true);
+                boolean success = printerService.connect(selectedDevice);
+                connectionListener.onConnect(success);
             }
-            catch (NoSuchMethodException |
-                   InvocationTargetException |
-                   IllegalAccessException |
-                   IOException e) {
+            catch (IOException e) {
+                Debug.log("Error connecting to device: %s", e.getMessage());
                 connectionListener.onConnect(false);
             }
         });

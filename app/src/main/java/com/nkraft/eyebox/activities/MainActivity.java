@@ -44,6 +44,7 @@ import com.nkraft.eyebox.utils.Formatter;
 import com.nkraft.eyebox.utils.HttpUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -320,13 +321,14 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 }
             }
 
-            if (hasFlag(processTypes, ProcessType.ORDERS)) {
+            if (hasFlag(processTypes, ProcessType.SUBMIT_ORDERS)) {
                 OrderService orderService = OrderService.instance();
                 List<Order2> orders = database().orders2().getAllOrders();
                 if (!orders.isEmpty()) {
                     PagedResult<Order2> result = orderService.submitOrders(orders);
                     if (result.isSuccess()) {
                         database().orders2().deleteAll();
+                        database().orders().deleteAll();
                         updateProgress(++progress, processTypes);
                     }
                     else {
@@ -397,17 +399,26 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
     private void uploadVisits(List<Visit> visits) {
         async(() -> {
             VisitService visitService = VisitService.instance();
+            boolean success = true;
             for(Visit visit : visits) {
-                File file = new File(visit.getSignature());
+                File file = new File(visit.getFileName());
                 if (!file.exists())
                     continue;
                 String path = visitService.getServicePath() + "?action=upload";
-                HttpUtil.uploadFile(path,
-                    "signature",
-                    file,
-                    (response, exception) -> Debug.log("response: %s, exception: %s", response, exception),
-                    HttpUtil.KeyValue.make("visitId", visit.getId())
-                );
+                try {
+                    String response = HttpUtil.uploadFile(path,
+                        "signature",
+                        file,
+                        HttpUtil.KeyValue.make("visitId", visit.getId())
+                    );
+                    Debug.log("upload response: %s", response);
+                } catch (IOException e) {
+                    Debug.log("exception caught: %s", e.getMessage());
+                    success = false;
+                }
+            }
+            if (success) {
+                database().visits().deleteAll();
             }
         });
     }

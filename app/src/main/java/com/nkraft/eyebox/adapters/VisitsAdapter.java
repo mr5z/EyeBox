@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Visit;
+import com.nkraft.eyebox.utils.Formatter;
 
 import java.util.List;
 
@@ -20,8 +21,12 @@ public class VisitsAdapter extends BaseListAdapter<VisitsAdapter.ViewHolder, Vis
 
     @Override
     void onDataBind(ViewHolder holder, Visit data) {
-        holder.txtDateVisit.setText(data.getFormattedDate());
-        Bitmap bitmap = BitmapFactory.decodeFile(data.getSignature());
+        Bitmap bitmap = BitmapFactory.decodeFile(data.getFileName());
+        holder.txtDateVisit.setText(
+                Formatter.string("%s %s",
+                        Formatter.date(data.getDate()),
+                        Formatter.time(data.getDate())));
+        holder.txtClientName.setText(data.getClientName());
         holder.imgClientSignature.setImageBitmap(bitmap);
     }
 
@@ -33,11 +38,13 @@ public class VisitsAdapter extends BaseListAdapter<VisitsAdapter.ViewHolder, Vis
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtDateVisit;
+        TextView txtClientName;
         ImageView imgClientSignature;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtDateVisit = itemView.findViewById(R.id.va_txt_date_visit);
+            txtClientName = itemView.findViewById(R.id.va_txt_client_name);
             imgClientSignature = itemView.findViewById(R.id.va_img_client_signature);
         }
     }

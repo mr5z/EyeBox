@@ -19,6 +19,20 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"/>
 
+    <TextView
+        android:text="Generic Name"
+        android:id="@+id/dac_txt_generic_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray" />
+
+    <TextView
+        android:text="Pkg: 100"
+        android:id="@+id/dac_txt_byx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -48,6 +62,7 @@
     </LinearLayout>
 
     <CheckBox
+        android:id="@+id/dac_chk_any_brand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/check_if_any_brand" />

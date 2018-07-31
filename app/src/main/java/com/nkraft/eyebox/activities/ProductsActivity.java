@@ -13,9 +13,12 @@ import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Order;
 import com.nkraft.eyebox.models.Product;
 import com.nkraft.eyebox.services.PagedResult;
+import com.nkraft.eyebox.utils.Formatter;
 import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +60,7 @@ public class ProductsActivity extends ListActivity<Product> implements
 
     private void updateCartButtonCount() {
         Button button = findViewById(R.id.cart_button);
-        button.setText(String.format(Locale.getDefault(), "CART (%d)", cart.size()));
+        button.setText(Formatter.string("CART (%d)", cart.size()));
     }
 
     void onUpdateOrders(ArrayList<Order> newOrders) {
@@ -117,22 +120,25 @@ public class ProductsActivity extends ListActivity<Product> implements
 
     @Override
     public void onTaskBegin() {
+        setRefreshing(true);
     }
 
     @Override
     public PagedResult<List<Product>> onTaskExecute() {
         List<Product> productList = database().products().getAllProducts();
+        Collections.sort(productList,
+                (o1, o2) -> o1.getGenericName().compareToIgnoreCase(o2.getGenericName()));
         return new PagedResult<>(productList, productList.size());
     }
 
     @Override
     public void onTaskEnd(PagedResult<List<Product>> result) {
+        setRefreshing(false);
         if (result.isSuccess()) {
             assert result.data != null;
             setDataList(result.data);
             notifyDataSetChanged();
         }
-        setRefreshing(false);
     }
 
     @Override
@@ -143,14 +149,14 @@ public class ProductsActivity extends ListActivity<Product> implements
     }
 
     @Override
-    public void onProceedAdd(int quantity) {
+    public void onProceedAdd(int quantity, boolean anyBrand) {
         if (quantity > 0) {
             Order.Product product = new Order.Product();
             product.setId(selectedProduct.getId());
             product.setName(selectedProduct.getName());
             product.setGenericName(selectedProduct.getGenericName());
             product.setUnit(selectedProduct.getUnits());
-            addToCart(new Order(product, quantity));
+            addToCart(new Order(product, quantity, anyBrand));
         }
     }
 

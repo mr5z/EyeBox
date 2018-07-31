@@ -27,6 +27,6 @@ public class VisitService extends RBaseService<Visit> {
         Gson gson = new GsonBuilder().serializeNulls().create();
         String postData = gson.toJson(visits);
         return postObject(action("submit"),
-                HttpUtil.KeyValue.make("visits", postData));
+                makeValue("visits", postData));
     }
 }

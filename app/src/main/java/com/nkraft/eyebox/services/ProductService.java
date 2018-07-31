@@ -40,6 +40,7 @@ public class ProductService extends BaseService {
                 String units = object.getString("units");
                 double price = object.getDouble("price");
                 int soh = object.getInt("soh");
+                double byx = object.getDouble("byx");
                 Product product = new Product();
                 product.setId(id);
                 product.setGenericName(genericName);
@@ -47,6 +48,7 @@ public class ProductService extends BaseService {
                 product.setUnits(units);
                 product.setPrice(price);
                 product.setSoh(soh);
+                product.setByX(byx);
                 productList.add(product);
             }
             return new PagedResult<>(productList, productList.size());

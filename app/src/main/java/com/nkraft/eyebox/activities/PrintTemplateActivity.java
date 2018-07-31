@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Base64;
 
 import com.nkraft.eyebox.R;
@@ -114,12 +115,15 @@ public class PrintTemplateActivity extends ListActivity<PrintTemplate>
         template.addPrintData("PR No:       " + firstItem.getProductNumber());
         template.addPrintData("Date:        " + dateNow);
         template.addPrintData("Client:      " + firstItem.getCustomerName());
-        template.addPrintData("Check #:     " + firstItem.getCheckNo());
+        if (!TextUtils.isEmpty(firstItem.getCheckNo())) {
+            template.addPrintData("Check #:     " + firstItem.getCheckNo());
+        }
         template.addPrintData("________________________________", TextAlignment.CENTER);
         template.addPrintData("\n");
         for(Payment payment : payments) {
             template.addPrintData("Amount:      " + payment.getFormattedAmount());
             template.addPrintData("Sales ID:    " + payment.getSalesId());
+            template.addPrintData("SO #:        " + payment.getSoNumber());
             template.addPrintData("\n");
             totalAmount += payment.getAmount();
         }

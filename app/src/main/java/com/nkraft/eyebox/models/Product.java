@@ -17,6 +17,7 @@ public class Product implements Parcelable, IModel {
     private String units;
     private double price;
     private int soh;
+    private double byX;
 
     public Product() {
     }
@@ -28,6 +29,23 @@ public class Product implements Parcelable, IModel {
         units = in.readString();
         price = in.readDouble();
         soh = in.readInt();
+        byX = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeString(genericName);
+        dest.writeString(units);
+        dest.writeDouble(price);
+        dest.writeInt(soh);
+        dest.writeDouble(byX);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -90,6 +108,14 @@ public class Product implements Parcelable, IModel {
         this.id = id;
     }
 
+    public double getByX() {
+        return byX;
+    }
+
+    public void setByX(double byX) {
+        this.byX = byX;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,20 +127,5 @@ public class Product implements Parcelable, IModel {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(id);
-        parcel.writeString(name);
-        parcel.writeString(genericName);
-        parcel.writeString(units);
-        parcel.writeDouble(price);
-        parcel.writeInt(soh);
     }
 }

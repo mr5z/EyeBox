@@ -11,6 +11,9 @@ import com.nkraft.eyebox.adapters.OrdersAdapter;
 import com.nkraft.eyebox.controls.CartEditDialog;
 import com.nkraft.eyebox.models.Client;
 import com.nkraft.eyebox.models.Order;
+import com.nkraft.eyebox.models.Order2;
+import com.nkraft.eyebox.models.User;
+import com.nkraft.eyebox.services.AccountService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,10 +59,24 @@ public class ViewCartActivity extends ListActivity<Order> implements
         async(() -> {
             Client client = getSelectedClient();
             List<Order> orderList = getDataList();
+            List<Order2> orderList2 = new ArrayList<>();
+            User currentUser = AccountService.instance().currentUser;
             for (Order order : orderList) {
                 order.setClientName(client.getName());
                 order.setDateOrdered((new Date()).getTime());
+                orderList2.add(new Order2() {{
+                    setId(order.getId());
+                    setEmployeesId(currentUser.getId());
+                    setProductId(String.valueOf(order.getProduct().getId()));
+                    setQuantity(order.getQuantity());
+                    setDate(new Date().getTime());
+                    setOrderFrom(client.getId());
+                    setOrderTo(currentUser.getAssignedBranch());
+                    setCustomer(client.getId());
+                    setAnybrand(order.isAnyBrand() ? "1" : "0");
+                }});
             }
+            database().orders2().insertOrders(orderList2);
             database().orders().insertOrders(orderList);
             runOnUiThread(this::popToMainActivity);
         });
@@ -93,6 +110,8 @@ public class ViewCartActivity extends ListActivity<Order> implements
             for (Order order : getDataList()) {
                 if (order.getId() == orderId) {
                     order.setQuantity(newQuantity);
+                    order.setAnyBrand(anyBrand);
+                    notifyDataSetChanged();
                     break;
                 }
             }

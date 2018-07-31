@@ -25,26 +25,22 @@ import okhttp3.ResponseBody;
 
 public class HttpUtil {
 
-    public interface UploadFileCallback {
-        void onFileUpload(String response, Exception exception);
-    }
-
     private static OkHttpClient httpClient = new OkHttpClient();
 
     public static class KeyValue extends Pair<String, String> {
         public KeyValue(String first, String second) {
             super(first, second);
         }
-        public static KeyValue make(String first, String second) {
-            Pair<String, String> pair = Pair.create(first, second);
+        public static KeyValue make(String key, String value) {
+            Pair<String, String> pair = Pair.create(key, value);
             return new KeyValue(pair.first, pair.second);
         }
-        public static KeyValue make(String first, int second) {
-            Pair<String, String> pair = Pair.create(first, String.valueOf(second));
+        public static KeyValue make(String key, int value) {
+            Pair<String, String> pair = Pair.create(key, String.valueOf(value));
             return new KeyValue(pair.first, pair.second);
         }
-        public static KeyValue make(String first, long second) {
-            Pair<String, String> pair = Pair.create(first, String.valueOf(second));
+        public static KeyValue make(String key, long value) {
+            Pair<String, String> pair = Pair.create(key, String.valueOf(value));
             return new KeyValue(pair.first, pair.second);
         }
     }
@@ -124,45 +120,33 @@ public class HttpUtil {
         return queryString.toString();
     }
 
-    public static void uploadFile(@NonNull String serverUrl,
+    public static String uploadFile(@NonNull String serverUrl,
                                   @NonNull String key,
                                   @NonNull File file,
-                                  UploadFileCallback uploadFileCallback,
-                                  KeyValue... keyValues) {
-        try {
-            String mimeType = getMimeType(file);
-            RequestBody content = RequestBody.create(MediaType.parse(mimeType), file);
-            MultipartBody.Builder builder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart(key, file.getName(), content);
+                                  KeyValue... keyValues) throws IOException {
+        String mimeType = getMimeType(file);
+        RequestBody content = RequestBody.create(MediaType.parse(mimeType), file);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(key, file.getName(), content);
 
-            for(KeyValue kv : keyValues) {
-                builder.addFormDataPart(kv.first, encode(kv.second));
-            }
+        for(KeyValue kv : keyValues) {
+            builder.addFormDataPart(kv.first, encode(kv.second));
+        }
 
-            Request request = new Request.Builder()
-                    .url(serverUrl)
-                    .post(builder.build())
-                    .build();
+        Request request = new Request.Builder()
+                .url(serverUrl)
+                .post(builder.build())
+                .build();
 
-            Response response = httpClient.newCall(request).execute();
+        Response response = httpClient.newCall(request).execute();
 
-            try {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    uploadFileCallback.onFileUpload(response.body().string(), null);
-                }
-                else {
-                    uploadFileCallback.onFileUpload(null,
-                            new Exception("Request unsuccessful. Returned HTTP " + response.code()));
-                }
-            }
-            catch (NullPointerException | IOException e) {
-                uploadFileCallback.onFileUpload(null, e);
-            }
-
-        } catch (Exception e) {
-            uploadFileCallback.onFileUpload(null, e);
+        if (response.isSuccessful()) {
+            assert response.body() != null;
+            return response.body().string();
+        }
+        else {
+            return null;
         }
     }
 

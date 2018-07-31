@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5703fff6143b8acb715d7f2f97376868",
+    "identityHash": "4c3a46733a57aad0dd52d678297a9fff",
     "entities": [
       {
         "tableName": "Users",
@@ -50,7 +50,7 @@
       },
       {
         "tableName": "Products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `genericName` TEXT, `units` TEXT, `price` REAL NOT NULL, `soh` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `genericName` TEXT, `units` TEXT, `price` REAL NOT NULL, `soh` INTEGER NOT NULL, `byX` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -86,6 +86,12 @@
             "fieldPath": "soh",
             "columnName": "soh",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "byX",
+            "columnName": "byX",
+            "affinity": "REAL",
             "notNull": true
           }
         ],
@@ -416,7 +422,7 @@
       },
       {
         "tableName": "Payments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `productNumber` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, `customerName` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dateX` INTEGER NOT NULL, `bankName` INTEGER NOT NULL, `checkDate` INTEGER NOT NULL, `checkNo` TEXT, `amount` REAL NOT NULL, `receivedBy` INTEGER NOT NULL, `delAll` TEXT, `userLogs` TEXT, `salesId` INTEGER NOT NULL, `terms` INTEGER NOT NULL, `remarks` TEXT, `checkName` TEXT, `branchNo` INTEGER NOT NULL, `dateDeposited` INTEGER NOT NULL, `status` TEXT, `customerId` INTEGER NOT NULL, `drNo` TEXT, `productNumber` TEXT, `salesDate` INTEGER NOT NULL, `orNo` TEXT, `dueDate` INTEGER NOT NULL, `checkDays` INTEGER NOT NULL, `controlNo` TEXT, `deposited` TEXT, `debit` REAL NOT NULL, `validatedBy` INTEGER NOT NULL, `receiptLayout` INTEGER NOT NULL, `receiverName` TEXT, `customerName` TEXT, `soNumber` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -597,6 +603,12 @@
             "columnName": "customerName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "soNumber",
+            "columnName": "soNumber",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -610,7 +622,7 @@
       },
       {
         "tableName": "Orders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `dateOrdered` INTEGER NOT NULL, `clientName` TEXT, `product_id` INTEGER, `product_name` TEXT, `product_generic_name` TEXT, `product_unit` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `quantity` INTEGER NOT NULL, `anyBrand` INTEGER NOT NULL, `dateOrdered` INTEGER NOT NULL, `clientName` TEXT, `product_id` INTEGER, `product_name` TEXT, `product_generic_name` TEXT, `product_unit` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -621,6 +633,12 @@
           {
             "fieldPath": "quantity",
             "columnName": "quantity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anyBrand",
+            "columnName": "anyBrand",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -657,6 +675,176 @@
           {
             "fieldPath": "product.unit",
             "columnName": "product_unit",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Orders2",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `quantity` REAL NOT NULL, `preparedQuantity` REAL NOT NULL, `productClass` TEXT, `productId` TEXT, `soh` REAL NOT NULL, `lotNumber` TEXT, `expiry` INTEGER NOT NULL, `manufacturingDate` INTEGER NOT NULL, `price` REAL NOT NULL, `shipId` INTEGER NOT NULL, `status` TEXT, `date` INTEGER NOT NULL, `deliveryDate` INTEGER NOT NULL, `orderFrom` INTEGER NOT NULL, `orderTo` INTEGER NOT NULL, `customer` INTEGER NOT NULL, `total` REAL NOT NULL, `remarks` TEXT, `anybrand` TEXT, `totalstocks` REAL NOT NULL, `salesId` INTEGER NOT NULL, `units` TEXT, `referenceCode` TEXT, `employeesId` INTEGER NOT NULL, `priority` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preparedQuantity",
+            "columnName": "preparedQuantity",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "productClass",
+            "columnName": "productClass",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "productId",
+            "columnName": "productId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "soh",
+            "columnName": "soh",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lotNumber",
+            "columnName": "lotNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expiry",
+            "columnName": "expiry",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manufacturingDate",
+            "columnName": "manufacturingDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shipId",
+            "columnName": "shipId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deliveryDate",
+            "columnName": "deliveryDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderFrom",
+            "columnName": "orderFrom",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderTo",
+            "columnName": "orderTo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customer",
+            "columnName": "customer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "total",
+            "columnName": "total",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remarks",
+            "columnName": "remarks",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "anybrand",
+            "columnName": "anybrand",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "totalstocks",
+            "columnName": "totalstocks",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salesId",
+            "columnName": "salesId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "units",
+            "columnName": "units",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "referenceCode",
+            "columnName": "referenceCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "employeesId",
+            "columnName": "employeesId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -932,7 +1120,7 @@
       },
       {
         "tableName": "Visits",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `date` INTEGER NOT NULL, `agent` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `code` TEXT, `status` TEXT, `latitude` REAL NOT NULL, `longtitude` REAL NOT NULL, `signature` TEXT, `fileSize` INTEGER NOT NULL, `fileType` TEXT, `fileWidth` INTEGER NOT NULL, `fileHeight` INTEGER NOT NULL, `fileName` TEXT, `time` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `date` INTEGER NOT NULL, `agent` INTEGER NOT NULL, `customerId` INTEGER NOT NULL, `code` TEXT, `status` TEXT, `latitude` REAL NOT NULL, `longtitude` REAL NOT NULL, `signature` TEXT, `fileSize` INTEGER NOT NULL, `fileType` TEXT, `fileWidth` INTEGER NOT NULL, `fileHeight` INTEGER NOT NULL, `fileName` TEXT, `time` INTEGER NOT NULL, `clientName` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1023,6 +1211,12 @@
             "columnName": "time",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "clientName",
+            "columnName": "clientName",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1735,7 +1929,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5703fff6143b8acb715d7f2f97376868\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4c3a46733a57aad0dd52d678297a9fff\")"
     ]
   }
 }

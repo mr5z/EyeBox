@@ -1,10 +1,13 @@
 package com.nkraft.eyebox.models;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 import com.nkraft.eyebox.utils.Formatter;
+
+import java.util.Objects;
 
 @Entity(tableName = "Visits")
 public class Visit implements IModel {
@@ -40,6 +43,8 @@ public class Visit implements IModel {
     private String fileName;
     @SerializedName("timex")
     private long time;
+
+    private String clientName;
 
     public long getId() {
         return id;
@@ -163,5 +168,26 @@ public class Visit implements IModel {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Visit visit = (Visit) o;
+        return id == visit.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

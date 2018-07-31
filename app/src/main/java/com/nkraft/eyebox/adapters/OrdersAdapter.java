@@ -21,6 +21,7 @@ public class OrdersAdapter extends BaseListAdapter<OrdersAdapter.ViewHolder, Ord
         holder.txtProductName.setText(product.getName());
         holder.txtGenericName.setText(product.getGenericName());
         holder.txtQuantity.setText(formatString("Quantity ( %d )", data.getQuantity()));
+        holder.txtAnyBrand.setText(data.isAnyBrand() ? "Any Brand" : "");
     }
 
     @Override
@@ -33,12 +34,14 @@ public class OrdersAdapter extends BaseListAdapter<OrdersAdapter.ViewHolder, Ord
         TextView txtProductName;
         TextView txtGenericName;
         TextView txtQuantity;
+        TextView txtAnyBrand;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtProductName = itemView.findViewById(R.id.vc_row_product_name);
             txtGenericName = itemView.findViewById(R.id.vc_row_generic_name);
             txtQuantity = itemView.findViewById(R.id.vc_row_quantity);
+            txtAnyBrand = itemView.findViewById(R.id.txt_vc_row_product_any_brand);
         }
     }
 }

@@ -37,11 +37,13 @@ public class CartEditDialog implements DialogInterface.OnClickListener, View.OnC
         TextView txtProductName = view.findViewById(R.id.deo_txt_product_name);
         EditText editQuantity = view.findViewById(R.id.deo_edit_quantity);
         TextView txtUnit = view.findViewById(R.id.deo_txt_unit);
+        CheckBox checkBox = view.findViewById(R.id.deo_chk_any_branch);
 
         button.setOnClickListener(this);
         editQuantity.setText(String.valueOf(order.getQuantity()));
         txtProductName.setText(order.getProduct().getName());
         txtUnit.setText(order.getProduct().getUnit());
+        checkBox.setChecked(order.isAnyBrand());
     }
 
     public void show() {

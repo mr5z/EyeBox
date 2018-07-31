@@ -225,13 +225,17 @@ public class PrinterService {
                 }
                 write(imageDataLine);
                 offset += 24;
-                SystemClock.sleep(10);
                 write(PrinterCommands.PRINT_AND_FEED_PAPER);
             }
 
             write(setLineSpacing30Dots);
         } catch (IOException ex) {
             Debug.log("IOException: %s", ex.getMessage());
+        }
+        try {
+            write(PrinterCommands.PRINT_AND_FEED_PAPER);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

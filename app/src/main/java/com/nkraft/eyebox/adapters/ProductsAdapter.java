@@ -21,6 +21,7 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
         holder.subName.setText(data.getGenericName());
         holder.price.setText("PHP " + formatCurrency(data.getPrice()));
         holder.soh.setText(formatString("SOH: %d", data.getSoh()));
+        holder.byx.setText("Pkg: " + (int)data.getByX());
     }
 
     @Override
@@ -34,6 +35,7 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
         TextView subName;
         TextView price;
         TextView soh;
+        TextView byx;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -41,6 +43,7 @@ public class ProductsAdapter extends BaseListAdapter<ProductsAdapter.ViewHolder,
             subName = itemView.findViewById(R.id.product_sub_name);
             price = itemView.findViewById(R.id.product_price);
             soh = itemView.findViewById(R.id.product_soh);
+            byx = itemView.findViewById(R.id.product_byx);
         }
     }
 }

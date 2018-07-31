@@ -86,6 +86,8 @@ public class Payment implements Parcelable, IModel {
 
     private String customerName;
 
+    private int soNumber;
+
     public Payment() {
 
     }
@@ -477,5 +479,13 @@ public class Payment implements Parcelable, IModel {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public int getSoNumber() {
+        return soNumber;
+    }
+
+    public void setSoNumber(int soNumber) {
+        this.soNumber = soNumber;
     }
 }

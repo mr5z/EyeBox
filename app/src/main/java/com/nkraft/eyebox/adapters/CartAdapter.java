@@ -20,6 +20,7 @@ public class CartAdapter extends BaseListAdapter<CartAdapter.ViewHolder, Order> 
         holder.txtProductName.setText(data.getProduct().getName());
         holder.txtGenericName.setText(data.getProduct().getGenericName());
         holder.txtQuantity.setText(formatString("Item(s) (%d)", data.getQuantity()));
+        holder.txtAnyBrand.setText(data.isAnyBrand() ? "Any Brand" : "");
     }
 
     @Override
@@ -32,12 +33,14 @@ public class CartAdapter extends BaseListAdapter<CartAdapter.ViewHolder, Order> 
         TextView txtProductName;
         TextView txtGenericName;
         TextView txtQuantity;
+        TextView txtAnyBrand;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtProductName = itemView.findViewById(R.id.vc_row_product_name);
             txtGenericName = itemView.findViewById(R.id.vc_row_generic_name);
             txtQuantity = itemView.findViewById(R.id.vc_row_quantity);
+            txtAnyBrand = itemView.findViewById(R.id.txt_vc_row_product_any_brand);
         }
     }
 }

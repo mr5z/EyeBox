@@ -23,6 +23,7 @@ public class Order implements Parcelable, IModel {
     @PrimaryKey
     private long id;
     private int quantity;
+    private boolean anyBrand;
     private long dateOrdered;
     private String clientName;
     @Embedded
@@ -33,16 +34,18 @@ public class Order implements Parcelable, IModel {
     }
 
     @Ignore
-    public Order(Order.Product product, int quantity) {
+    public Order(Order.Product product, int quantity, boolean anyBrand) {
         this.id = generateId();
-        this.quantity = quantity;
         this.product = product;
+        this.quantity = quantity;
+        this.anyBrand = anyBrand;
     }
 
     @Ignore
     protected Order(Parcel in) {
         id = in.readLong();
         quantity = in.readInt();
+        anyBrand = in.readInt() != 0;
         dateOrdered = in.readLong();
         clientName = in.readString();
         product = in.readParcelable(Product.class.getClassLoader());
@@ -97,6 +100,7 @@ public class Order implements Parcelable, IModel {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(id);
         parcel.writeInt(quantity);
+        parcel.writeInt(anyBrand ? 1 : 0);
         parcel.writeLong(dateOrdered);
         parcel.writeString(clientName);
         parcel.writeParcelable(product, i);
@@ -120,6 +124,14 @@ public class Order implements Parcelable, IModel {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public boolean isAnyBrand() {
+        return anyBrand;
+    }
+
+    public void setAnyBrand(boolean anyBrand) {
+        this.anyBrand = anyBrand;
     }
 
     public static class Product implements Parcelable {

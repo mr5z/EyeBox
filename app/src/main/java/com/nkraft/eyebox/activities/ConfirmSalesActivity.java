@@ -59,7 +59,7 @@ public class ConfirmSalesActivity extends BaseActivity {
     void initialize(@Nullable Bundle savedInstanceState) {
         super.initialize(savedInstanceState);
         transaction = getTransaction();
-        txtClientName.setText(String.format(Locale.getDefault(), "Client: %s", transaction.getClientName()));
+        txtClientName.setText(Formatter.string("Client: %s", transaction.getClientName()));
         txtAmount.setText(Formatter.string("The Amount of: %s", Formatter.currency(transaction.getAmount())));
         txtTotalBalance.setText(Formatter.currency(transaction.getBalance()));
         txtTotalPayment.setText("0");
@@ -185,6 +185,7 @@ public class ConfirmSalesActivity extends BaseActivity {
             payment.setId(id);
             payment.setSalesId(sale.getId());
             payment.setAmount(sale.getAmount());
+            payment.setSoNumber((int) sale.getTransaction());
             payment.setReceivedBy(currentUser.getId());
             payment.setReceiverName(currentUser.getName());
             payment.setBranchNo(currentUser.getAssignedBranch());

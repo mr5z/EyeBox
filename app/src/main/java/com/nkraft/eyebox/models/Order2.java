@@ -38,9 +38,9 @@ public class Order2 implements IModel {
     @SerializedName("deliverydate")
     private long deliveryDate;
     @SerializedName("orderfrom")
-    private long orderfrom;
-    @SerializedName("")
-    private long orderto;
+    private long orderFrom;
+    @SerializedName("orderto")
+    private long orderTo;
     @SerializedName("customer")
     private long customer;
     @SerializedName("total")
@@ -176,20 +176,20 @@ public class Order2 implements IModel {
         this.deliveryDate = deliveryDate;
     }
 
-    public long getOrderfrom() {
-        return orderfrom;
+    public long getOrderFrom() {
+        return orderFrom;
     }
 
-    public void setOrderfrom(long orderfrom) {
-        this.orderfrom = orderfrom;
+    public void setOrderFrom(long orderFrom) {
+        this.orderFrom = orderFrom;
     }
 
-    public long getOrderto() {
-        return orderto;
+    public long getOrderTo() {
+        return orderTo;
     }
 
-    public void setOrderto(long orderto) {
-        this.orderto = orderto;
+    public void setOrderTo(long orderTo) {
+        this.orderTo = orderTo;
     }
 
     public long getCustomer() {

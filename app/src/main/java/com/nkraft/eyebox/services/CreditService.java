@@ -8,12 +8,9 @@ import java.util.List;
 
 public class CreditService extends RBaseService<Credit> {
 
-    private static CreditService _instance;
+    private static CreditService _instance = new CreditService();
 
     public static CreditService instance() {
-        if (_instance == null) {
-            _instance = new CreditService();
-        }
         return _instance;
     }
 
@@ -24,7 +21,7 @@ public class CreditService extends RBaseService<Credit> {
     public PagedResult<Credit> submitCredits(List<Credit> credits) {
         Gson gson = new Gson();
         String postData = gson.toJson(credits);
-        return postObject(action("submit"), HttpUtil.KeyValue.make("credits", postData));
+        return postObject(action("submit"), makeValue("credits", postData));
     }
 
 }

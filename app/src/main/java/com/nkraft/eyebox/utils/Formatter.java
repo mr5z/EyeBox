@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class Formatter {
@@ -14,6 +15,17 @@ public class Formatter {
 
     public static String string(String message, Object ...args) {
         return String.format(Locale.getDefault(), message, args);
+    }
+
+    public static <T> String join(List<T> objList, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        for (T item : objList) {
+            if (sb.length() > 0) {
+                sb.append(delimiter);
+            }
+            sb.append(item);
+        }
+        return sb.toString();
     }
 
     public static String date(long date) {

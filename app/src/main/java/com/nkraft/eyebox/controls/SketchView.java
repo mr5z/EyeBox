@@ -70,6 +70,7 @@ public class SketchView extends View {
     public void clear() {
         path.reset();
         invalidate();
+        System.gc();
     }
 
     public Bitmap bitmap() {
@@ -88,7 +89,7 @@ public class SketchView extends View {
 
     void init() {
         linePaint.setColor(Color.BLACK);
-        linePaint.setStrokeWidth(0);
+        linePaint.setStrokeWidth(4);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
     }

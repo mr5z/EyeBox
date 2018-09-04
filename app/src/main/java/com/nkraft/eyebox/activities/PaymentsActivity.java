@@ -10,13 +10,22 @@ import com.nkraft.eyebox.adapters.PaymentsAdapter;
 import com.nkraft.eyebox.controls.dialogs.DeletePaymentDialog;
 import com.nkraft.eyebox.models.Payment;
 import com.nkraft.eyebox.models.PaymentGroup;
+import com.nkraft.eyebox.models.dao.PaymentsDao;
+import com.nkraft.eyebox.services.PagedResult;
+import com.nkraft.eyebox.services.PaymentService;
+import com.nkraft.eyebox.utils.Debug;
+import com.nkraft.eyebox.utils.TaskWrapper;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class PaymentsActivity extends ListActivity<Payment> implements
-        BaseListAdapter.ItemClickListener<Payment>,BaseListAdapter.LongItemClickListener<Payment> {
+        BaseListAdapter.ItemClickListener<Payment>,
+        BaseListAdapter.LongItemClickListener<Payment>,
+        TaskWrapper.Task<PagedResult<List<Payment>>> {
+
+    private TaskWrapper<PagedResult<List<Payment>>> paymentTask = new TaskWrapper<>(this);
 
     @Override
     void initialize(@Nullable Bundle savedInstanceState) {
@@ -32,6 +41,7 @@ public class PaymentsActivity extends ListActivity<Payment> implements
             setDataList(payments);
             runOnUiThread(this::notifyDataSetChanged);
         });
+        paymentTask.execute();
     }
 
     @Override
@@ -104,5 +114,54 @@ public class PaymentsActivity extends ListActivity<Payment> implements
         payment.setStatus(paymentGroup.getStatus());
         payment.setAmount(paymentGroup.getTotalPayment());
         return  payment;
+    }
+
+    @Override
+    public void onTaskBegin() {
+        showLoader(true, "Checking status...");
+    }
+
+    @Override
+    public PagedResult<List<Payment>> onTaskExecute() {
+        PaymentService paymentService = PaymentService.instance();
+        List<Payment> submittedPayments = database().payments().getAllSubmittedPayments();
+        if (submittedPayments.isEmpty()) {
+            return new PagedResult<>(new ArrayList<>(), 0);
+        }
+        return paymentService.syncPaymentsStatus(submittedPayments);
+    }
+
+    @Override
+    public void onTaskEnd(PagedResult<List<Payment>> result) {
+        showLoader(false);
+        if (result.isSuccess()) {
+            onPaymentsSync(result.data);
+        }
+        else {
+            onPaymentsNotSync(result.errorMessage);
+        }
+    }
+
+    private void onPaymentsSync(List<Payment> payments) {
+        async(() -> {
+            List<Payment> submittedPayments = database().payments().getAllSubmittedPayments();
+            for (Payment updatedPayment : payments) {
+                for (Payment oldPayment : submittedPayments) {
+                    if (updatedPayment.equals(oldPayment)) {
+                        String status = updatedPayment.getStatus();
+                        if (status != null && !status.equals("unsubmitted")) {
+                            oldPayment.setStatus(updatedPayment.getStatus());
+                        }
+                        break;
+                    }
+                }
+            }
+            database().payments().insertPayments(submittedPayments);
+        });
+    }
+
+    private void onPaymentsNotSync(String message) {
+        Debug.log("sync payments response: %s", message);
+        showSnackbar("An error occurred.");
     }
 }

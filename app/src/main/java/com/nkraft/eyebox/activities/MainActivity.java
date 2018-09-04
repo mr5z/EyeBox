@@ -286,7 +286,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 if (!payments.isEmpty()) {
                     PagedResult<Payment> result = paymentService.submitPayments(payments);
                     if (result.isSuccess()) {
-                        database().payments().markAllSubmitted();
+                        long affectedRows = database().payments().markAllSubmitted();
                         updateProgress(++progress, processTypes);
                     } else {
                         success = false;
@@ -312,6 +312,11 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 SalesService salesService = SalesService.instance();
                 PagedResult<List<Sale>> result = salesService.getSalesByBranch(user.getAssignedBranch());
                 if (result.isSuccess()) {
+                    for (Sale sale : result.data) {
+                        if (sale.getTransaction() <= 0) {
+                            Debug.log("SO# is zero");
+                        }
+                    }
                     database().sales().deleteAll();
                     database().sales().insertSales(result.data);
                     updateProgress(++progress, processTypes);

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.models.Product;
+import com.nkraft.eyebox.utils.Formatter;
 
 public class CartDialog extends BaseDialog<Product> {
 
@@ -32,7 +33,7 @@ public class CartDialog extends BaseDialog<Product> {
         txtProductName.setText(data.getName());
         txtGenericName.setText(data.getGenericName());
         txtUnitName.setText(data.getUnits());
-        txtByx.setText("byx: " + data.getByX());
+        txtByx.setText(Formatter.string("Pkg: %d", (int)data.getByX()));
         setOnClickListener((p) -> {
             EditText editText = view.findViewById(R.id.dac_edit_quantity);
             CheckBox checkBox = view.findViewById(R.id.dac_chk_any_brand);

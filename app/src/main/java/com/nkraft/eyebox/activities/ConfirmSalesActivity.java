@@ -27,6 +27,7 @@ import com.nkraft.eyebox.utils.Formatter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -220,7 +221,7 @@ public class ConfirmSalesActivity extends BaseActivity {
     }
 
     static long generateId(long prefix) {
-        return Long.parseLong(prefix + "" + (new Date().getTime() / 1000));
+        return Long.parseLong(prefix + "" + Calendar.getInstance().getTimeInMillis() / 1000);
     }
 
     private void updateTotalPayment(boolean checked, Sale data) {

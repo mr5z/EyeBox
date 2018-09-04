@@ -28,11 +28,7 @@ import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.Task<PagedResult<List<Payment>>> {
-
-    private TaskWrapper<PagedResult<List<Payment>>> paymentsTask() {
-        return new TaskWrapper<>(this);
-    }
+public class PaymentDetailsActivity extends BaseActivity {
 
     private PaymentDetailsAdapter adapter;
     private List<Payment> payments = new ArrayList<>();
@@ -105,7 +101,16 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
         Payment payment = getPayment();
         txtClientName.setText(Formatter.string("Client: %s", payment.getCustomerName()));
         txtAmount.setText(Formatter.string("Payment Amount: %s", payment.getFormattedAmount()));
-        paymentsTask().execute();
+        async(() -> {
+            String productNumber = payment.getProductNumber();
+            List<Payment> dataList = database().payments().getPaymentsByProductNumber(productNumber);
+            runOnUiThread(() -> {
+                payments.addAll(dataList);
+                adapter = new PaymentDetailsAdapter(payments);
+                paymentDetailList.setLayoutManager(new LinearLayoutManager(this));
+                paymentDetailList.setAdapter(adapter);
+            });
+        });
     }
 
     @Override
@@ -116,41 +121,6 @@ public class PaymentDetailsActivity extends BaseActivity implements TaskWrapper.
     private Payment getPayment() {
         Intent intent = getIntent();
         return intent.getParcelableExtra("payment");
-    }
-
-    @Override
-    public void onTaskBegin() {
-        showLoader(true, "Checking status...");
-    }
-
-    @Override
-    public PagedResult<List<Payment>> onTaskExecute() {
-        PaymentService paymentService = PaymentService.instance();
-        Payment payment = getPayment();
-        String productNumber = payment.getProductNumber();
-        List<Payment> dataList = database().payments().getPaymentsByProductNumber(productNumber);
-        PagedResult<List<Payment>> statusResult = paymentService.checkPaymentsStatus(payment.getCustomerId());
-        updateExtraDetails(dataList, payment);
-        if (statusResult.isSuccess()) {
-            for(Payment p : statusResult.data) {
-                updateStatus(p, dataList);
-            }
-        }
-
-        async(() -> database().payments().insertPayments(dataList));
-        return new PagedResult<>(dataList, dataList.size());
-    }
-
-    @Override
-    public void onTaskEnd(PagedResult<List<Payment>> result) {
-        showLoader(false);
-        if (!result.isSuccess())
-            return;
-        payments.clear();
-        payments.addAll(result.data);
-        adapter = new PaymentDetailsAdapter(payments);
-        paymentDetailList.setLayoutManager(new LinearLayoutManager(this));
-        paymentDetailList.setAdapter(adapter);
     }
 
     private ArrayList<Payment> getCheckedPayments() {

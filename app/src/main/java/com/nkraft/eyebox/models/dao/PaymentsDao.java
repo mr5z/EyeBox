@@ -32,6 +32,9 @@ public interface PaymentsDao {
     @Query("SELECT * FROM Payments WHERE status = 'unsubmitted'")
     List<Payment> getAllUnsubmittedPayments();
 
+    @Query("SELECT * FROM Payments WHERE status = 'submitted'")
+    List<Payment> getAllSubmittedPayments();
+
     @Query("UPDATE Payments SET status = 'submitted' WHERE status = 'unsubmitted'")
     int markAllSubmitted();
 

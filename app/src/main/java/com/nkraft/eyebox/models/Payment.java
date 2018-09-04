@@ -118,15 +118,15 @@ public class Payment implements Parcelable, IModel {
         checkDays = in.readLong();
         controlNo = in.readString();
         deposited = in.readString();
-        status = in.readString();
         debit = in.readDouble();
         validatedBy = in.readLong();
         receiptLayout = in.readInt();
         bankNameStr = in.readString();
         termsName = in.readString();
-        isChecked = in.readInt() != 0;
+        isChecked = in.readByte() != 0;
         receiverName = in.readString();
         customerName = in.readString();
+        soNumber = in.readInt();
     }
 
     public static final Creator<Payment> CREATOR = new Creator<Payment>() {
@@ -369,49 +369,6 @@ public class Payment implements Parcelable, IModel {
         return Formatter.currency(amount);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(id);
-        parcel.writeLong(dateX);
-        parcel.writeLong(bankName);
-        parcel.writeLong(checkDate);
-        parcel.writeString(checkNo);
-        parcel.writeDouble(amount);
-        parcel.writeLong(receivedBy);
-        parcel.writeString(delAll);
-        parcel.writeString(userLogs);
-        parcel.writeLong(salesId);
-        parcel.writeInt(terms);
-        parcel.writeString(remarks);
-        parcel.writeString(checkName);
-        parcel.writeInt(branchNo);
-        parcel.writeLong(dateDeposited);
-        parcel.writeString(status);
-        parcel.writeLong(customerId);
-        parcel.writeString(drNo);
-        parcel.writeString(productNumber);
-        parcel.writeLong(salesDate);
-        parcel.writeString(orNo);
-        parcel.writeLong(dueDate);
-        parcel.writeLong(checkDays);
-        parcel.writeString(controlNo);
-        parcel.writeString(deposited);
-        parcel.writeString(status);
-        parcel.writeDouble(debit);
-        parcel.writeLong(validatedBy);
-        parcel.writeInt(receiptLayout);
-        parcel.writeString(bankNameStr);
-        parcel.writeString(termsName);
-        parcel.writeInt(isChecked ? 1 : 0);
-        parcel.writeString(receiverName);
-        parcel.writeString(customerName);
-    }
-
     public List<Sale> getSales() {
         return sales;
     }
@@ -487,5 +444,48 @@ public class Payment implements Parcelable, IModel {
 
     public void setSoNumber(int soNumber) {
         this.soNumber = soNumber;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeLong(dateX);
+        dest.writeLong(bankName);
+        dest.writeLong(checkDate);
+        dest.writeString(checkNo);
+        dest.writeDouble(amount);
+        dest.writeLong(receivedBy);
+        dest.writeString(delAll);
+        dest.writeString(userLogs);
+        dest.writeLong(salesId);
+        dest.writeInt(terms);
+        dest.writeString(remarks);
+        dest.writeString(checkName);
+        dest.writeInt(branchNo);
+        dest.writeLong(dateDeposited);
+        dest.writeString(status);
+        dest.writeLong(customerId);
+        dest.writeString(drNo);
+        dest.writeString(productNumber);
+        dest.writeLong(salesDate);
+        dest.writeString(orNo);
+        dest.writeLong(dueDate);
+        dest.writeLong(checkDays);
+        dest.writeString(controlNo);
+        dest.writeString(deposited);
+        dest.writeDouble(debit);
+        dest.writeLong(validatedBy);
+        dest.writeInt(receiptLayout);
+        dest.writeString(bankNameStr);
+        dest.writeString(termsName);
+        dest.writeByte((byte) (isChecked ? 1 : 0));
+        dest.writeString(receiverName);
+        dest.writeString(customerName);
+        dest.writeInt(soNumber);
     }
 }

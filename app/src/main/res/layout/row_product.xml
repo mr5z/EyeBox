@@ -56,7 +56,7 @@
         android:maxLines="1" />
 
     <TextView
-        android:text="byx: 100"
+        android:text="Pkg: 100"
         android:id="@+id/product_byx"
         android:layout_column="1"
         android:layout_row="2"

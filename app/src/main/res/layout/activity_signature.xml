@@ -19,7 +19,7 @@
         android:layout_margin="12dp"
         app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_eraser"
-        app:elevation="6dp"
+        app:elevation="2dp"
         android:backgroundTint="@color/gray" />
 
     <android.support.design.widget.FloatingActionButton
@@ -31,8 +31,7 @@
         android:layout_margin="12dp"
         app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_save"
-        app:elevation="6dp"
+        app:elevation="2dp"
         android:backgroundTint="@color/gray" />
-
 
 </RelativeLayout>

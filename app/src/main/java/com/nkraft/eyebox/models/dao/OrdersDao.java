@@ -33,6 +33,9 @@ public interface OrdersDao {
     @Query("DELETE FROM Orders")
     int deleteAll();
 
+    @Query("DELETE FROM Orders WHERE id = :id")
+    int deleteById(long id);
+
     @Query("SELECT COUNT(*) FROM Orders")
     long count();
 }

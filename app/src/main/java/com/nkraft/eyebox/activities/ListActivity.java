@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.nkraft.eyebox.R;
 import com.nkraft.eyebox.adapters.BaseListAdapter;
+import com.nkraft.eyebox.models.IModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public abstract class ListActivity<TModel>
+public abstract class ListActivity<TModel extends IModel>
         extends BaseActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener {
@@ -182,6 +183,10 @@ public abstract class ListActivity<TModel>
 
     TModel removeDataAt(int index) {
         return dataList.remove(index);
+    }
+
+    boolean removeData(TModel model) {
+        return dataList.remove(model);
     }
 
     int getIndexOf(TModel data) {

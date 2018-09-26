@@ -286,7 +286,7 @@ public class MainActivity extends BaseActivity implements SyncDialog.SyncListene
                 if (!payments.isEmpty()) {
                     PagedResult<Payment> result = paymentService.submitPayments(payments);
                     if (result.isSuccess()) {
-                        long affectedRows = database().payments().markAllSubmitted();
+                        database().payments().deleteAll();
                         updateProgress(++progress, processTypes);
                     } else {
                         success = false;

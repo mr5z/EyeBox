@@ -13,6 +13,7 @@ import com.nkraft.eyebox.utils.Formatter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 @Entity(tableName = "Orders")
 public class Order implements Parcelable, IModel {
@@ -134,6 +135,19 @@ public class Order implements Parcelable, IModel {
         this.anyBrand = anyBrand;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     public static class Product implements Parcelable {
 
         @ColumnInfo(name = "product_id")
@@ -210,5 +224,6 @@ public class Order implements Parcelable, IModel {
         public void setUnit(String unit) {
             this.unit = unit;
         }
+
     }
 }

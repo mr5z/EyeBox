@@ -44,7 +44,6 @@ function submitVisits() {
 		}
 		$values .= "
 		(
-			$v->id,
 			FROM_UNIXTIME($v->date/1000),
 			FROM_UNIXTIME($v->timex/1000),
 			$v->agent,
@@ -59,7 +58,6 @@ function submitVisits() {
 	}
 	$sql = "INSERT IGNORE INTO 
 				tbl_visits(
-					id,
 					date,
 					timex,
 					agent, 

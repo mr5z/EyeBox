@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.BitmapCompat;
+import android.util.Base64;
 import android.view.View;
 
 import com.nkraft.eyebox.R;
@@ -16,7 +16,7 @@ import com.nkraft.eyebox.models.Visit;
 import com.nkraft.eyebox.services.AccountService;
 import com.nkraft.eyebox.utils.Debug;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
 
@@ -61,6 +61,7 @@ public class SignatureActivity extends BaseActivity {
             visit.setId((new Date().getTime() / 1000));
             visit.setDate((new Date()).getTime());
             visit.setFileName(path);
+            visit.setSignature(encodeBase64(bitmap));
             visit.setAgent(currentUser.getId());
             visit.setCustomerId(client.getId());
             visit.setClientName(client.getName());
@@ -87,6 +88,16 @@ public class SignatureActivity extends BaseActivity {
             Debug.log("error saving signature: %s", e.getMessage());
             return null;
         }
+    }
+
+    String encodeBase64(Bitmap bitmap) {
+        if (bitmap == null)
+            return null;
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(data, Base64.DEFAULT);
     }
 
     @Override

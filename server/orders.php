@@ -37,6 +37,7 @@ function submitOrders() {
 			$value->employeesid,
 			$value->productid,
 			$value->orderfrom,
+			$value->orderto,
 			$value->anybrand,
 			(CASE WHEN $value->date = 0 THEN NULL ELSE FROM_UNIXTIME($value->date/1000) END)
 		)";
@@ -52,6 +53,7 @@ function submitOrders() {
 					employeesid, 
 					productid,
 					orderfrom,
+					orderto,
 					anybrand,
 					`date`
 				) 
